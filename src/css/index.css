@@ -1,0 +1,33 @@
+.headerText {
+    font-family: "Gen Jyuu Gothic XP",Georgia, 'Times New Roman', Times, serif;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 100%;
+}
+
+#homeBtn {
+    color: #F2AF21;
+}
+
+#header .menuBtn {
+    color: #003C95;  
+}
+
+#header .menuBtn:active {
+    color: #003C95;  
+}
+
+#loginBtn {
+    color: #003C95;  
+}
+
+#header {
+    height: 100px;
+    width: 100%;
+}
+
+@media screen and (max-width:710px) {
+    .menuBtn {
+        display: none;
+    }
+}
