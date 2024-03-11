@@ -1,8 +1,15 @@
-.headerText {
+*{
     font-family: "Gen Jyuu Gothic XP",Georgia, 'Times New Roman', Times, serif;
+}
+
+.headerText {
     font-size: 26px;
     font-weight: 500;
     line-height: 100%;
+}
+
+#banner {
+    width: 100%;
 }
 
 #homeBtn {
@@ -26,7 +33,38 @@
     width: 100%;
 }
 
-@media screen and (max-width:710px) {
+#footer {
+    margin-top: 50px; 
+    background-image: url('../images/Footer_Background.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+#footerlink img {
+    cursor: pointer;
+}
+#footerInfo p {
+    cursor: pointer;
+}
+
+@media screen and (max-width:1060px) {
+    .headerText {
+        font-size: 18px;
+    }
+}
+@media screen and (max-width:800px) {
+    .headerText {
+        font-size: 12px;
+    }
+
+    .footerText{
+        font-size: 10px;
+    }
+}
+@media screen and (max-width:600px) {
+    .footerText{
+        font-size: 8px;
+    }
     .menuBtn {
         display: none;
     }
