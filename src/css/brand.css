@@ -186,14 +186,14 @@ body {
 }
 
 @media screen and (max-width:1060px) {
-    .headerText {
-        font-size: 18px;
-    }
     #memberNav{
         right: 25px;
     }
 }
 @media screen and (max-width:992px) {
+    .headerText {
+        font-size: 22px;
+    }
     .brandCard {
         height: 210px;
     }
@@ -209,19 +209,20 @@ body {
     }
 }
 @media screen and (max-width:800px) {
-    .headerText {
-        font-size: 12px;
-    }
+   
     #memberNav{
         top:65px;
         right: 20px;
     }
     .footerText{
-        font-size: 10px;
+        font-size: 14px;
     }
     
 }
 @media screen and (max-width:768px) {
+    .headerText {
+        font-size: 18px;
+    }
     .brandCard {
         height: 150px;
     }
@@ -235,13 +236,25 @@ body {
         width: 100px;
         height: 100px;
     }
+    .footerText{
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width:650px) {
+    .headerText {
+        font-size: 16px;
+    }
 }
 @media screen and (max-width:600px) {
+    .headerText {
+        font-size: 18px;
+    }
     .brandCard {
         height: 140px;
     }
     .footerText{
-        font-size: 8px;
+        font-size: 10px;
     }
     .menuBtn {
         display: none;

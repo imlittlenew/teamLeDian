@@ -13,11 +13,11 @@ class index extends Component {
     render() { 
         return (<React.Fragment>
             <div id='header' className='d-flex justify-content-between'>
-                <div className='col-6  d-flex ms-2 justify-content-between align-items-center'>
+                <div className='col-6 d-flex ms-2 justify-content-between align-items-center' >
                     <h4 id='homeBtn' className='my-auto btn headerText' onClick={()=>{window.location="/index"}}>首頁</h4>
-                    <h4 className='my-auto btn headerText menuBtn'><HiOutlineShoppingBag />購物車</h4>
-                    <h4 className='my-auto btn headerText menuBtn' onClick={()=>{window.location="/brand"}}><PiMedal />品牌專區</h4>
-                    <h4 className='my-auto btn headerText menuBtn' onClick={this.pointinfoShow}><PiCoins />集點資訊</h4>
+                    <h4 className='my-auto px-0 btn headerText menuBtn'><HiOutlineShoppingBag className='fs-6'/>購物車</h4>
+                    <h4 className='my-auto px-0 btn headerText menuBtn' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-6'/>品牌專區</h4>
+                    <h4 className='my-auto px-0 btn headerText menuBtn' onClick={this.pointinfoShow}><PiCoins className='fs-6'/>集點資訊</h4>
                 </div>
                 <div id="pointinfo">
                     <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2    text-light' /></button>
@@ -55,63 +55,63 @@ class index extends Component {
                 <div id='brandArea' className='row'>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/1.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/2.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/3.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/4.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/5.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/6.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/7.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/8.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/9.png")} alt='navImg' className='img-fluid'></img></div>
                         <h3 className='brandText my-1'>迷克夏</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/2.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>得正</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/3.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>烏弄</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/4.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>五桐號</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/5.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>麻古茶坊</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/6.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>龜記茗品</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/7.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>茶湯會</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/8.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>八曜和茶</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/9.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>50嵐</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/10.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克查</h3>
+                        <h3 className='brandText my-1'>TEA TOP第一味</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1 '>
                         <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/11.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏夏</h3>
+                        <h3 className='brandText my-1'>大苑子</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/12.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克</h3>
+                        <h3 className='brandText my-1'>可不可熟成紅茶</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/13.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏</h3>
+                        <h3 className='brandText my-1'>大茗本位製茶堂</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/14.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                        <h3 className='brandText my-1'>清心福全</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/15.png")} alt='navImg' className='img-fluid'></img></div>
-                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                        <h3 className='brandText my-1'>Mr.Wish</h3>
                     </div>
 
 
