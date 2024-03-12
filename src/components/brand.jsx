@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "../css/index.css";
+import "../css/brand.css";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
@@ -52,6 +52,73 @@ class index extends Component {
                     <div className='navImg col-4 btn'><img src={require("../images/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
+                <div id='brandArea' className='row'>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/1.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/2.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/3.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/4.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/5.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/6.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/7.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/8.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/9.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/10.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克查</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1 '>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/11.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/12.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/13.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/14.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                        <div className='brandImg rounded-circle m-1'><img src={require("../images/logo/15.png")} alt='navImg' className='img-fluid'></img></div>
+                        <h3 className='brandText my-1'>迷克夏迷克夏迷克夏迷克夏</h3>
+                    </div>
+
+
+
+
+                    
+                </div>
             </div>
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>
