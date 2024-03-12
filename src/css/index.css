@@ -47,16 +47,85 @@
     cursor: pointer;
 }
 
+#pointinfo {
+    position: fixed;
+    top: -500px;
+    left: 30%;
+    width: 300px;
+    background-color: #fff;
+    color: #003C95;
+    padding: 20px 20px 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    box-shadow: 0 1px 5px #333;
+    z-index: 101;
+    transition: all 1s ease-out;
+    
+}
+
+#pointinfo h1 {
+    border-bottom: 1px dashed #7F7F7F;
+    margin: -20px -20px 0px -20px;
+    padding: 10px;
+    background-color: #003C95;
+    color: #fff;
+    border-radius: 20px 20px 0px 0px;
+    text-align: center;
+}
+
+#pointinfo p{
+    margin: 10px;
+}
+
+#pointinfoclose {
+    background-color: initial;
+    border: none;
+    position: absolute;   
+    top: 28px; 
+    right: 35px;
+    width: 30px;
+    height: 30px;
+    margin-top: -30px;
+    margin-right: -30px;
+}
+
+#memberNav{
+    position: absolute;
+    top: 70px;
+    right: 30px;
+    border:1px solid #F2AF21;
+    padding: 0px 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+#memberNav h4 {
+    cursor: pointer;
+}
+
+#memberNavImg {
+    position: absolute;
+    right: 0px;
+    width: 100%;
+    opacity: 0.2;
+}
+
 @media screen and (max-width:1060px) {
     .headerText {
         font-size: 18px;
+    }
+    #memberNav{
+        right: 25px;
     }
 }
 @media screen and (max-width:800px) {
     .headerText {
         font-size: 12px;
     }
-
+    #memberNav{
+        top:65px;
+        right: 20px;
+    }
     .footerText{
         font-size: 10px;
     }
