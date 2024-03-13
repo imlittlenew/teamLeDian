@@ -4,7 +4,8 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-import * as Icon from 'react-bootstrap-icons';
+// import * as Icon from 'react-bootstrap-icons';
+import GradeIcon from '@mui/icons-material/Grade';
 
 class index extends Component {
     state = { 
@@ -53,29 +54,6 @@ class index extends Component {
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
             </div>
  
 
@@ -84,244 +62,244 @@ class index extends Component {
 
 
 
-            <div className="container">
+            <div className="container my-2">
                 <div className="row">
-                <div className="choose_right row">
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                    <div className="choose_right row">
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score align-items-center">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
-                    </div>
-                    </div>
-                    <div className="col-4">
-                    <div className="card">
-                        <div className="image">
-                        <img
-                            src={require("../images/mainproduct/8.png")}
-                            className="card-img-top"
-                            alt="..."
-                        />
-                        <img src={require("../images/logo/8.png")} className="logo" alt="..." />
-                        </div>
-                        <div className="card-body">
-                        <div className="row information">
-                            <p className="col-3 score">
-                            <Icon.StarFill /> 4.3
+                        <div className="col-lg-6 col-xxl-4 my-3">
+                        <div className="card">
+                            <div className="image">
+                            <img
+                                src={require("../images/mainproduct/8.png")}
+                                className="card-img-top"
+                                alt="..."
+                            />
+                            <img src={require("../images/logo/8.png")} className="logo" alt="..." />
+                            </div>
+                            <div className="card-body">
+                            <div className="row information">
+                                <p className="col-3 score">
+                                <GradeIcon /> 4.3
+                                </p>
+                                <p className="col-4 time">10:00~23:00</p>
+                                <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
+                                八曜和茶 台中五權門市店<br /><a
+                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                >台中市北區五權路238號</a>
                             </p>
-                            <p className="col-4 time">10:00~23:00</p>
-                            <p className="col-4 kilometre">約 0.2 公里</p>
+                            </div>
                         </div>
-                        <p className="card-title lh-sm">
-                            八曜和茶 台中五權門市店<br /><a
-                            href="https://www.google.com/maps/place/台中市北區五權路238號"
-                            >台中市北區五權路238號</a>
-                        </p>
                         </div>
                     </div>
-                    </div>
-                </div>
                 </div>
             </div>
 

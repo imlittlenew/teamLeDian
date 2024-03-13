@@ -109,6 +109,7 @@
     background-image: url('../images/Footer_Background.jpg');
     background-size: 100%;
     background-repeat: no-repeat;
+    z-index: -1;
 }
 
 #footerlink img {
@@ -147,13 +148,15 @@
     padding: 0% 2%;
   }
   
-.choose_right div.information p.score {
+.choose_right div.information .score {
     background-color: #f2f2f2;
     padding: 1% 2%;
     border-radius: 20px;
     text-align: center;
     margin: 0% auto;
+    
   }
+
   
 .choose_right div.information p.score i {
     color: #f3b021;
