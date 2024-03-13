@@ -33,23 +33,20 @@ class index extends Component {
                     <div id='memberNav' className='collapse'>
                         <img id='memberNavImg' src={require("../images/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div>
-                            <h4 className='headerText my-2'>個人檔案</h4>
-                            <h4 className='headerText my-2'>帳號管理</h4>
-                            <h4 className='headerText my-2'>歷史訂單</h4>
-                            <h4 className='headerText my-2'>載具存取</h4>
+                            <h4 className='headerText my-3'>個人檔案</h4><hr />
+                            <h4 className='headerText my-3'>帳號管理</h4><hr />
+                            <h4 className='headerText my-3'>歷史訂單</h4><hr />
+                            <h4 className='headerText my-3'>載具存取</h4>
                         </div>
                     </div>
                 </div>
-
-
-                
             </div>
             <div id='banner' className='d-flex justify-content-center'><img src={require("../images/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
                     <div className='navImg col-4 btn'><img src={require("../images/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
                     <div className='navImg col-4 btn'><img src={require("../images/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={require("../images/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../images/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
                 <div id='brandArea' className='row'>

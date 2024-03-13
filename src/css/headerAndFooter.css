@@ -110,6 +110,7 @@
     background-image: url('../images/Footer_Background.jpg');
     background-size: 100%;
     background-repeat: no-repeat;
+    z-index: -1;
 }
 
 #footerlink img {
@@ -119,73 +120,9 @@
     cursor: pointer;
 }
 
-/* Brand */
-#brandArea {
-    margin-top: 20px;
-    height: 1100px;
-    overflow: scroll;
-    -ms-overflow-style: none;
-}
-/* 滾動條 start */
-#brandArea::-webkit-scrollbar {
-    display: none;
-}
 
-html {
-    overflow: -moz-hidden-unscrollable;
-    height: 100%;
-}
 
-body {
-	height: 100%;
-	overflow: auto;
-}
-/* 滾動條 end */
-
-.brandCard {
-    height: 320px;
-}
-
-.brandImg {
-    overflow: hidden;
-    width: 200px;
-    height: 200px;
-    border: 1px solid #F2AF21;
-}
-.brandText{
-    text-align: center  ;
-}
 /* RWD */
-@media screen and (max-width:1400px) {
-    .brandCard {
-        height: 290px;
-    }
-    #brandArea {
-        height: 1000px;
-    }
-    .brandImg {
-        width: 180px;
-        height: 180px;
-    }
-    
-}
-@media screen and (max-width:1200px) {
-    .brandCard {
-        height: 230px;
-    }
-    .brandText{
-        font-size: 24px;
-    }
-    #brandArea {
-        height: 800px;
-    }
-    .brandImg {
-        width: 150px;
-        height: 150px;
-    }
-    
-}
-
 @media screen and (max-width:1060px) {
     #memberNav{
         right: 25px;
@@ -195,22 +132,8 @@ body {
     .headerText {
         font-size: 22px;
     }
-    .brandCard {
-        height: 210px;
-    }
-    .brandText{
-        font-size: 20px;
-    }
-    #brandArea {
-        height: 730px;
-    }
-    .brandImg {
-        width: 130px;
-        height: 130px;
-    }
 }
 @media screen and (max-width:800px) {
-   
     #memberNav{
         top:65px;
         right: 20px;
@@ -218,30 +141,15 @@ body {
     .footerText{
         font-size: 14px;
     }
-    
 }
 @media screen and (max-width:768px) {
     .headerText {
         font-size: 18px;
     }
-    .brandCard {
-        height: 150px;
-    }
-    .brandText{
-        font-size: 16px;
-    }
-    #brandArea {
-        height: 550px;
-    }
-    .brandImg {
-        width: 100px;
-        height: 100px;
-    }
     .footerText{
         font-size: 12px;
     }
 }
-
 @media screen and (max-width:650px) {
     .headerText {
         font-size: 16px;
@@ -251,20 +159,11 @@ body {
     .headerText {
         font-size: 18px;
     }
-    .brandCard {
-        height: 140px;
-    }
-    .footerText{
-        font-size: 10px;
-    }
+
     .menuBtn {
         display: none;
     }
-    #brandArea {
-        height: 500px;
-    }
-    .brandImg {
-        width: 80px;
-        height: 80px;
+    .footerText{
+        font-size: 10px;
     }
 }
