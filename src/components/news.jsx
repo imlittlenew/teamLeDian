@@ -15,10 +15,10 @@ class index extends Component {
         return (<React.Fragment>
             <div id='header' className='d-flex justify-content-between'>
                 <div className='col-6  d-flex ms-2 justify-content-between align-items-center'>
-                    <h4 id='homeBtn' className='my-auto btn headerText' onClick={()=>{window.location="/index"}}>首頁</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn'><HiOutlineShoppingBag className='fs-6'/>購物車</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-6'/>品牌專區</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn' onClick={this.pointinfoShow}><PiCoins className='fs-6'/>集點資訊</h4>
+                    <h4 id='homeBtn' className='my-auto btn headerText text-nowrap' onClick={()=>{window.location="/index"}}>首頁</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-6'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-6'/>品牌專區</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-6'/>集點資訊</h4>
                 </div>
                 <div id="pointinfo">
                     <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2    text-light' /></button>
@@ -30,9 +30,9 @@ class index extends Component {
                     <p>．本集點活動以本站公告為準，如有更改，恕不另行通知。</p>
                 </div>
                 <div className='d-flex me-2  align-items-center'>
-                    <h4 id='loginBtn' className='my-auto btn headerText' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
+                    <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
                     <div id='memberNav' className='collapse'>
-                        <img id='memberNavImg' src={require("../images/LeDian_LOGO-05.png")} alt='logo'></img>
+                        <img id='memberNavImg' src={require("../img/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div>
                             <h4 className='headerText my-3'>個人檔案</h4><hr />
                             <h4 className='headerText my-3'>帳號管理</h4><hr />
@@ -42,41 +42,42 @@ class index extends Component {
                     </div>
                 </div> 
             </div>
-            <div id='banner' className='d-flex justify-content-center'><img src={require("../images/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
+            <div id='banner' className='d-flex justify-content-center'><img src={require("../img/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={require("../images/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={require("../images/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../images/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={require("../img/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={require("../img/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../img/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>            
+                <h2 className='text-center mainColor m-2'>最新消息</h2>
             <div id='newsArea' className='row mt-2'>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/1.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex">
+                    <img src={require("../img/news/1.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/2.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/2.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/3.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/3.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/4.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/4.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/5.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/5.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/6.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/6.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/7.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/7.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/8.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/8.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
-                <div className="newsCard col-4 overflow-hidden my-2" >
-                    <img src={require("../images/news/9.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
+                <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex" >
+                    <img src={require("../img/news/9.jpg")} alt='newsImg' className='img-fluid rounded-1'></img>
                 </div>
 
             </div>
@@ -89,14 +90,14 @@ class index extends Component {
             </div>
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>
-                    <img id='"footerImg"' className='img-fluid' src={require("../images/LeDian_LOGO-04.png")} alt="footerLogo" />
+                    <img id='"footerImg"' className='img-fluid' src={require("../img/LeDian_LOGO-04.png")} alt="footerLogo" />
                 </div>
                 <div className='col-6 d-flex align-items-center'>
                     <div  id='footerlink' className='col-2 d-flex flex-column'>
                         <div className='d-flex'>
-                            <div><img className='img-fluid' src={require("../images/facebook.png")} alt="fackbook" /></div>
-                            <div><img className='img-fluid' src={require("../images/instagram.png")} alt="instagram" /></div>
-                            <div><img className='img-fluid' src={require("../images/line.png")} alt="line" /></div>
+                            <div><img className='img-fluid' src={require("../img/facebook.png")} alt="fackbook" /></div>
+                            <div><img className='img-fluid' src={require("../img/instagram.png")} alt="instagram" /></div>
+                            <div><img className='img-fluid' src={require("../img/line.png")} alt="line" /></div>
                         </div>
                         <p className='text-white text-nowrap footerText'>信箱: ledian.tw@gmail.com</p>
                     </div>

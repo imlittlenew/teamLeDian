@@ -7,6 +7,10 @@
 *{
     font-family: "FakePearl-Regular",Georgia, 'Times New Roman', Times, serif;
 }
+
+.mainColor {
+    color: #003C95;
+}
 /* header */
 .headerText {
     font-size: 26px;
@@ -90,6 +94,7 @@
     padding: 0px 10px;
     border-radius: 5px;
     background-color: white;
+    z-index: 50;
 }
 
 #memberNav h4 {
@@ -107,7 +112,7 @@
 /* footer */
 #footer {
     margin-top: 50px; 
-    background-image: url('../images/Footer_Background.jpg');
+    background-image: url('../img/Footer_Background.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }
@@ -117,6 +122,9 @@
 }
 #footerInfo p {
     cursor: pointer;
+}
+.footerText{
+    font-size: 22px;
 }
 
 /* Brand */
@@ -151,6 +159,7 @@ body {
     width: 200px;
     height: 200px;
     border: 1px solid #F2AF21;
+    cursor: pointer;
 }
 .brandText{
     text-align: center  ;
@@ -189,6 +198,9 @@ body {
 @media screen and (max-width:1060px) {
     #memberNav{
         right: 25px;
+    }
+    .footerText{
+        font-size: 18px;
     }
 }
 @media screen and (max-width:992px) {
@@ -249,7 +261,7 @@ body {
 }
 @media screen and (max-width:600px) {
     .headerText {
-        font-size: 18px;
+        font-size: 12px;
     }
     .brandCard {
         height: 140px;
@@ -257,14 +269,20 @@ body {
     .footerText{
         font-size: 10px;
     }
-    .menuBtn {
-        display: none;
-    }
+    /* .menuBtn {
+        visibility: hidden;
+    } */
     #brandArea {
         height: 500px;
     }
     .brandImg {
         width: 80px;
         height: 80px;
+    }
+}
+@media screen and (max-width:500px) {
+
+    .footerText{
+        font-size: 8px;
     }
 }

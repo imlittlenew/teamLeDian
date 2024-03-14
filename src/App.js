@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import index from './components/index';
 import brand from './components/brand';
 import news from './components/news';
+import branch from './components/branch';
 
  
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
              <Route path="/index" component={index} exact/>
              <Route path="/brand" component={brand} exact/>
              <Route path="/news" component={news} exact/>
+             <Route path="/branch" component={branch} exact/>
 
             <Route component={Error}/>
            </Switch>
@@ -26,5 +28,6 @@ class App extends Component {
     );
   }
 }
+
  
 export default App;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "../css/index.css";
+import "../css/branch.css";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
@@ -54,7 +54,7 @@ class index extends Component {
                     <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../img/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
-                <h2 className='text-center mainColor m-2'>附近店家</h2>
+                <h2 className='text-center mainColor m-2'>所有分店</h2>
             </div>
             <div className="container my-2">
                 <div className="row d-flex justify-content-center">

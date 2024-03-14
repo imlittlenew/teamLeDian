@@ -109,11 +109,6 @@
     top: 50px;
 }
 
-/* news */
-.newsCard {
-    height: 100%;
-}
-
 /* footer */
 #footer {
     margin-top: 50px; 
@@ -129,13 +124,76 @@
 #footerInfo p {
     cursor: pointer;
 }
-
 .footerText{
     font-size: 22px;
 }
 
-/* RWD */
+/* 店家資訊 (右) */
+.choose_right div.image {
+    position: relative;
+  }
+  
+.choose_right div.image img.logo {
+    width: 65px;
+    height: 65px;
+    z-index: 3;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    border-radius: 50%;
+    border: 1px solid #aaaaaa;
+  }
+  
+.choose_right div.image img.card-img-top {
+    z-index: 1;
+  }
+  
+.choose_right div.information {
+    padding: 0% 2%;
+  }
+  
+.choose_right div.information .score {
+    background-color: #f2f2f2;
+    padding: 1% 2%;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0% auto;
+    
+  }
 
+.choose_right div.information p.score i {
+    color: #f3b021;
+  }
+  
+.choose_right div.information p.time {
+    background-color: #f2f2f2;
+    padding: 1% 2%;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0% auto;
+  }
+  
+.choose_right div.information p.kilometre {
+    background-color: #f2f2f2;
+    padding: 1% 2%;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0% auto;
+  }
+  
+.choose_right p.card-title {
+    font-size: 1.3rem;
+    margin-top: 5%;
+    padding-left: 2%;
+  }
+  
+.choose_right p.card-title a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+  }
+
+/* RWD */
 @media screen and (max-width:1060px) {
     #memberNav{
         right: 25px;
