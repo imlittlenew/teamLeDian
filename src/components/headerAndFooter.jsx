@@ -4,7 +4,6 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-// import * as Icon from 'react-bootstrap-icons';
 
 class index extends Component {
     state = { 

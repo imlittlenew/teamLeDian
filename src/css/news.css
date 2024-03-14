@@ -114,9 +114,30 @@
     height: 100%;
 }
 
+/* roulette */
+
+#rouletteArea {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0px;
+    background-image: url('../img/roulette_background.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+.rouletteBrand{
+    color: #F2AF21;
+}
+.rouletteProduct{
+    color: #F2AF21;
+}
+
+
+
+
 /* footer */
 #footer {
-    margin-top: 50px; 
     background-image: url('../img/Footer_Background.png');
     background-size: 100%;
     background-repeat: no-repeat;
@@ -157,6 +178,11 @@
     .footerText{
         font-size: 14px;
     }
+    #rouletteArea {
+        background-size: contain;
+        background-position-y: -10px;
+}
+
 }
 @media screen and (max-width:768px) {
     .headerText {
@@ -165,6 +191,13 @@
     .footerText{
         font-size: 12px;
     }
+    .rouletteBrand{
+        font-size: 16px;
+    }
+    .rouletteProduct{
+        font-size: 14px;
+    }
+
 }
 @media screen and (max-width:650px) {
     .headerText {
@@ -175,9 +208,6 @@
     .headerText {
         font-size: 12px;
     }
-    /* .menuBtn {
-        visibility: hidden;
-    } */
     .footerText{
         font-size: 10px;
     }
@@ -187,4 +217,11 @@
     .footerText{
         font-size: 8px;
     }
+    .rouletteBrand{
+        font-size: 14px;
+    }
+    .rouletteProduct{
+        font-size: 12px;
+    }
+
 }

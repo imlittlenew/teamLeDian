@@ -4,8 +4,8 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-// import * as Icon from 'react-bootstrap-icons';
 import GradeIcon from '@mui/icons-material/Grade';  
+import Carousel from 'react-bootstrap/Carousel';
 
 class index extends Component {
     state = { 
@@ -56,7 +56,7 @@ class index extends Component {
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
                 <h2 className='text-center mainColor m-2'>附近店家</h2>
             </div>
-            <div className="container my-2">
+            <div className="container mt-2 mb-3">
                 <div className="row d-flex justify-content-center">
                     <div className="choose_right row">
                         <div className="col-lg-6 col-xxl-4 my-3">
@@ -296,6 +296,117 @@ class index extends Component {
                     </div>
                 </div>
             </div>
+
+            <div id='rouletteArea' className='row d-flex align-items-center justify-content-center mx-auto'>
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
+                    <Carousel.Item >
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_1.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption>
+                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
+                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_2.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption className='d-block'>
+                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
+                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_3.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption>
+                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
+                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                </Carousel>            
+                <Carousel data-bs-theme="dark" indicators={false} className='col-5'> 
+                    <Carousel.Item className='p-0 my-1'><br/><br/>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_1.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/>
+                        <Carousel.Caption className='p-0 my-1'>
+                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
+                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item className='p-0 my-1'><br/><br/>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_2.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/>
+                        <Carousel.Caption className='p-0 my-1'>
+                        <h5 className='rouletteBrand m-0'>可不可熟成紅茶</h5>
+                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item className='py-0 my-1'><br/><br/>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_3.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/>
+                        <Carousel.Caption className='p-0 my-1'>
+                        <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
+                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                </Carousel>            
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
+                    <Carousel.Item >
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_1.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption>
+                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
+                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_2.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption className='d-block'>
+                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
+                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={require("../img/class/1_3.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption>
+                        <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
+                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                </Carousel>            
+
+            </div>
+
+
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>
                     <img id='"footerImg"' className='img-fluid' src={require("../img/LeDian_LOGO-04.png")} alt="footerLogo" />
