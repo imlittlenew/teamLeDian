@@ -6,15 +6,45 @@ import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import GradeIcon from '@mui/icons-material/Grade';  
 import Carousel from 'react-bootstrap/Carousel';
+import Axios from 'axios';
+import { GoogleMap, LoadScript, Marker, StandaloneSearchBox, Autocomplete } from '@react-google-maps/api';
+<head>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxryD8kH56hfiJ0bJt6r_KQ6G4MEZY6dI&loading=async&callback=initMap&v=weekly"></script>
+</head>
 
 class index extends Component {
     state = { 
+        currentLocation: { lat: 0, lng: 0 },
         search:'搜尋店家',
-
+        branchList:[
+            {}
+        ],
+        brandList:[
+            {}
+        ]
      } 
-     
-    render() { 
 
+     async componentDidMount() {
+        navigator?.geolocation.getCurrentPosition(
+            ({ coords: { latitude: lat, longitude: lng } }) => {
+              const pos = { lat, lng };
+              this.setState({ currentLocation: pos });
+            }
+          );
+          
+        var resultBranch = await Axios.get("http://localhost:8000/index/branch");
+        var newState = {...this.state};
+        var resultBrand = await Axios.get("http://localhost:8000/index/brand/"+ 1);
+        newState.brandList = resultBrand.data;
+        newState.branchList = resultBranch.data;
+        this.setState(newState);
+        console.log(this.state);
+
+    }
+
+
+    render() { 
+ 
         return (<React.Fragment>
             <div id='header' className='d-flex justify-content-between'>
                 <div className='col-9 col-sm-7 col-md-6 d-flex ms-2 justify-content-between align-items-center'>
@@ -73,15 +103,15 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information ">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> {this.state.branchList[0].branch_score}
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
                             </div>
                             <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
+                             {this.state.brandList.brand_name} {this.state.branchList[0].branch_name}<br /><a
                                 href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
+                                >{this.state.branchList[0].branch_address}</a>
                             </p>
                             </div>
                         </div>
@@ -307,7 +337,7 @@ class index extends Component {
                         alt="..."
                         /><br/><br/><br/><br/><br/><br/>
                         <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
+                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
                         <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
                         </Carousel.Caption>
                     </Carousel.Item>
@@ -454,6 +484,24 @@ class index extends Component {
     toggleMemberNav = () => {
         document.getElementById('memberNav').classList.toggle('collapse');
     }
+
+    showBrandName = async function(){
+        var resultBrand = await Axios.get("http://localhost:8000/index/brand/"+ 1);
+        console.log(resultBrand);
+        var newState = {...this.state};
+        newState.brandList = resultBrand.data;
+        this.setState(newState);
+        // newState.brandList = resultBrand.data;
+
+        // for(let i=0;i<this.state.brandList.length;i++){
+        //     var id = this.state.branchList[0].brand_id;
+        //     console.log(id);
+        //     if(id == this.state.brandList[i].brand_id){
+        //         return this.state.brandList[i].brand_name;
+        //     }
+        // }
+    }
 }
+
  
 export default index;
