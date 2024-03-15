@@ -23,7 +23,7 @@
 }
 
 #homeBtn {
-    color: #F2AF21;
+    color: #F3B021;
 }
 
 #header .menuBtn {
@@ -47,7 +47,7 @@
     position: fixed;
     top: -500px;
     left: 30%;
-    width: 300px;
+    width: 500px;
     background-color: #fff;
     color: #003C95;
     padding: 20px 20px 10px 20px;
@@ -90,7 +90,7 @@
     position: absolute;
     top: 70px;
     right: 30px;
-    border:1px solid #F2AF21;
+    border:1px solid #F3B021;
     padding: 0px 10px;
     border-radius: 5px;
     background-color: white;
@@ -118,19 +118,19 @@
 
 #rouletteArea {
     width: 100%;
-    height: 100%;
+    height: 900px;
     margin-bottom: 0px;
-    background-image: url('../img/roulette_background.png');
+    background-image: url('../img/index/roulette_background.png');
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: bottom;
 }
 
 .rouletteBrand{
-    color: #F2AF21;
+    color: #F3B021;
 }
 .rouletteProduct{
-    color: #F2AF21;
+    color: #F3B021;
 }
 
 
@@ -138,7 +138,7 @@
 
 /* footer */
 #footer {
-    background-image: url('../img/Footer_Background.png');
+    background-image: url('../img/index/Footer_Background.png');
     background-size: 100%;
     background-repeat: no-repeat;
     z-index: -1;
@@ -156,7 +156,11 @@
 }
 
 /* RWD */
-
+@media screen and (max-width:1300px) {
+    #rouletteArea {
+        height: 700px;
+    }    
+}
 @media screen and (max-width:1060px) {
     #memberNav{
         right: 25px;
@@ -167,8 +171,11 @@
 }
 @media screen and (max-width:992px) {
     .headerText {
-        font-size: 22px;
+        font-size: 21px;
     }
+    #rouletteArea {
+        height: 400px;
+    }    
 }
 @media screen and (max-width:800px) {
     #memberNav{
@@ -179,10 +186,10 @@
         font-size: 14px;
     }
     #rouletteArea {
-        background-size: contain;
-        background-position-y: -10px;
+        height: 300px;
+        background-position-y: 0px;
+    
 }
-
 }
 @media screen and (max-width:768px) {
     .headerText {
@@ -206,14 +213,16 @@
 }
 @media screen and (max-width:600px) {
     .headerText {
-        font-size: 12px;
+        font-size: 14px;
     }
     .footerText{
         font-size: 10px;
     }
+    #pointinfo {
+        width: 300px;
+    }
 }
 @media screen and (max-width:500px) {
-
     .footerText{
         font-size: 8px;
     }
@@ -223,5 +232,9 @@
     .rouletteProduct{
         font-size: 12px;
     }
-
+}
+@media screen and (max-width:374px) {
+    .headerText {
+        font-size: 12px;
+    }
 }

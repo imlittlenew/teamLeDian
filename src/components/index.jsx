@@ -9,7 +9,8 @@ import Carousel from 'react-bootstrap/Carousel';
 
 class index extends Component {
     state = { 
-        search:'搜尋店家',    
+        search:'搜尋店家',
+
      } 
      
     render() { 
@@ -18,9 +19,9 @@ class index extends Component {
             <div id='header' className='d-flex justify-content-between'>
                 <div className='col-9 col-sm-7 col-md-6 d-flex ms-2 justify-content-between align-items-center'>
                     <h4 id='homeBtn' className='my-auto btn headerText text-nowrap' onClick={()=>{window.location="/index"}}>首頁</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-6'/>購物車</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-6'/>品牌專區</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-6'/>集點資訊</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
                 </div>
                 <div id="pointinfo">
                     <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2 text-light' /></button>
@@ -36,7 +37,7 @@ class index extends Component {
                 <div className='d-flex me-2  align-items-center'>
                     <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
                     <div id='memberNav' className='collapse'>
-                        <img id='memberNavImg' src={require("../img/LeDian_LOGO-05.png")} alt='logo'></img>
+                        <img id='memberNavImg' src={require("../img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div>
                             <h4 className='headerText my-3'>個人檔案</h4><hr />
                             <h4 className='headerText my-3'>帳號管理</h4><hr />
@@ -46,12 +47,12 @@ class index extends Component {
                     </div>
                 </div>
             </div>
-            <div id='banner' className='d-flex justify-content-center'><img src={require("../img/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
+            <div id='banner' className='d-flex justify-content-center'><img src={require("../img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={require("../img/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={require("../img/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../img/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
                 <h2 className='text-center mainColor m-2'>附近店家</h2>
@@ -72,7 +73,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information ">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -98,7 +99,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -124,7 +125,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -150,7 +151,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -176,7 +177,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -202,7 +203,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -228,7 +229,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -254,7 +255,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -280,7 +281,7 @@ class index extends Component {
                             <div className="card-body">
                             <div className="row information">
                                 <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1' /> 4.3
+                                <GradeIcon className='me-1 iconGrade' /> 4.3
                                 </p>
                                 <p className="col-4 time">10:00~23:00</p>
                                 <p className="col-4 kilometre">約 0.2 公里</p>
@@ -297,7 +298,7 @@ class index extends Component {
                 </div>
             </div>
 
-            <div id='rouletteArea' className='row d-flex align-items-center justify-content-center mx-auto'>
+            <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto '>
                 <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
                     <Carousel.Item >
                         <img
@@ -333,7 +334,7 @@ class index extends Component {
                         </Carousel.Caption>
                     </Carousel.Item>
                 </Carousel>            
-                <Carousel data-bs-theme="dark" indicators={false} className='col-5'> 
+                <Carousel data-bs-theme="dark" indicators={false}  className='col-5'> 
                     <Carousel.Item className='p-0 my-1'><br/><br/>
                         <img
                         className="d-block w-100 img-fluid mx-auto"
@@ -409,14 +410,14 @@ class index extends Component {
 
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>
-                    <img id='"footerImg"' className='img-fluid' src={require("../img/LeDian_LOGO-04.png")} alt="footerLogo" />
+                    <img id='"footerImg"' className='img-fluid' src={require("../img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
                 </div>
                 <div className='col-6 d-flex align-items-center'>
                     <div  id='footerlink' className='col-2 d-flex flex-column'>
                         <div className='d-flex'>
-                            <div><img className='img-fluid' src={require("../img/facebook.png")} alt="fackbook" /></div>
-                            <div><img className='img-fluid' src={require("../img/instagram.png")} alt="instagram" /></div>
-                            <div><img className='img-fluid' src={require("../img/line.png")} alt="line" /></div>
+                            <div><img className='img-fluid' src={require("../img/index/facebook.png")} alt="fackbook" /></div>
+                            <div><img className='img-fluid' src={require("../img/index/instagram.png")} alt="instagram" /></div>
+                            <div><img className='img-fluid' src={require("../img/index/line.png")} alt="line" /></div>
                         </div>
                         <p className='text-white text-nowrap footerText'>信箱: ledian.tw@gmail.com</p>
                     </div>
@@ -442,7 +443,7 @@ class index extends Component {
     }
     pointinfoShow = function (event) {
         document.getElementById("pointinfo").style.top = event.clientY + "px";
-        document.getElementById("pointinfo").style.left = event.clientX-150 + "px";
+        document.getElementById("pointinfo").style.left = event.clientX-250 + "px";
     } 
 
     pointinfoHide = function (event) {

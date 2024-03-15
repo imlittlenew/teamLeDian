@@ -23,7 +23,7 @@
 }
 
 #homeBtn {
-    color: #F2AF21;
+    color: #F3B021;
 }
 
 #header .menuBtn {
@@ -47,7 +47,7 @@
     position: fixed;
     top: -500px;
     left: 30%;
-    width: 300px;
+    width: 500px;
     background-color: #fff;
     color: #003C95;
     padding: 20px 20px 10px 20px;
@@ -90,7 +90,7 @@
     position: absolute;
     top: 70px;
     right: 30px;
-    border:1px solid #F2AF21;
+    border:1px solid #F3B021;
     padding: 0px 10px;
     border-radius: 5px;
     background-color: white;
@@ -111,7 +111,7 @@
 
 /* footer */
 #footer {
-    background-image: url('../img/Footer_Background.png');
+    background-image: url('../img/index/Footer_Background.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }
@@ -157,7 +157,7 @@ body {
     overflow: hidden;
     width: 200px;
     height: 200px;
-    border: 1px solid #F2AF21;
+    border: 1px solid #F3B021;
     cursor: pointer;
 }
 .brandText{
@@ -204,7 +204,7 @@ body {
 }
 @media screen and (max-width:992px) {
     .headerText {
-        font-size: 22px;
+        font-size: 21px;
     }
     .brandCard {
         height: 210px;
@@ -260,7 +260,7 @@ body {
 }
 @media screen and (max-width:600px) {
     .headerText {
-        font-size: 12px;
+        font-size: 14px;
     }
     .brandCard {
         height: 140px;
@@ -275,10 +275,17 @@ body {
         width: 80px;
         height: 80px;
     }
+    #pointinfo {
+        width: 300px;
+    }
 }
 @media screen and (max-width:500px) {
-
     .footerText{
         font-size: 8px;
+    }
+}
+@media screen and (max-width:374px) {
+    .headerText {
+        font-size: 12px;
     }
 }
