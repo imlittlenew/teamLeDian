@@ -33,7 +33,7 @@ class index extends Component {
                 <div className='d-flex me-2  align-items-center'>
                     <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
                     <div id='memberNav' className='collapse'>
-                        <img id='memberNavImg' src={require("../img/index/LeDian_LOGO-05.png")} alt='logo'></img>
+                        <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div>
                             <h4 className='headerText my-3'>個人檔案</h4><hr />
                             <h4 className='headerText my-3'>帳號管理</h4><hr />
@@ -43,103 +43,103 @@ class index extends Component {
                     </div>
                 </div>
             </div>
-            <div id='banner' className='d-flex justify-content-center'><img src={require("../img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
+            <div id='banner' className='d-flex justify-content-center'><img src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
                 <h2 className='text-center mainColor m-2'>品牌專區</h2>
                 <div id='brandArea' className='row'>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/1.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/1.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>迷克夏</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/2.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/2.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>得正</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/3.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/3.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>烏弄</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/4.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/4.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>五桐號</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/5.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/5.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>麻古茶坊</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/6.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/6.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>龜記茗品</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/7.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/7.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>茶湯會</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/8.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/8.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>八曜和茶</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/9.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/9.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>50嵐</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/10.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/10.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>TEA TOP第一味</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1 '>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/11.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/11.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>大苑子</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/12.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/12.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>可不可熟成紅茶</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/13.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/13.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>大茗本位製茶堂</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/14.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/14.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>清心福全</h3>
                     </div>
                     <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
                         <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={require("../img/logo/15.png")} alt='navImg' className='img-fluid'></img>
+                            <img src={("/img/logo/15.png")} alt='navImg' className='img-fluid'></img>
                         </div>
                         <h3 className='brandText my-1'>Mr.Wish</h3>
                     </div>
@@ -147,14 +147,14 @@ class index extends Component {
             </div>
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>
-                    <img id='"footerImg"' className='img-fluid' src={require("../img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
+                    <img id='"footerImg"' className='img-fluid' src={("/img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
                 </div>
                 <div className='col-6 d-flex align-items-center'>
                     <div  id='footerlink' className='col-2 d-flex flex-column'>
                         <div className='d-flex'>
-                            <div><img className='img-fluid' src={require("../img/index/facebook.png")} alt="fackbook" /></div>
-                            <div><img className='img-fluid' src={require("../img/index/instagram.png")} alt="instagram" /></div>
-                            <div><img className='img-fluid' src={require("../img/index/line.png")} alt="line" /></div>
+                            <div><img className='img-fluid' src={("/img/index/facebook.png")} alt="fackbook" /></div>
+                            <div><img className='img-fluid' src={("/img/index/instagram.png")} alt="instagram" /></div>
+                            <div><img className='img-fluid' src={("/img/index/line.png")} alt="line" /></div>
                         </div>
                         <p className='text-white text-nowrap footerText'>信箱: ledian.tw@gmail.com</p>
                     </div>

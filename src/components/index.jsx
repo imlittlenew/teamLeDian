@@ -7,45 +7,115 @@ import { GiCancel } from "react-icons/gi";
 import GradeIcon from '@mui/icons-material/Grade';  
 import Carousel from 'react-bootstrap/Carousel';
 import Axios from 'axios';
-import { GoogleMap, LoadScript, Marker, StandaloneSearchBox, Autocomplete } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, StandaloneSearchBox, Autocomplete,DistanceMatrixService } from '@react-google-maps/api';
+
 <head>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxryD8kH56hfiJ0bJt6r_KQ6G4MEZY6dI&loading=async&callback=initMap&v=weekly"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxryD8kH56hfiJ0bJt6r_KQ6G4MEZY6dI&loading=async&libraries=places,drawing,geometry&callback=initMap&v=weekly"></script>
 </head>
 
 class index extends Component {
     state = { 
-        currentLocation: { lat: 0, lng: 0 },
+        currentLocation: { lat: null, lng: null },
         search:'搜尋店家',
         branchList:[
             {}
         ],
         brandList:[
             {}
-        ]
+        ],  
+        branchPosition:[
+            {branchId: 1,branchAddress: '台中市西屯區中工三路181號1樓', lat: 24.1767266, lng: 120.6183528},
+        ],
+        distances: {},
+        productList:[
+            {}
+        ],  
      } 
 
      async componentDidMount() {
-        navigator?.geolocation.getCurrentPosition(
-            ({ coords: { latitude: lat, longitude: lng } }) => {
-              const pos = { lat, lng };
-              this.setState({ currentLocation: pos });
-            }
-          );
-          
-        var resultBranch = await Axios.get("http://localhost:8000/index/branch");
-        var newState = {...this.state};
-        var resultBrand = await Axios.get("http://localhost:8000/index/brand/"+ 1);
-        newState.brandList = resultBrand.data;
-        newState.branchList = resultBranch.data;
-        this.setState(newState);
-        console.log(this.state);
-
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                ({ coords: { latitude: lat, longitude: lng } }) => {
+                    const pos = { lat, lng };
+                    this.setState({ currentLocation: pos }, 
+                    () => {
+                        this.getData(); 
+                    });
+                },
+                error => {
+                    console.error('Error getting geolocation:', error);
+                }
+            );
+        } else {
+            console.error('Geolocation is not supported by this browser.');
+        }
     }
+
+    getData = async () => {
+        try {
+            const resultBranch = await Axios.get("http://localhost:8000/index/branch");
+            const  resultBrand = await Axios.get("http://localhost:8000/index/brand");
+            const resultProduct = await Axios.get("http://localhost:8000/index/products");
+            const newState = {...this.state};
+            newState.branchList = resultBranch.data;
+            newState.brandList = resultBrand.data;
+            newState.productList = resultProduct.data;
+            newState.branchPosition = resultBranch.data.map(branch => ({
+                branchId: branch.branch_id,
+                branchAddress: branch.branch_address,
+                lat: branch.branch_latitude,
+                lng: branch.branch_longitude
+            }));
+            this.setState(newState, () => {
+                this.calculateDistances();
+            });
+            console.log(this.state)
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    
+    calculateDistances = () => {
+        const currentLat =  this.state.currentLocation.lat
+        const currentLng =  this.state.currentLocation.lng
+        const branchPosition  = this.state.branchPosition;
+        if (currentLat !== null && currentLng !== null) {
+          const R = 6371; // 地球平均半径（km）
+          const distances = {};
+          branchPosition.forEach(branch => {
+            const { branchId,lat, lng,} = branch;
+            const dLat = this.deg2rad(lat - currentLat);
+            const dLng = this.deg2rad(lng - currentLng);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(this.deg2rad(currentLat)) * Math.cos(this.deg2rad(lat)) *
+                      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            distances[branchId] = (R * c).toFixed(1); // 保留一位小数
+          });        
+          this.setState({distances});
+        }
+      }
+    
+      deg2rad = (deg) => {
+        return deg * (Math.PI / 180);
+      }
 
 
     render() { 
- 
+        const currentLat =  this.state.currentLocation.lat
+        const currentLng =  this.state.currentLocation.lng
+        const distances  = this.state.distances;
+        const productNumber = Math.floor(Math.random() * this.state.productList.length);
+        
         return (<React.Fragment>
+
+
+
+
+
+
+
+            
             <div id='header' className='d-flex justify-content-between'>
                 <div className='col-9 col-sm-7 col-md-6 d-flex ms-2 justify-content-between align-items-center'>
                     <h4 id='homeBtn' className='my-auto btn headerText text-nowrap' onClick={()=>{window.location="/index"}}>首頁</h4>
@@ -67,7 +137,7 @@ class index extends Component {
                 <div className='d-flex me-2  align-items-center'>
                     <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
                     <div id='memberNav' className='collapse'>
-                        <img id='memberNavImg' src={require("../img/index/LeDian_LOGO-05.png")} alt='logo'></img>
+                        <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div>
                             <h4 className='headerText my-3'>個人檔案</h4><hr />
                             <h4 className='headerText my-3'>帳號管理</h4><hr />
@@ -77,12 +147,12 @@ class index extends Component {
                     </div>
                 </div>
             </div>
-            <div id='banner' className='d-flex justify-content-center'><img src={require("../img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
+            <div id='banner' className='d-flex justify-content-center'><img src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
                 <h2 className='text-center mainColor m-2'>附近店家</h2>
@@ -90,331 +160,244 @@ class index extends Component {
             <div className="container mt-2 mb-3">
                 <div className="row d-flex justify-content-center">
                     <div className="choose_right row">
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information ">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> {this.state.branchList[0].branch_score}
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                             {this.state.brandList.brand_name} {this.state.branchList[0].branch_name}<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >{this.state.branchList[0].branch_address}</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={require("../img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
+                            {/* 附近店鋪 */}
+                            {currentLat !== null && currentLng !== null ? (
+                                <>
+                                    {Object.entries(distances).filter(([branchId, distance]) => distance < 1.5)
+                                    .sort((a, b) => a[1] - b[1]).map(([branchid, distance]) => (
+                                        <div key={branchid} className="col-lg-6 col-xxl-4 my-3">
+                                            <div className="card">
+                                                <div className="image">
+                                                {this.state.branchList.map((branch)=>{
+                                                        if(branch.branch_id == branchid){
+                                                            var id = branch.brand_id;
+                                                            return this.state.brandList.map(function(brand){
+                                                                if( brand.brand_id == id ){
+                                                                    return <img
+                                                                    src={`/img/mainproduct/${brand.brand_id}.png`}
+                                                                    className="card-img-top"
+                                                                    alt="..."
+                                                                    key={branch.branch_id}
+                                                                />
+                                                                }else{
+                                                                    return null}
+                                                                })
+                                                        }else{
+                                                            return null
+                                                        }
+                                                    })}
+                                                {this.state.branchList.map((branch)=>{
+                                                        if(branch.branch_id == branchid){
+                                                            var id = branch.brand_id;
+                                                            return this.state.brandList.map(function(brand){
+                                                                if( brand.brand_id == id ){
+                                                                    return <img
+                                                                    src={`/img/logo/${brand.brand_id}.png`}
+                                                                    className="logo"
+                                                                    alt="..."
+                                                                    key={branch.branch_id}
+                                                                />
+                                                                }else{
+                                                                    return null}
+                                                                })
+                                                        }else{
+                                                            return null
+                                                        }
+                                                    })}
+                                                </div>
+                                                <div className="card-body">
+                                                <div className="row information ">
+                                                    <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
+                                                    <GradeIcon className='me-1 iconGrade' />                                                 
+                                                    {/* 評分 */}
+                                                {this.state.branchList.map(function(e){
+                                                        if(e.branch_id == branchid){
+                                                            return e.branch_score.toFixed(1);  //小數點後補0
+                                                        }else{
+                                                            return null
+                                                        }
+                                                    })}
+
+                                                    </p>
+                                                    <p className="col-4 time">                                           
+
+                                                        {/* 營業時間 */}
+
+                                                    {this.state.branchList.map((branch)=>{
+                                                        if(branch.branch_id == branchid){
+                                                            const day = new Date().getDay();
+                                                            const openTime = [branch.Sun_start,branch.Mon_start,branch.Tue_start,branch.Wed_start,branch.Thu_start,branch.Fri_start,branch.Sat_start]
+                                                            const closeTime = [branch.Sun_end,branch.Mon_end,branch.Tue_end,branch.Wed_end,branch.Thu_end,branch.Fri_end,branch.Sat_end]
+                                                            // console.log(branch)
+                                                            if(openTime[day] == "店休" | closeTime[day] == "店休"){
+                                                                return "店休"
+                                                            }else{
+                                                                return `${openTime[day]}~${closeTime[day]}`
+                                                            }
+                                                        }else{
+                                                            return null
+                                                        }
+                                                    })}
+                                  
+                                                    </p>               
+                                                    <p className="col-4 kilometre">約 {distance} 公里</p>
+                                                </div>
+                                                <p className="card-title lh-sm">
+
+                                                {/* 品牌名 */}
+                                                {this.state.branchList.map((branch)=>{
+                                                        if(branch.branch_id == branchid){
+                                                            var id = branch.brand_id;
+                                                            return this.state.brandList.map(function(brand){
+                                                                if( brand.brand_id == id ){
+                                                                    return brand.brand_name
+                                                                }else{
+                                                                    return null}
+                                                                }
+                                                            )
+                                                        }else{
+                                                            return null
+                                                        }
+                                                    })}
+                                                    {" "}
+                                                {/* 店名 */}
+                                                {this.state.branchList.map(function(e){
+                                                        if(e.branch_id == branchid){
+                                                            return e.branch_name}
+                                                        else{
+                                                            return null
+                                                        }
+                                                    })}
+                                                <br />
+                                                {this.state.branchList.map(function(e){
+                                                        if(e.branch_id == branchid){
+                                                            return( <a key={branchid}
+                                                    href={"https://www.google.com/maps/place/" +  e.branch_address}
+                                                    >
+                                                            {e.branch_address}
+                                                            </a>)}else{
+                                                                return null
+                                                            }
+                                                    })}
+                                                </p>
+                                                </div>
+                                            </div>
+                                        </div>                            
+                                    ))}
+                                </>
+                                ) : (
+                                <h3>無法讀取位置...</h3>
+                                )}
+                        
                     </div>
                 </div>
             </div>
+            <div className='text-center'>
+                <h2>#網友激推!</h2>
+                <h3>想不到喝甚麼?來這看看!</h3>
+            </div>
+            <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto'>
+                {/* <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
+                    <Carousel.Item >
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={("/img/class/1_1.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption>
+                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
+                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={("/img/class/1_2.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption className='d-block'>
+                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
+                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={("/img/class/1_3.png")}
+                        alt="..."
+                        /><br/><br/><br/><br/><br/><br/>
+                        <Carousel.Caption>
+                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
+                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                </Carousel>             */}
 
-            <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto '>
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
-                    <Carousel.Item >
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_1.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_2.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption className='d-block'>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_3.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>            
                 <Carousel data-bs-theme="dark" indicators={false}  className='col-5'> 
-                    <Carousel.Item className='p-0 my-1'><br/><br/>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_1.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/>
-                        <Carousel.Caption className='p-0 my-1'>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item className='p-0 my-1'><br/><br/>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_2.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/>
-                        <Carousel.Caption className='p-0 my-1'>
-                        <h5 className='rouletteBrand m-0'>可不可熟成紅茶</h5>
-                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item className='py-0 my-1'><br/><br/>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_3.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/>
-                        <Carousel.Caption className='p-0 my-1'>
-                        <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
-                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>            
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
+
+                {this.state.productList.map((product)=>{
+                    return(                    
+                    <Carousel.Item key={product.product_img} className='p-0 my-1'><br/><br/>
+                    <img
+                    className="d-block w-100 img-fluid mx-auto"
+                    src={`/img/class/${product.product_img}.png`}
+                    alt="..."
+                    /><br/><br/><br/><br/>
+                    <Carousel.Caption className='p-0 my-1'>
+                    <h5 className='rouletteBrand m-0'>
+                        {this.state.brandList.map((e)=>{
+                            if(product.brand_id == e.brand_id){
+                                return e.brand_name
+                            }else{ return null}
+                        })
+                    }
+                    </h5>
+                    <p className='rouletteProduct m-0'>{product.product_name}</p>
+                    </Carousel.Caption>
+                </Carousel.Item>)
+                {/* <Carousel.Item className='p-0 my-1'><br/><br/>
+                    <img
+                    className="d-block w-100 img-fluid mx-auto"
+                    src={("/img/class/1_2.png")}
+                    alt="..."
+                    /><br/><br/><br/><br/>
+                    <Carousel.Caption className='p-0 my-1'>
+                    <h5 className='rouletteBrand m-0'>可不可熟成紅茶</h5>
+                    <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
+                    </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item className='py-0 my-1'><br/><br/>
+                    <img
+                    className="d-block w-100 img-fluid mx-auto"
+                    src={("/img/class/1_3.png")}
+                    alt="..."
+                    /><br/><br/><br/><br/>
+                    <Carousel.Caption className='p-0 my-1'>
+                    <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
+                    <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
+                    </Carousel.Caption>
+                </Carousel.Item> */}
+                })}
+                </Carousel> 
+
+
+
+                {/* <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
                     <Carousel.Item >
                         <img
                         className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_1.png")}
+                        src={("/img/class/1_1.png")}
                         alt="..."
                         /><br/><br/><br/><br/><br/><br/>
                         <Carousel.Caption>
                         <h5 className='rouletteBrand m-0'>迷克夏</h5>
                         <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
                         </Carousel.Caption>
-                    </Carousel.Item>
+                    </Carousel.Item>              
                     <Carousel.Item>
                         <img
                         className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_2.png")}
+                        src={("/img/class/1_2.png")}
                         alt="..."
                         /><br/><br/><br/><br/><br/><br/>
                         <Carousel.Caption className='d-block'>
@@ -425,7 +408,7 @@ class index extends Component {
                     <Carousel.Item>
                         <img
                         className="d-block w-100 img-fluid mx-auto"
-                        src={require("../img/class/1_3.png")}
+                        src={("/img/class/1_3.png")}
                         alt="..."
                         /><br/><br/><br/><br/><br/><br/>
                         <Carousel.Caption>
@@ -433,21 +416,20 @@ class index extends Component {
                         <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
                         </Carousel.Caption>
                     </Carousel.Item>
-                </Carousel>            
+                </Carousel>             */}
 
             </div>
 
-
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>
-                    <img id='"footerImg"' className='img-fluid' src={require("../img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
+                    <img id='"footerImg"' className='img-fluid' src={("/img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
                 </div>
                 <div className='col-6 d-flex align-items-center'>
                     <div  id='footerlink' className='col-2 d-flex flex-column'>
                         <div className='d-flex'>
-                            <div><img className='img-fluid' src={require("../img/index/facebook.png")} alt="fackbook" /></div>
-                            <div><img className='img-fluid' src={require("../img/index/instagram.png")} alt="instagram" /></div>
-                            <div><img className='img-fluid' src={require("../img/index/line.png")} alt="line" /></div>
+                            <div><img className='img-fluid' src={("/img/index/facebook.png")} alt="fackbook" /></div>
+                            <div><img className='img-fluid' src={("/img/index/instagram.png")} alt="instagram" /></div>
+                            <div><img className='img-fluid' src={("/img/index/line.png")} alt="line" /></div>
                         </div>
                         <p className='text-white text-nowrap footerText'>信箱: ledian.tw@gmail.com</p>
                     </div>
@@ -465,7 +447,7 @@ class index extends Component {
                 </div>
             </div>
             </React.Fragment>);
-    }
+}
     searchChange = (e) => {
         var newState = {...this.state};
         newState.search = e.target.value   
@@ -501,7 +483,7 @@ class index extends Component {
         //     }
         // }
     }
-}
 
+}
  
 export default index;

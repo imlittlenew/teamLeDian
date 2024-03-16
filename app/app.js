@@ -27,10 +27,17 @@ app.get("/index/branch", function (req, res) {
         }
     )
 })
-app.get("/index/brand/:id", function (req, res) {
-    conn.query("select * from brand where brand_id = ?",[req.params.id],
+app.get("/index/brand", function (req, res) {
+    conn.query("select * from brand",
         function (err, rows) {
-            res.send( JSON.stringify(rows[0]) );
+            res.send( JSON.stringify(rows) );
+        }
+    )
+})
+app.get("/index/products", function (req, res) {
+    conn.query("select product_name, product_img, brand_id from products where product_img != '無' and product_class_1 = 1",
+        function (err, rows) {
+            res.send( JSON.stringify(rows) );
         }
     )
 })

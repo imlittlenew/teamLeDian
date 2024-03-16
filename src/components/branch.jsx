@@ -35,7 +35,7 @@ class index extends Component {
                 <div className='d-flex me-2  align-items-center'>
                     <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
                     <div id='memberNav' className='collapse'>
-                        <img id='memberNavImg' src={require("../img/index/LeDian_LOGO-05.png")} alt='logo'></img>
+                        <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div>
                             <h4 className='headerText my-3'>個人檔案</h4><hr />
                             <h4 className='headerText my-3'>帳號管理</h4><hr />
@@ -45,12 +45,12 @@ class index extends Component {
                     </div>
                 </div>
             </div>
-            <div id='banner' className='d-flex justify-content-center'><img src={require("../img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
+            <div id='banner' className='d-flex justify-content-center'><img src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={require("../img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={require("../img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
                 <h2 className='text-center mainColor m-2'>所有分店</h2>
@@ -62,11 +62,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information ">
@@ -88,11 +88,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -114,11 +114,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -140,11 +140,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -166,11 +166,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -192,11 +192,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -218,11 +218,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -244,11 +244,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -270,11 +270,11 @@ class index extends Component {
                         <div className="card">
                             <div className="image">
                             <img
-                                src={require("../img/mainproduct/8.png")}
+                                src={("/img/mainproduct/8.png")}
                                 className="card-img-top"
                                 alt="..."
                             />
-                            <img src={require("../img/logo/8.png")} className="logo" alt="..." />
+                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
                             </div>
                             <div className="card-body">
                             <div className="row information">
@@ -297,14 +297,14 @@ class index extends Component {
             </div>
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>
-                    <img id='"footerImg"' className='img-fluid' src={require("../img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
+                    <img id='"footerImg"' className='img-fluid' src={("/img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
                 </div>
                 <div className='col-6 d-flex align-items-center'>
                     <div  id='footerlink' className='col-2 d-flex flex-column'>
                         <div className='d-flex'>
-                            <div><img className='img-fluid' src={require("../img/index/facebook.png")} alt="fackbook" /></div>
-                            <div><img className='img-fluid' src={require("../img/index/instagram.png")} alt="instagram" /></div>
-                            <div><img className='img-fluid' src={require("../img/index/line.png")} alt="line" /></div>
+                            <div><img className='img-fluid' src={("/img/index/facebook.png")} alt="fackbook" /></div>
+                            <div><img className='img-fluid' src={("/img/index/instagram.png")} alt="instagram" /></div>
+                            <div><img className='img-fluid' src={("/img/index/line.png")} alt="line" /></div>
                         </div>
                         <p className='text-white text-nowrap footerText'>信箱: ledian.tw@gmail.com</p>
                     </div>
