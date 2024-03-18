@@ -29,15 +29,15 @@ class index extends Component {
         distances: {},
         productList:[
             {}
-        ],  
+        ],
      } 
 
-     async componentDidMount() {
+    async componentDidMount() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 ({ coords: { latitude: lat, longitude: lng } }) => {
                     const pos = { lat, lng };
-                    this.setState({ currentLocation: pos }, 
+                    this.setState({ currentLocation: pos}, 
                     () => {
                         this.getData(); 
                     });
@@ -54,7 +54,7 @@ class index extends Component {
     getData = async () => {
         try {
             const resultBranch = await Axios.get("http://localhost:8000/index/branch");
-            const  resultBrand = await Axios.get("http://localhost:8000/index/brand");
+            const resultBrand = await Axios.get("http://localhost:8000/index/brand");
             const resultProduct = await Axios.get("http://localhost:8000/index/products");
             const newState = {...this.state};
             newState.branchList = resultBranch.data;
@@ -105,8 +105,8 @@ class index extends Component {
         const currentLat =  this.state.currentLocation.lat
         const currentLng =  this.state.currentLocation.lng
         const distances  = this.state.distances;
-        const productNumber = Math.floor(Math.random() * this.state.productList.length);
-        
+        const randomNumber = Math.floor(Math.random() * 191);
+
         return (<React.Fragment>
 
 
@@ -297,126 +297,82 @@ class index extends Component {
                 <h3>想不到喝甚麼?來這看看!</h3>
             </div>
             <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto'>
-                {/* <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
-                    <Carousel.Item >
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_1.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_2.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption className='d-block'>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_3.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>             */}
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
 
-                <Carousel data-bs-theme="dark" indicators={false}  className='col-5'> 
+                    {this.state.productList.map((product,i)=>{
+                        return(                    
+                        <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
+                        <img
+                        key={product.product_id}
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={`/img/class/${product.product_img}.png`}
+                        alt="..."
+                        /><br/><br/><br/><br/>
+                        <Carousel.Caption> 
+                        <h5 className='rouletteBrand m-0'>
+                            {this.state.brandList.map((e)=>{
+                                if(product.brand_id == e.brand_id){
+                                    return e.brand_name
+                                }else{ return null}
+                            })
+                        }
+                        </h5>
+                        <p className='rouletteProduct m-0'>{product.product_name}</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>)
+                    })}
+                </Carousel> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={randomNumber}> 
 
-                {this.state.productList.map((product)=>{
-                    return(                    
-                    <Carousel.Item key={product.product_img} className='p-0 my-1'><br/><br/>
-                    <img
-                    className="d-block w-100 img-fluid mx-auto"
-                    src={`/img/class/${product.product_img}.png`}
-                    alt="..."
-                    /><br/><br/><br/><br/>
-                    <Carousel.Caption className='p-0 my-1'>
-                    <h5 className='rouletteBrand m-0'>
-                        {this.state.brandList.map((e)=>{
-                            if(product.brand_id == e.brand_id){
-                                return e.brand_name
-                            }else{ return null}
-                        })
-                    }
-                    </h5>
-                    <p className='rouletteProduct m-0'>{product.product_name}</p>
-                    </Carousel.Caption>
-                </Carousel.Item>)
-                {/* <Carousel.Item className='p-0 my-1'><br/><br/>
-                    <img
-                    className="d-block w-100 img-fluid mx-auto"
-                    src={("/img/class/1_2.png")}
-                    alt="..."
-                    /><br/><br/><br/><br/>
-                    <Carousel.Caption className='p-0 my-1'>
-                    <h5 className='rouletteBrand m-0'>可不可熟成紅茶</h5>
-                    <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
-                    </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item className='py-0 my-1'><br/><br/>
-                    <img
-                    className="d-block w-100 img-fluid mx-auto"
-                    src={("/img/class/1_3.png")}
-                    alt="..."
-                    /><br/><br/><br/><br/>
-                    <Carousel.Caption className='p-0 my-1'>
-                    <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
-                    <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
-                    </Carousel.Caption>
-                </Carousel.Item> */}
-                })}
+                    {this.state.productList.map((product,i)=>{
+                        return(                    
+                        <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
+                        <img
+                        key={product.product_id}
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={`/img/class/${product.product_img}.png`}
+                        alt="..."
+                        /><br/><br/><br/><br/>
+                        <Carousel.Caption className='p-0 my-1' > 
+                        <h5 className='rouletteBrand m-0'>
+                            {this.state.brandList.map((e)=>{
+                                if(product.brand_id == e.brand_id){
+                                    return e.brand_name
+                                }else{ return null}
+                            })
+                        }
+                        </h5>
+                        <p className='rouletteProduct m-0'>{product.product_name}</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>)
+                    })}
+                </Carousel> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber+1}> 
+
+                    {this.state.productList.map((product,i)=>{
+                        return(                    
+                        <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
+                        <img
+                        key={product.product_id}
+                        className="d-block w-100 img-fluid mx-auto"
+                        src={`/img/class/${product.product_img}.png`}
+                        alt="..."
+                        /><br/><br/><br/><br/>
+                        <Carousel.Caption> 
+                        <h5 className='rouletteBrand m-0'>
+                            {this.state.brandList.map((e)=>{
+                                if(product.brand_id == e.brand_id){
+                                    return e.brand_name
+                                }else{ return null}
+                            })
+                        }
+                        </h5>
+                        <p className='rouletteProduct m-0'>{product.product_name}</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>)
+                    })}
                 </Carousel> 
 
-
-
-                {/* <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
-                    <Carousel.Item >
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_1.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>              
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_2.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption className='d-block'>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_3.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
-                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>             */}
 
             </div>
 
@@ -467,22 +423,6 @@ class index extends Component {
         document.getElementById('memberNav').classList.toggle('collapse');
     }
 
-    showBrandName = async function(){
-        var resultBrand = await Axios.get("http://localhost:8000/index/brand/"+ 1);
-        console.log(resultBrand);
-        var newState = {...this.state};
-        newState.brandList = resultBrand.data;
-        this.setState(newState);
-        // newState.brandList = resultBrand.data;
-
-        // for(let i=0;i<this.state.brandList.length;i++){
-        //     var id = this.state.branchList[0].brand_id;
-        //     console.log(id);
-        //     if(id == this.state.brandList[i].brand_id){
-        //         return this.state.brandList[i].brand_name;
-        //     }
-        // }
-    }
 
 }
  

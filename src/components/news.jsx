@@ -5,13 +5,33 @@ import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import Carousel from 'react-bootstrap/Carousel';
+import Axios from 'axios';
 
 class index extends Component {
     state = { 
         search:'搜尋店家',
-        newsCardHeight:10,
+        productList:[
+            {}
+        ],
+        brandList:[
+            {}
+        ],
+
      } 
+
+     async componentDidMount() {
+        const newState = {...this.state};
+        const resultProduct = await Axios.get("http://localhost:8000/index/products");
+        const resultBrand = await Axios.get("http://localhost:8000/index/brand");
+        newState.productList = resultProduct.data;
+        newState.brandList = resultBrand.data;
+        this.setState(newState);
+     }
+
+
     render() { 
+        const randomNumber = Math.floor(Math.random() * 191);
+
         return (<React.Fragment>
             <div id='header' className='d-flex justify-content-between'>
                 <div className='col-9 col-sm-7 col-md-6 d-flex ms-2 justify-content-between align-items-center'>
@@ -85,117 +105,84 @@ class index extends Component {
             </div>
             
             <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto'>
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
-                    <Carousel.Item >
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
+
+                    {this.state.productList.map((product,i)=>{
+                        return(                    
+                        <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
+                        key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_1.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
-                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_2.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption className='d-block'>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_3.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏迷克夏迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>            
-                <Carousel data-bs-theme="dark" indicators={false} className='col-5'> 
-                    <Carousel.Item className='p-0 my-1'><br/><br/>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_1.png")}
+                        src={`/img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
-                        <Carousel.Caption className='p-0 my-1'>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
+                        <Carousel.Caption> 
+                        <h5 className='rouletteBrand m-0'>
+                            {this.state.brandList.map((e)=>{
+                                if(product.brand_id == e.brand_id){
+                                    return e.brand_name
+                                }else{ return null}
+                            })
+                        }
+                        </h5>
+                        <p className='rouletteProduct m-0'>{product.product_name}</p>
                         </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item className='p-0 my-1'><br/><br/>
+                    </Carousel.Item>)
+                    })}
+                </Carousel> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={randomNumber}> 
+
+                    {this.state.productList.map((product,i)=>{
+                        return(                    
+                        <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
+                        key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_2.png")}
+                        src={`/img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
-                        <Carousel.Caption className='p-0 my-1'>
-                        <h5 className='rouletteBrand m-0'>可不可熟成紅茶</h5>
-                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
+                        <Carousel.Caption className='p-0 my-1' > 
+                        <h5 className='rouletteBrand m-0'>
+                            {this.state.brandList.map((e)=>{
+                                if(product.brand_id == e.brand_id){
+                                    return e.brand_name
+                                }else{ return null}
+                            })
+                        }
+                        </h5>
+                        <p className='rouletteProduct m-0'>{product.product_name}</p>
                         </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item className='py-0 my-1'><br/><br/>
+                    </Carousel.Item>)
+                    })}
+                </Carousel> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber+1}> 
+
+                    {this.state.productList.map((product,i)=>{
+                        return(                    
+                        <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
+                        key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_3.png")}
+                        src={`/img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
-                        <Carousel.Caption className='p-0 my-1'>
-                        <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
-                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
+                        <Carousel.Caption> 
+                        <h5 className='rouletteBrand m-0'>
+                            {this.state.brandList.map((e)=>{
+                                if(product.brand_id == e.brand_id){
+                                    return e.brand_name
+                                }else{ return null}
+                            })
+                        }
+                        </h5>
+                        <p className='rouletteProduct m-0'>{product.product_name}</p>
                         </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>            
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3'> 
-                    <Carousel.Item >
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_1.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>水之森玄米抹茶</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_2.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption className='d-block'>
-                        <h5 className='rouletteBrand m-0'>迷克夏</h5>
-                        <p className='rouletteProduct m-0'>圓仔伯爵紅茶拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <img
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={("/img/class/1_3.png")}
-                        alt="..."
-                        /><br/><br/><br/><br/><br/><br/>
-                        <Carousel.Caption>
-                        <h5 className='rouletteBrand m-0'>TEA TOP第一味</h5>
-                        <p className='rouletteProduct m-0'>圓仔烏龍拿鐵</p>
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                </Carousel>            
+                    </Carousel.Item>)
+                    })}
+                </Carousel> 
+
 
             </div>
-
-
-
-            
            
             <div id="footer" className='d-flex'>
                 <div id="footerLogo" className='col-3'>

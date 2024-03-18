@@ -5,13 +5,97 @@ import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import GradeIcon from '@mui/icons-material/Grade';  
+import Axios from 'axios';
+import { GoogleMap, LoadScript, Marker, StandaloneSearchBox, Autocomplete,DistanceMatrixService } from '@react-google-maps/api';
+
+<head>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxryD8kH56hfiJ0bJt6r_KQ6G4MEZY6dI&loading=async&libraries=places,drawing,geometry&callback=initMap&v=weekly"></script>
+</head>
 
 class index extends Component {
     state = { 
+        currentLocation: { lat: null, lng: null },
         search:'搜尋店家',    
+        branchList:[
+            {},
+        ],
+        distances: {},
+        brand:{},
      } 
+     async componentDidMount() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                ({ coords: { latitude: lat, longitude: lng } }) => {
+                    const pos = { lat, lng };
+                    this.setState({ currentLocation: pos}, 
+                    () => {
+                        this.getData(); 
+                    });
+                },
+                error => {
+                    console.error('Error getting geolocation:', error);
+                }
+            );
+        } else {
+            console.error('Geolocation is not supported by this browser.');
+        }
+    }
+
+     getData = async () => {
+        try {
+            const resultBranch = await Axios.get(`http://localhost:8000/branch/${this.props.match.params.id}`);
+            const resultBrand = await Axios.get(`http://localhost:8000/brand/${this.props.match.params.id}`);
+            const newState = {...this.state};
+            newState.branchList = resultBranch.data;
+            newState.brand = resultBrand.data;
+            newState.branchPosition = resultBranch.data.map(branch => ({
+                branchId: branch.branch_id,
+                branchAddress: branch.branch_address,
+                lat: branch.branch_latitude,
+                lng: branch.branch_longitude
+            }));
+
+            this.setState(newState, () => {
+                this.calculateDistances();
+                console.log(this.state)
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
+    calculateDistances = () => {
+        const currentLat =  this.state.currentLocation.lat
+        const currentLng =  this.state.currentLocation.lng
+        const branchPosition  = this.state.branchPosition;
+        if (currentLat !== null && currentLng !== null) {
+          const R = 6371; // 地球平均半径（km）
+          const distances = {};
+          branchPosition.forEach(branch => {
+            const { branchId,lat, lng,} = branch;
+            const dLat = this.deg2rad(lat - currentLat);
+            const dLng = this.deg2rad(lng - currentLng);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(this.deg2rad(currentLat)) * Math.cos(this.deg2rad(lat)) *
+                      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            distances[branchId] = (R * c).toFixed(1); // 保留一位小数
+          });        
+          this.setState({distances});
+        }
+      }
+    
+      deg2rad = (deg) => {
+        return deg * (Math.PI / 180);
+      }
+
+
      
     render() { 
+        const currentLat =  this.state.currentLocation.lat
+        const currentLng =  this.state.currentLocation.lng
+        const distances  = this.state.distances;
 
         return (<React.Fragment>
             <div id='header' className='d-flex justify-content-between'>
@@ -48,7 +132,7 @@ class index extends Component {
             <div id='banner' className='d-flex justify-content-center'><img src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{ console.log(this.state)}}><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
                     <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
                     <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
@@ -58,240 +142,87 @@ class index extends Component {
             <div className="container my-2">
                 <div className="row d-flex justify-content-center">
                     <div className="choose_right row">
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information ">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
-                        <div className="col-lg-6 col-xxl-4 my-3">
-                        <div className="card">
-                            <div className="image">
-                            <img
-                                src={("/img/mainproduct/8.png")}
-                                className="card-img-top"
-                                alt="..."
-                            />
-                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                            </div>
-                            <div className="card-body">
-                            <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                </p>
-                                <p className="col-4 time">10:00~23:00</p>
-                                <p className="col-4 kilometre">約 0.2 公里</p>
-                            </div>
-                            <p className="card-title lh-sm">
-                                八曜和茶 台中五權門市店<br /><a
-                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                >台中市北區五權路238號</a>
-                            </p>
-                            </div>
-                        </div>
-                        </div>
+                        
+                        {Object.entries(distances).sort((a, b) => a[1] - b[1]).map((distance)=>{
+                            return this.state.branchList.map((branch,i)=>{
+                                if(distance[0] == branch.branch_id){
+                                    const day = new Date().getDay();
+                                    const openTime = [branch.Sun_start,branch.Mon_start,branch.Tue_start,branch.Wed_start,branch.Thu_start,branch.Fri_start,branch.Sat_start]
+                                    const closeTime = [branch.Sun_end,branch.Mon_end,branch.Tue_end,branch.Wed_end,branch.Thu_end,branch.Fri_end,branch.Sat_end]
+
+                                    return(<React.Fragment key={i}> 
+                                        <div className="col-lg-6 col-xxl-4 my-3" id={branch.branch_id}>
+                                            <div className="card">
+                                                <div className="image">
+                                                <img
+                                                    src={`/img/mainproduct/${branch.brand_id}.png`}
+                                                    className="card-img-top"
+                                                    alt="..."
+                                                />     
+                                                <img src={`/img/logo/${branch.brand_id}.png`} className="logo" alt="..." />
+                                                </div>
+                                                <div className="card-body">
+                                                <div className="row information ">
+                                                    <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
+                                                    <GradeIcon className='me-1 iconGrade' /> {branch.branch_score.toFixed(1)}
+                                                    </p>
+                                                    <p className="col-4 time">
+
+                                                
+                                                    {openTime[day]}~{closeTime[day]}
+
+                                                    </p>
+                                                    <p className="col-4 kilometre">約 {distances[branch.branch_id]} 公里</p>
+                                                </div>
+                                                <p className="card-title lh-sm">
+                                                    {this.state.brand[0].brand_name} {" "}
+                                                    {branch.branch_name}<br /><a
+                                                    href={`https://www.google.com/maps/place/${branch.branch_address}`}
+                                                    >{branch.branch_address}</a>
+                                                </p>
+                                                </div>
+                                            </div>
+                                        </div>
+            
+                                        </React.Fragment>)
+                                }
+                            })
+                        })}
+
+
+                        {/* {this.state.branchList.map((branch,i)=>{
+                                // var sortedDistances = Object.entries(distances).sort((a, b) => a[1] - b[1])
+                               
+                                return(<React.Fragment key={i}>
+                                    <div className="col-lg-6 col-xxl-4 my-3">
+                                        <div className="card">
+                                            <div className="image">
+                                            <img
+                                                src={("/img/mainproduct/8.png")}
+                                                className="card-img-top"
+                                                alt="..."
+                                            />
+                                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
+                                            </div>
+                                            <div className="card-body">
+                                            <div className="row information ">
+                                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
+                                                <GradeIcon className='me-1 iconGrade' /> 4.3
+                                                </p>
+                                                <p className="col-4 time">10:00~23:00</p>
+                                                <p className="col-4 kilometre">約 {distances[branch.branch_id]} 公里</p>
+                                            </div>
+                                            <p className="card-title lh-sm">
+                                                八曜和茶 {branch.branch_name}<br /><a
+                                                href="https://www.google.com/maps/place/台中市北區五權路238號"
+                                                >{branch.branch_address}</a>
+                                            </p>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    </React.Fragment>)
+                                    })} */}
                     </div>
                 </div>
             </div>

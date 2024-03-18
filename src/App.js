@@ -18,7 +18,7 @@ class App extends Component {
              <Route path="/index" component={index} exact/>
              <Route path="/brand" component={brand} exact/>
              <Route path="/news" component={news} exact/>
-             <Route path="/branch" component={branch} exact/>
+             <Route path="/branch/:id" component={branch} exact/>
 
             <Route component={Error}/>
            </Switch>

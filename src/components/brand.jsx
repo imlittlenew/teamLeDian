@@ -4,12 +4,34 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
+import Axios from 'axios';
 
 
 class index extends Component {
     state = { 
         search:'搜尋店家',
+        brandList: [
+            {},
+        ],
      } 
+
+    componentDidMount() {
+        this.getData();
+}
+    getData = async () => {
+        try {
+            // const resultBranch = await Axios.get("http://localhost:8000/index/branch");
+            const resultBrand = await Axios.get("http://localhost:8000/brand");
+            const newState = {...this.state};
+            // newState.branchList = resultBranch.data;
+            newState.brandList = resultBrand.data;
+            this.setState(newState);            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    
     render() { 
         return (<React.Fragment>
             <div id='header' className='d-flex justify-content-between'>
@@ -53,96 +75,17 @@ class index extends Component {
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
                 <h2 className='text-center mainColor m-2'>品牌專區</h2>
                 <div id='brandArea' className='row'>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/1.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>迷克夏</h3>
+
+                {this.state.brandList.map((brand,i)=>{
+                    return <div  key={i} id={brand.brand_id}
+                     className='brandCard col-3 d-flex flex-column align-items-center my-1'>
+                    <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch/"+ brand.brand_id}}>
+                        <img src={(`/img/logo/${brand.brand_id}.png`)} alt='navImg' className='img-fluid'></img>
                     </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/2.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>得正</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/3.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>烏弄</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/4.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>五桐號</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/5.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>麻古茶坊</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/6.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>龜記茗品</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/7.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>茶湯會</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/8.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>八曜和茶</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/9.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>50嵐</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/10.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>TEA TOP第一味</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1 '>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/11.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>大苑子</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/12.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>可不可熟成紅茶</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/13.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>大茗本位製茶堂</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/14.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>清心福全</h3>
-                    </div>
-                    <div className='brandCard col-3 d-flex flex-column align-items-center my-1'>
-                        <div className='brandImg rounded-circle m-1' onClick={()=>{window.location="/branch"}}>
-                            <img src={("/img/logo/15.png")} alt='navImg' className='img-fluid'></img>
-                        </div>
-                        <h3 className='brandText my-1'>Mr.Wish</h3>
-                    </div>
+                    <h3 className='brandText my-1'>{brand.brand_name}</h3>
+                </div>               
+                })}
+
                 </div>
             </div>
             <div id="footer" className='d-flex'>

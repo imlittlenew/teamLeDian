@@ -35,13 +35,36 @@ app.get("/index/brand", function (req, res) {
     )
 })
 app.get("/index/products", function (req, res) {
-    conn.query("select product_name, product_img, brand_id from products where product_img != '無' and product_class_1 = 1",
+    conn.query("select product_name, product_img, brand_id, product_id from products where product_img != '無' and product_class_1 = 1",
         function (err, rows) {
             res.send( JSON.stringify(rows) );
         }
     )
 })
 
+app.get("/brand", function (req, res) {
+    conn.query("select * from brand",
+        function (err, rows) {
+            res.send( JSON.stringify(rows) );
+        }
+    )
+})
+
+app.get("/branch/:id", function (req, res) {
+    conn.query("select * from branch where brand_id = ?",[req.params.id],
+        function (err, rows) {
+            res.send( JSON.stringify(rows) );
+        }
+    )
+})
+
+app.get("/brand/:id", function (req, res) {
+    conn.query("select * from brand where brand_id = ?",[req.params.id],
+        function (err, rows) {
+            res.send( JSON.stringify(rows) );
+        }
+    )
+})
 
 // app.get("/todo/item/:id", function (req, res) {
 //     conn.query("select * from todoTable where todoTableId = ?", 
