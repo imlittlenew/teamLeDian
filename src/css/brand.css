@@ -46,7 +46,6 @@
 #pointinfo {
     position: fixed;
     top: -500px;
-    left: 30%;
     width: 500px;
     background-color: #fff;
     color: #003C95;
@@ -111,7 +110,7 @@
 
 /* footer */
 #footer {
-    background-image: url('../img/index/Footer_Background.png');
+    background-image: url('../../public/img/index/Footer_Background.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }

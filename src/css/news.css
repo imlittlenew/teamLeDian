@@ -46,7 +46,6 @@
 #pointinfo {
     position: fixed;
     top: -500px;
-    left: 30%;
     width: 500px;
     background-color: #fff;
     color: #003C95;
@@ -120,7 +119,7 @@
     width: 100%;
     height: 900px;
     margin-bottom: 0px;
-    background-image: url('../img/index/roulette_background.png');
+    background-image: url('../../public/img/index/roulette_background.png');
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: bottom;
@@ -138,7 +137,7 @@
 
 /* footer */
 #footer {
-    background-image: url('../img/index/Footer_Background.png');
+    background-image: url('../../public/img/index/Footer_Background.png');
     background-size: 100%;
     background-repeat: no-repeat;
     z-index: -1;
@@ -255,11 +254,18 @@
     #rouletteArea {
         height: 215px;    
     }
+    .rouletteBrand{
+        font-size: 12px;
+    }
+    .rouletteProduct{
+        font-size: 10px;
+    }
 }
 @media screen and (max-width:420px) {
     #rouletteArea {
         height: 195px;    
     }
+
 }
 @media screen and (max-width:374px) {
     .headerText {

@@ -90,12 +90,12 @@ class index extends Component {
         newState.search = e.target.value   
         this.setState(newState);
     }
-    pointinfoShow = function (event) {
-        document.getElementById("pointinfo").style.top = event.clientY + "px";
-        document.getElementById("pointinfo").style.left = event.clientX-250 + "px";
+    pointinfoShow = (event) => {
+        document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
+        document.getElementById("pointinfo").style.left = event.clientX - 200 + "px";
     } 
 
-    pointinfoHide = function (event) {
+    pointinfoHide = (event) => {
         document.getElementById("pointinfo").style.top = "-500px";
         event.cancelBubble = true;
     }

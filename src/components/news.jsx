@@ -20,12 +20,16 @@ class index extends Component {
      } 
 
      async componentDidMount() {
-        const newState = {...this.state};
-        const resultProduct = await Axios.get("http://localhost:8000/index/products");
-        const resultBrand = await Axios.get("http://localhost:8000/index/brand");
-        newState.productList = resultProduct.data;
-        newState.brandList = resultBrand.data;
-        this.setState(newState);
+        try{
+            const newState = {...this.state};
+            const resultProduct = await Axios.get("http://localhost:8000/index/products");
+            const resultBrand = await Axios.get("http://localhost:8000/brand");
+            newState.productList = resultProduct.data;
+            newState.brandList = resultBrand.data;
+            this.setState(newState);}
+        catch (error) {
+            console.error('Error:', error);
+        }
      }
 
 
@@ -217,12 +221,12 @@ class index extends Component {
         newState.search = e.target.value   
         this.setState(newState);
     }
-    pointinfoShow = function (event) {
-        document.getElementById("pointinfo").style.top = event.clientY + "px";
-        document.getElementById("pointinfo").style.left = event.clientX-250 + "px";
+    pointinfoShow = (event) => {
+        document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
+        document.getElementById("pointinfo").style.left = event.clientX - 200 + "px";
     } 
 
-    pointinfoHide = function (event) {
+    pointinfoHide = (event) => {
         document.getElementById("pointinfo").style.top = "-500px";
         event.cancelBubble = true;
     }

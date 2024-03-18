@@ -30,6 +30,7 @@ class index extends Component {
         productList:[
             {}
         ],
+        path:[{1:`/img/class/1_1.png`},{2:`/img/class/1_2.png`}]
      } 
 
     async componentDidMount() {
@@ -60,6 +61,10 @@ class index extends Component {
             newState.branchList = resultBranch.data;
             newState.brandList = resultBrand.data;
             newState.productList = resultProduct.data;
+            newState.productList.map((item,i)=>{
+                newState.path[i] = `/img/class/${newState.productList[i].product_img}.png`;
+            })
+                 
             newState.branchPosition = resultBranch.data.map(branch => ({
                 branchId: branch.branch_id,
                 branchAddress: branch.branch_address,
@@ -161,133 +166,113 @@ class index extends Component {
                 <div className="row d-flex justify-content-center">
                     <div className="choose_right row">
                             {/* 附近店鋪 */}
-                            {currentLat !== null && currentLng !== null ? (
-                                <>
-                                    {Object.entries(distances).filter(([branchId, distance]) => distance < 1.5)
-                                    .sort((a, b) => a[1] - b[1]).map(([branchid, distance]) => (
-                                        <div key={branchid} className="col-lg-6 col-xxl-4 my-3">
-                                            <div className="card">
-                                                <div className="image">
-                                                {this.state.branchList.map((branch)=>{
-                                                        if(branch.branch_id == branchid){
-                                                            var id = branch.brand_id;
-                                                            return this.state.brandList.map(function(brand){
-                                                                if( brand.brand_id == id ){
-                                                                    return <img
-                                                                    src={`/img/mainproduct/${brand.brand_id}.png`}
-                                                                    className="card-img-top"
-                                                                    alt="..."
-                                                                    key={branch.branch_id}
-                                                                />
-                                                                }else{
-                                                                    return null}
-                                                                })
-                                                        }else{
-                                                            return null
-                                                        }
-                                                    })}
-                                                {this.state.branchList.map((branch)=>{
-                                                        if(branch.branch_id == branchid){
-                                                            var id = branch.brand_id;
-                                                            return this.state.brandList.map(function(brand){
-                                                                if( brand.brand_id == id ){
-                                                                    return <img
-                                                                    src={`/img/logo/${brand.brand_id}.png`}
-                                                                    className="logo"
-                                                                    alt="..."
-                                                                    key={branch.branch_id}
-                                                                />
-                                                                }else{
-                                                                    return null}
-                                                                })
-                                                        }else{
-                                                            return null
-                                                        }
-                                                    })}
-                                                </div>
-                                                <div className="card-body">
-                                                <div className="row information ">
-                                                    <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                                    <GradeIcon className='me-1 iconGrade' />                                                 
-                                                    {/* 評分 */}
-                                                {this.state.branchList.map(function(e){
-                                                        if(e.branch_id == branchid){
-                                                            return e.branch_score.toFixed(1);  //小數點後補0
-                                                        }else{
-                                                            return null
-                                                        }
-                                                    })}
+        {currentLat !== null && currentLng !== null ? (
+        <>
+        {Object.entries(distances).filter(([branchId, distance]) => distance < 1.5)
+            .sort((a, b) => a[1] - b[1]).map(([branchid, distance]) => (
+                <div key={branchid} className="col-lg-6 col-xxl-4 my-3">
+                    <div className="card">
+                        <div className="image">
+                            {this.state.branchList.map((branch)=>{
+                                if(branch.branch_id == branchid){
+                                    var id = branch.brand_id;
+                                    return this.state.brandList.map(function(brand){
+                                        if( brand.brand_id == id ){
+                                            return <img
+                                                src={`/img/mainproduct/${brand.brand_id}.png`}
+                                                className="card-img-top"
+                                                alt="..."
+                                                key={branch.branch_id}
+                                            />
+                                        }else{
+                                            return null}
+                                    })
+                                }else{
+                                    return null
+                                }
+                            })}
+                        </div>
+                        <div className="card-body">
+                            <div className="row information ">
+                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
+                                    <GradeIcon className='me-1 iconGrade' />
+                                    {/* 評分 */}
+                                    {this.state.branchList.map(function(e){
+                                        if(e.branch_id == branchid){
+                                            return e.branch_score.toFixed(1);  //小數點後補0
+                                        }else{
+                                            return null
+                                        }
+                                    })}
+                                </p>
+                                <p className="col-4 time">
 
-                                                    </p>
-                                                    <p className="col-4 time">                                           
+                                    {/* 營業時間 */}
 
-                                                        {/* 營業時間 */}
+                                    {this.state.branchList.map((branch)=>{
+                                        if(branch.branch_id == branchid){
+                                            const day = new Date().getDay();
+                                            const openTime = [branch.Sun_start,branch.Mon_start,branch.Tue_start,branch.Wed_start,branch.Thu_start,branch.Fri_start,branch.Sat_start]
+                                            const closeTime = [branch.Sun_end,branch.Mon_end,branch.Tue_end,branch.Wed_end,branch.Thu_end,branch.Fri_end,branch.Sat_end]
+                                            if(openTime[day] == "店休" | closeTime[day] == "店休"){
+                                                return "店休"
+                                            }else{
+                                                return `${openTime[day]}~${closeTime[day]}`
+                                            }
+                                        }else{
+                                            return null
+                                        }
+                                    })}
 
-                                                    {this.state.branchList.map((branch)=>{
-                                                        if(branch.branch_id == branchid){
-                                                            const day = new Date().getDay();
-                                                            const openTime = [branch.Sun_start,branch.Mon_start,branch.Tue_start,branch.Wed_start,branch.Thu_start,branch.Fri_start,branch.Sat_start]
-                                                            const closeTime = [branch.Sun_end,branch.Mon_end,branch.Tue_end,branch.Wed_end,branch.Thu_end,branch.Fri_end,branch.Sat_end]
-                                                            // console.log(branch)
-                                                            if(openTime[day] == "店休" | closeTime[day] == "店休"){
-                                                                return "店休"
-                                                            }else{
-                                                                return `${openTime[day]}~${closeTime[day]}`
-                                                            }
-                                                        }else{
-                                                            return null
-                                                        }
-                                                    })}
-                                  
-                                                    </p>               
-                                                    <p className="col-4 kilometre">約 {distance} 公里</p>
-                                                </div>
-                                                <p className="card-title lh-sm">
+                                </p>               
+                                <p className="col-4 kilometre">約 {distance} 公里</p>
+                            </div>
+                            <p className="card-title lh-sm">
 
-                                                {/* 品牌名 */}
-                                                {this.state.branchList.map((branch)=>{
-                                                        if(branch.branch_id == branchid){
-                                                            var id = branch.brand_id;
-                                                            return this.state.brandList.map(function(brand){
-                                                                if( brand.brand_id == id ){
-                                                                    return brand.brand_name
-                                                                }else{
-                                                                    return null}
-                                                                }
-                                                            )
-                                                        }else{
-                                                            return null
-                                                        }
-                                                    })}
-                                                    {" "}
-                                                {/* 店名 */}
-                                                {this.state.branchList.map(function(e){
-                                                        if(e.branch_id == branchid){
-                                                            return e.branch_name}
-                                                        else{
-                                                            return null
-                                                        }
-                                                    })}
-                                                <br />
-                                                {this.state.branchList.map(function(e){
-                                                        if(e.branch_id == branchid){
-                                                            return( <a key={branchid}
-                                                    href={"https://www.google.com/maps/place/" +  e.branch_address}
-                                                    >
-                                                            {e.branch_address}
-                                                            </a>)}else{
-                                                                return null
-                                                            }
-                                                    })}
-                                                </p>
-                                                </div>
-                                            </div>
-                                        </div>                            
-                                    ))}
-                                </>
-                                ) : (
-                                <h3>無法讀取位置...</h3>
-                                )}
+                                {/* 品牌名 */}
+                                {this.state.branchList.map((branch)=>{
+                                    if(branch.branch_id == branchid){
+                                        var id = branch.brand_id;
+                                        return this.state.brandList.map(function(brand){
+                                            if( brand.brand_id == id ){
+                                                return brand.brand_name
+                                            }else{
+                                                return null}
+                                        }
+                                        )
+                                    }else{
+                                        return null
+                                    }
+                                })}
+                                {" "}
+                                {/* 店名 */}
+                                {this.state.branchList.map(function(e){
+                                    if(e.branch_id == branchid){
+                                        return e.branch_name}
+                                    else{
+                                        return null
+                                    }
+                                })}
+                                <br />
+                                {this.state.branchList.map(function(e){
+                                    if(e.branch_id == branchid){
+                                        return( <a key={branchid}
+                                                   href={"https://www.google.com/maps/place/" +  e.branch_address}
+                                                >
+                                                    {e.branch_address}
+                                                </a>)}else{
+                                        return null
+                                    }
+                                })}
+                            </p>
+                        </div>
+                    </div>
+                </div>                            
+        ))}
+    </>
+) : (
+    <h3>無法讀取位置...</h3>
+)}
                         
                     </div>
                 </div>
@@ -300,12 +285,16 @@ class index extends Component {
                 <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
 
                     {this.state.productList.map((product,i)=>{
+
+
+                        const imgPath = `img/class/${product.product_img}.png`
+
                         return(                    
                         <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
@@ -330,7 +319,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption className='p-0 my-1' > 
@@ -355,7 +344,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
@@ -409,12 +398,12 @@ class index extends Component {
         newState.search = e.target.value   
         this.setState(newState);
     }
-    pointinfoShow = function (event) {
-        document.getElementById("pointinfo").style.top = event.clientY + "px";
-        document.getElementById("pointinfo").style.left = event.clientX-250 + "px";
+    pointinfoShow = (event) => {
+        document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
+        document.getElementById("pointinfo").style.left = event.clientX - 200 + "px";
     } 
 
-    pointinfoHide = function (event) {
+    pointinfoHide = (event) => {
         document.getElementById("pointinfo").style.top = "-500px";
         event.cancelBubble = true;
     }

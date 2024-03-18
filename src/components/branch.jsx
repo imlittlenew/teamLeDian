@@ -189,40 +189,6 @@ class index extends Component {
                             })
                         })}
 
-
-                        {/* {this.state.branchList.map((branch,i)=>{
-                                // var sortedDistances = Object.entries(distances).sort((a, b) => a[1] - b[1])
-                               
-                                return(<React.Fragment key={i}>
-                                    <div className="col-lg-6 col-xxl-4 my-3">
-                                        <div className="card">
-                                            <div className="image">
-                                            <img
-                                                src={("/img/mainproduct/8.png")}
-                                                className="card-img-top"
-                                                alt="..."
-                                            />
-                                            <img src={("/img/logo/8.png")} className="logo" alt="..." />
-                                            </div>
-                                            <div className="card-body">
-                                            <div className="row information ">
-                                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                                <GradeIcon className='me-1 iconGrade' /> 4.3
-                                                </p>
-                                                <p className="col-4 time">10:00~23:00</p>
-                                                <p className="col-4 kilometre">約 {distances[branch.branch_id]} 公里</p>
-                                            </div>
-                                            <p className="card-title lh-sm">
-                                                八曜和茶 {branch.branch_name}<br /><a
-                                                href="https://www.google.com/maps/place/台中市北區五權路238號"
-                                                >{branch.branch_address}</a>
-                                            </p>
-                                            </div>
-                                        </div>
-                                    </div>
-        
-                                    </React.Fragment>)
-                                    })} */}
                     </div>
                 </div>
             </div>
@@ -259,15 +225,16 @@ class index extends Component {
         newState.search = e.target.value   
         this.setState(newState);
     }
-    pointinfoShow = function (event) {
-        document.getElementById("pointinfo").style.top = event.clientY + "px";
-        document.getElementById("pointinfo").style.left = event.clientX-250 + "px";
+    pointinfoShow = (event) => {
+        document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
+        document.getElementById("pointinfo").style.left = event.clientX - 200 + "px";
     } 
 
-    pointinfoHide = function (event) {
+    pointinfoHide = (event) => {
         document.getElementById("pointinfo").style.top = "-500px";
         event.cancelBubble = true;
     }
+
 
     toggleMemberNav = () => {
         document.getElementById('memberNav').classList.toggle('collapse');
