@@ -37,9 +37,15 @@ class index extends Component {
         const randomNumber = Math.floor(Math.random() * 191);
 
         return (<React.Fragment>
-            <div id='header' className='d-flex justify-content-between'>
-                <div className='col-9 col-sm-7 col-md-6 d-flex ms-2 justify-content-between align-items-center'>
-                    <h4 id='homeBtn' className='my-auto btn headerText text-nowrap' onClick={()=>{window.location="/index"}}>首頁</h4>
+            <div id='header'
+                style={{
+                    boxShadow: '1px 3px 10px #cccccc',
+                    marginBottom: '4px',
+                }} 
+                className='d-flex justify-content-between'>
+                <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
+                <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
+                    <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png'></img></h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
@@ -56,19 +62,26 @@ class index extends Component {
 
 
                 <div className='d-flex me-2  align-items-center'>
-                    <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
+                    <h4 id='loginBtn' className='my-auto btn headerText' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
                     <div id='memberNav' className='collapse'>
                         <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div>
-                            <h4 className='headerText my-3'>個人檔案</h4><hr />
-                            <h4 className='headerText my-3'>帳號管理</h4><hr />
-                            <h4 className='headerText my-3'>歷史訂單</h4><hr />
-                            <h4 className='headerText my-3'>載具存取</h4>
+                            <h4 className='headerText text-center my-3'>個人檔案</h4><hr />
+                            <h4 className='headerText text-center my-3'>帳號管理</h4><hr />
+                            <h4 className='headerText text-center my-3'>歷史訂單</h4><hr />
+                            <h4 className='headerText text-center my-3'>載具存取</h4><hr />
+                            <h4 className='headerText text-center my-3'>登出</h4>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id='banner' className='d-flex justify-content-center'><img src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
+            <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
+            </div>
+
+            <div id='banner' className='d-flex justify-content-center'><img id='bannerImg' src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
                     <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
@@ -223,7 +236,7 @@ class index extends Component {
     }
     pointinfoShow = (event) => {
         document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
-        document.getElementById("pointinfo").style.left = event.clientX - 200 + "px";
+        document.getElementById("pointinfo").style.left = event.clientX - 150 + "px";
     } 
 
     pointinfoHide = (event) => {
@@ -233,6 +246,9 @@ class index extends Component {
 
     toggleMemberNav = () => {
         document.getElementById('memberNav').classList.toggle('collapse');
+    }
+    toggleMenuNav = () => {
+        document.getElementById('menuNav').classList.toggle('menuNav');
     }
 }
  
