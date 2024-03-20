@@ -62,12 +62,12 @@ class index extends Component {
                     <h4 id='loginBtn' className='my-auto btn headerText' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
                     <div id='memberNav' className='collapse'>
                         <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
-                        <div>
-                            <h4 className='headerText text-center my-3'>個人檔案</h4><hr />
-                            <h4 className='headerText text-center my-3'>帳號管理</h4><hr />
-                            <h4 className='headerText text-center my-3'>歷史訂單</h4><hr />
-                            <h4 className='headerText text-center my-3'>載具存取</h4><hr />
-                            <h4 className='headerText text-center my-3'>登出</h4>
+                        <div className='p-2'>
+                            <h4 className='headerText text-center my-2'>個人檔案</h4><hr />
+                            <h4 className='headerText text-center my-2'>帳號管理</h4><hr />
+                            <h4 className='headerText text-center my-2'>歷史訂單</h4><hr />
+                            <h4 className='headerText text-center my-2'>載具存取</h4><hr />
+                            <h4 className='headerText text-center my-2'>登出</h4>
                         </div>
                     </div>
                 </div>
