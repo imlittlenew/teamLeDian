@@ -768,7 +768,7 @@ class Profile extends Component {
                     <div className="tab-pane fade" id="Historical_Orders-v">
                       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                         <div className="col">
-                          <div className="card h-100 text-center">
+                          <div className="profilecard card h-100 text-center">
                             <div className="card-header fw-bold">完成</div>
                             <div className="text-center mt-3">
                               <img
@@ -797,7 +797,7 @@ class Profile extends Component {
                           </div>
                         </div>
                         <div className="col">
-                          <div className="card h-100 text-center">
+                          <div className="profilecard card h-100 text-center">
                             <div className="card-header fw-bold">完成</div>
                             <div className="text-center mt-3">
                               <img
@@ -826,7 +826,7 @@ class Profile extends Component {
                           </div>
                         </div>
                         <div className="col">
-                          <div className="card h-100 text-center">
+                          <div className="profilecard card h-100 text-center">
                             <div className="card-header fw-bold">完成</div>
                             <div className="text-center mt-3">
                               <img
@@ -855,7 +855,7 @@ class Profile extends Component {
                           </div>
                         </div>
                         <div className="col">
-                          <div className="card h-100 text-center">
+                          <div className="profilecard card h-100 text-center">
                             <div className="card-header fw-bold">完成</div>
                             <div className="text-center mt-3">
                               <img

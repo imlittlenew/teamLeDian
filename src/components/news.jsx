@@ -23,7 +23,7 @@ class index extends Component {
         try{
             const newState = {...this.state};
             const resultProduct = await Axios.get("http://localhost:8000/index/products");
-            const resultBrand = await Axios.get("http://localhost:8000/brand");
+            const resultBrand = await Axios.get("http://localhost:8000/index/brand");
             const shuffle =  (array)=>{for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1)); 
                 [array[i], array[j]] = [array[j], array[i]];
@@ -32,7 +32,8 @@ class index extends Component {
             }
             newState.productList = shuffle(resultProduct.data);
             newState.brandList = resultBrand.data;
-            this.setState(newState);}
+            this.setState(newState);            console.log(this.state)
+        }
         catch (error) {
             console.error('Error:', error);
         }
@@ -141,7 +142,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto mb-3"
-                        src={this.state.path[i]}
+                        src={`/img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
@@ -166,7 +167,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={this.state.path[i]}
+                        src={`/img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption className='p-0 my-1' > 
@@ -191,7 +192,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto mb-3"
-                        src={this.state.path[i]}
+                        src={`/img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
