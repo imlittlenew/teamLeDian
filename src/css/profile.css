@@ -1,0 +1,258 @@
+@font-face {
+  font-family: FakePearl-Regular;
+  src: url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff)
+      format("woff");
+}
+#profile {
+  background-color: #eee;
+  font-family: FakePearl-Regular, sans-serif;
+}
+
+#userimg {
+  width: 120%;
+}
+
+.tab-content {
+  background-color: #fff;
+  padding: 20px;
+}
+
+#pointimg {
+  width: 20%;
+}
+
+.nav-link {
+  border-left: 5px solid transparent;
+  padding-left: 15px;
+  color: #000;
+  font-weight: bold;
+}
+.nav-link:hover {
+  color: #000;
+}
+
+.nav-link.active,
+.nav-link:focus,
+.nav-link:active {
+  border-left-color: #003c96;
+  color: #000;
+}
+
+@media (max-width: 1100px) {
+  #leftnav {
+    font-size: 18px !important;
+  }
+  #userimg {
+    width: 150%;
+    margin-top: 8px;
+  }
+  .username {
+    font-size: 14px;
+  }
+  #pointimg {
+    width: 25%;
+  }
+  .userpoint {
+    font-size: 14px;
+    margin-top: 2px;
+  }
+
+}
+@media (max-width: 930px) {
+  .profilecol2 {
+    display: none;
+  }
+
+  .profilecol10 {
+    width: 100%;
+    margin: 0 auto;
+  }
+  #generatedBarcodeContainer{
+    width: 90%
+  }
+  #userimgcol10{
+    width: 40%;
+  }
+  .minisize{
+    background-color: #fff;
+  }
+  #pointimgcol10{
+    width: 10%;
+  }
+}
+
+#Barcodecolor {
+  color: #f3b021;
+}
+#Barcodeborder {
+  position: relative;
+  border-color: #f3b021;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 10px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  cursor: pointer;
+}
+.Barcodemodallabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 100px;
+  background-color: #f3b021;
+  padding: 10px;
+  text-align: center; /* 文字水平置中 */
+  cursor: pointer;
+  padding: 0.375rem 0.75rem;
+  margin: 0; /* 清除 margin 以保持水平置中 */
+  width: 70%; /* 保留原本的寬度 */
+  height: 60%; /* 保留原本的高度 */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.Barcodemodal {
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.modalLabel {
+  font-size: 15px;
+  color: gray;
+}
+#validationResult {
+  font-size: 15px;
+  color: red;
+}
+.modal-header {
+  background-color: #f3b021;
+  color: #fff;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+.btnmodal,
+.modal-footer {
+  background-color: #f3b021;
+  width: 100%;
+  border: none;
+  color: white;
+  transition: 0.3s;
+}
+
+.btnmodal:hover,
+.modal-footer:hover {
+  opacity: 0.8;
+}
+#uploadborder {
+  position: relative;
+  border-color: #003c96;
+  border-width: 3px;
+  border-style: dashed;
+  border-radius: 10px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* 垂直置中 */
+  cursor: pointer;
+}
+
+.custom-file-input {
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  height: 12px;
+}
+
+#uploadtext {
+  color: gray;
+}
+#profileButton,
+#managementButton {
+  color: #fff;
+  background-color: #f3b021;
+}
+.card-header {
+  background-color: #f3b021;
+  color: #fff;
+}
+.card-footer {
+  background-color: #fff;
+}
+.btn-footer {
+  background-color: #f3b021;
+  color: #fff;
+}
+.btn-footer:hover {
+  border-color: #f3b021;
+  color: #f3b021;
+}
+.card {
+  border: #f3b021 1px solid;
+}
+#LeDianLogoModal {
+  width: 80%;
+  margin: 0 auto;
+}
+#pointbuttom {
+  background-color: #f3b021;
+  color: #fff;
+}
+.detailsbuttom {
+  background-color: #eee;
+}
+
+.rating-group {
+  display: inline-flex;
+}
+.rating_input {
+  position: absolute !important;
+  left: -9999px !important;
+}
+.rating_label {
+  cursor: pointer;
+  padding: 0 0.1em;
+  font-size: 2rem;
+}
+.star {
+  color: orange;
+}
+.rating_input:checked ~ .rating_label .star {
+  color: #ddd;
+}
+.rating-group:hover .rating_label .star {
+  color: orange;
+}
+.rating_input:hover ~ .rating_label .star {
+  color: #ddd;
+}
+textarea {
+  resize: none; /* 禁止调整大小 */
+}
+.sendOrder {
+  background-color: #003c96;
+  color: #fff;
+}
+#Barcodecontent{
+  width: 50%;
+}
+.hide {
+  display: none;
+}
+.custom-width {
+    width: 100%;
+}
+#profileheader{
+  background-color: #fff;
+}

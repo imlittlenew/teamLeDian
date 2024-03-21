@@ -1,0 +1,504 @@
+@font-face {
+    font-family: FakePearl-Regular;
+    src: url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff) format("woff");
+}
+
+
+
+
+
+/* 電腦banner */
+@media (min-width: 991px) {
+    .col-12 .banner {
+        max-width: 100%;
+    }
+
+    .row.phone {
+        display: none;
+    }
+}
+
+/* 手機banner */
+
+@media (max-width: 992px) {
+    .bannermin {
+        display: block;
+        max-width: 100%;
+    }
+
+    .row.computer {
+        display: none;
+    }
+}
+
+
+
+
+/* buy */
+.text-des {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.text-title-b {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+}
+
+.btn-join {
+    background-color: #003c95;
+    /* border-radius: 50%; */
+    color: #ffff;
+    border: none;
+    /* padding: 5px 15px; */
+    font-size: 18pt;
+}
+
+.icon-join {
+    max-width: 30px;
+}
+
+.join-box {
+    border: 10px solid #003c95;
+    border-radius: 10%;
+    min-height: 400px;
+}
+
+.join-box button {
+    color: #fff;
+    border-radius: 10px;
+}
+
+.join-box img {
+    width: 150px;
+}
+
+.join-box-input {
+    width: 90%;
+    border-radius: 10px;
+    background-color: #ededed;
+}
+
+.btn-continue {
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #003c95;
+}
+
+.buyjoin {
+    width: 60px;
+    border-radius: 100px;
+}
+
+
+
+
+.storeTitle {
+    color: #383838;
+    font-family: "jf-openhuninn-2.0";
+}
+
+.storeContent {
+    color: #383838;
+    font-family: "jf-openhuninn-2.0";
+}
+
+.buyText {
+    color: #F2AF21;
+    font-family: "jf-openhuninn-2.0";
+    font-size: 18px;
+    text-align: center;
+    padding-top: 3px;
+}
+
+.row-2.buyBox {
+    z-index: 100;
+    display: flex;
+    position: absolute;
+    top: 35px;
+    left: 360px;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(0, 60, 149);
+    border-radius: 150px;
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.buyImg {
+    margin-top: -10px;
+}
+
+
+/* 電腦商店資訊 */
+@media (min-width: 991px) {
+    .col-3.storeBox {
+        position: absolute;
+        top: 70px;
+        left: 115px;
+        width: 320px;
+        height: 235px;
+        z-index: 50;
+        background-color: rgba(232, 232, 232, 0.6);
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: -2px 6px 7px 0px rgba(0, 0, 0, 0.3);
+    }
+
+}
+
+/* 手機商店資訊 */
+@media (max-width: 992px) {
+    .col-3.storeBox {
+        /* position: absolute; */
+        width: 410px;
+        height: 80px;
+        z-index: 50;
+        background-color: rgba(232, 232, 232, 0.6);
+        padding: 10px;
+        /* box-shadow: -2px 6px 7px 0px rgba(0, 0, 0, 0.3); */
+    }
+
+    .row.textstore {
+        display: none;
+    }
+}
+
+.title1 {
+    font-family: "FakePearl-SemiBold";
+}
+
+.boxMenu {
+    margin-top: 50px;
+}
+
+.link-top {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    height: 1px;
+    border-top: solid #afafaf 1px;
+}
+
+.storeBoxLogo {
+    width: 60px;
+    border-radius: 100px;
+}
+
+/* .col-6 {
+    display: flex;
+    justify-content: center;
+    /* 在水平方向上置中 */
+    /* align-items: center; */
+    /* 在垂直方向上置中 */
+/* } */ */
+
+
+/* 商店資訊 */
+.row.textstore {
+    padding: 0px;
+    padding-top: 18px;
+}
+
+.col-12.textstore {
+    margin: -3px;
+    padding-left: 50px;
+}
+
+
+
+
+
+
+
+
+/* 按鈕 */
+
+/* row 飲料 手機版顯示 */
+@media (max-width:992px) {
+    .row.drink {
+        width: 90%;
+        margin-left: 10px;
+    }
+}
+
+/* 按鈕變色 */
+
+.btn-outline-warning {
+    color: #333;
+    border-color:#EEEEEE;
+}
+
+.btn:hover {
+    color: #F2AF21;
+}
+
+
+.col-lg-3.col-md-6.button {
+    background-color: #EEEEEE;
+    /* border: none; */
+    /* position:absolute; */
+    border-radius: 14px;
+    display: flex;
+    margin: 5px;
+    padding-left: 25px;
+    padding-top: 10px;
+}
+
+/* .col-lg-3 {
+    max-width:24% !important;
+}
+
+@media (max-width: 992px) {
+    .col-md-6 {
+        flex: 1 1 100%;
+        /* 每個列佔滿整行 */
+        /* max-width: 100%; */
+    /* } */
+/* } */ */
+
+.col-4.product {
+    padding-right:17px!important;
+    padding-left:14px!important;
+    margin-left: -21px!important;
+}
+
+.col-sm-8.button {
+    margin: 10px 10px 0px 10px;
+}
+
+.buttonTitle {
+    font-family: "jf-openhuninn-2.0";
+    font-size: 14pt;
+    white-space: nowrap;
+    margin: auto;
+}
+
+.productImg {
+    max-width: 180%;
+    padding-left: 10px;
+}
+
+.col-sm-4.product {
+    margin: 10px;
+}
+
+.col-sm-3.product {
+    margin-top: 10px;
+}
+
+.buttonPrics {
+    font-family: "jf-openhuninn-2.0";
+    font-size: 14pt;
+}
+
+/* .col-sm-9.button {
+    padding: 15px;
+} */
+
+.row.text {
+    padding-top: 15px;
+}
+
+
+
+/* 電腦 */
+@media (min-width: 991px) {
+    .cold {
+        max-width: 40%;
+    }
+
+    .hot {
+        max-width: 50%;
+    }
+}
+
+
+/* 手機 */
+@media (max-width: 992px) {
+    .cold {
+        max-width: 30%;
+    }
+
+    .hot {
+        max-width: 40%;
+    }
+}
+
+
+
+
+
+/* 對話盒 */
+.clasImg {
+    width: 80%;
+    /* padding-left: 30px; */
+}
+
+.modal-content {
+    border-color: #F2AF21 !important;
+    border-width: 8px !important;
+}
+
+.modal-content {
+    border-radius: 36px !important;
+}
+
+.row.sizetitle {
+    flex: auto;
+    justify-content: center;
+}
+
+/* 備註匡 */
+.col-12.Text {
+    /* background-color:rgba(245,175,33,0.3); */
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+
+/* 核取方塊樣式調整 */
+.form-check-input:checked {
+    background-color: #F2AF21 !important;
+    border-color: #F2AF21 !important;
+}
+
+.form-check-input[type=radio] {
+    border-color: #003C95;
+    border-width: 1px;
+}
+
+.form-check .form-check-input {
+    margin-left: 0px
+}
+
+.col-md-7.modalRight {
+    font-family: "jf-openhuninn-2.0";
+}
+
+.col-4.text {
+    font-size: 14pt;
+    font-family: "FakePearl-SemiBold";
+}
+
+svg {
+    color: #003C95;
+}
+
+.modalTitle {
+    font-family: "jf-openhuninn-2.0";
+    font-size: 22pt;
+    text-align: center;
+}
+
+.col-6.modaltop {
+    border-bottom: 2px solid #003C95;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.col-6.modaltop {
+    font-family: "jf-openhuninn-2.0";
+    font-size: 22pt;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    /* 在水平方向上置中 */
+    align-items: center;
+    /* 在垂直方向上置中 */
+}
+
+.row.footer {
+    margin-top: 30px;
+}
+
+/* 核取方塊間距調整 */
+.row.sizetitle {
+    padding: 10px;
+}
+
+.row.temperaturetitle {
+    padding: 10px;
+}
+
+.row.sugarinesstitle {
+    padding: 10px;
+}
+
+.row.sugarinesstitle {
+    padding: 10px;
+}
+
+.row.sizecheck {
+    padding-left: 25px;
+}
+
+.row.temperaturecheck {
+    padding-left: 25px;
+}
+
+.row.sugarinesscheck {
+    padding-left: 25px;
+}
+
+.row.sugarinesscheck {
+    padding-left: 25px;
+}
+
+/* 加入購物車按鈕 */
+.btn-outline-warning {
+    --bs-btn-color: #003C95 !important;
+    --bs-btn-border-color: #003C95 !important;
+    --bs-btn-hover-color: #fff !important;
+}
+
+/* 加減按鈕 */
+.btn.add.btn-outline-warning {
+    border-radius: 100px;
+}
+
+.price {
+    font-family: "jf-openhuninn-2.0";
+    font-size: 22pt;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    /* 在水平方向上置中 */
+    align-items: center;
+    /* 在垂直方向上置中 */
+}
+.row.price {
+    font-family: "jf-openhuninn-2.0";
+    font-size: 22pt;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    /* 在水平方向上置中 */
+    align-items: center;
+    /* 在垂直方向上置中 */
+    padding-bottom: 5px;
+}
+
+.col-4.text-center {
+    font-family: "jf-openhuninn-2.0";
+    font-size: 22pt;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    /* 在水平方向上置中 */
+    align-items: center;
+    /* 在垂直方向上置中 */
+}
+
+/* 配料按鈕樣式 */
+.form-check-input[type=checkbox] {
+    border-radius: 50% ;
+    border-color:#003C95;
+    border-width:1px;
+}
