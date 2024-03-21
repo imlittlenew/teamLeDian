@@ -44,10 +44,10 @@ class index extends Component {
                     <div id='memberNav' className='collapse'>
                         <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div className='p-2'>
-                            <h4 className='headerText text-center my-2'>個人檔案</h4><hr />
-                            <h4 className='headerText text-center my-2'>帳號管理</h4><hr />
-                            <h4 className='headerText text-center my-2'>歷史訂單</h4><hr />
-                            <h4 className='headerText text-center my-2'>載具存取</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>個人檔案</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>帳號管理</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>歷史訂單</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>載具存取</h4><hr />
                             <h4 className='headerText text-center my-2'>登出</h4>
                         </div>
                     </div>
@@ -59,11 +59,12 @@ class index extends Component {
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
             </div>
 
+
             <div id='banner' className='d-flex justify-content-center'><img id='bannerImg' src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/le"}}><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/dian"}}><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
                     <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>

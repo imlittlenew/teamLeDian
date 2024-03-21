@@ -24,7 +24,13 @@ class index extends Component {
             const newState = {...this.state};
             const resultProduct = await Axios.get("http://localhost:8000/index/products");
             const resultBrand = await Axios.get("http://localhost:8000/brand");
-            newState.productList = resultProduct.data;
+            const shuffle =  (array)=>{for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1)); 
+                [array[i], array[j]] = [array[j], array[i]];
+              }
+              return array;
+            }
+            newState.productList = shuffle(resultProduct.data);
             newState.brandList = resultBrand.data;
             this.setState(newState);}
         catch (error) {
@@ -66,10 +72,10 @@ class index extends Component {
                     <div id='memberNav' className='collapse'>
                         <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div className='p-2'>
-                            <h4 className='headerText text-center my-2'>個人檔案</h4><hr />
-                            <h4 className='headerText text-center my-2'>帳號管理</h4><hr />
-                            <h4 className='headerText text-center my-2'>歷史訂單</h4><hr />
-                            <h4 className='headerText text-center my-2'>載具存取</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>個人檔案</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>帳號管理</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>歷史訂單</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>載具存取</h4><hr />
                             <h4 className='headerText text-center my-2'>登出</h4>
                         </div>
                     </div>
@@ -81,11 +87,12 @@ class index extends Component {
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
             </div>
 
+
             <div id='banner' className='d-flex justify-content-center'><img id='bannerImg' src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/le"}}><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/dian"}}><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
                     <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>            
@@ -125,12 +132,16 @@ class index extends Component {
                 <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
 
                     {this.state.productList.map((product,i)=>{
+
+
+                        const imgPath = `img/class/${product.product_img}.png`
+
                         return(                    
                         <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
                         key={product.product_id}
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        className="d-block w-100 img-fluid mx-auto mb-3"
+                        src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
@@ -155,14 +166,14 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption className='p-0 my-1' > 
                         <h5 className='rouletteBrand m-0'>
                             {this.state.brandList.map((e)=>{
                                 if(product.brand_id == e.brand_id){
-                                    return e.brand_name
+                                    return e.brand_name 
                                 }else{ return null}
                             })
                         }
@@ -179,12 +190,12 @@ class index extends Component {
                         <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
                         key={product.product_id}
-                        className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        className="d-block w-100 img-fluid mx-auto mb-3"
+                        src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
-                        <h5 className='rouletteBrand m-0'>
+                        <h5 className='rouletteBrand text-center'>
                             {this.state.brandList.map((e)=>{
                                 if(product.brand_id == e.brand_id){
                                     return e.brand_name

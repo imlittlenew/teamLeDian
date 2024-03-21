@@ -34,7 +34,7 @@ class index extends Component {
         path:[{1:`/img/class/1_1.png`},{2:`/img/class/1_2.png`}],
      } 
 
-    async componentDidMount() {
+    componentDidMount() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 ({ coords: { latitude: lat, longitude: lng } }) => {
@@ -62,7 +62,16 @@ class index extends Component {
             const newState = {...this.state};
             newState.branchList = resultBranch.data;
             newState.brandList = resultBrand.data;
-            newState.productList = resultProduct.data;
+
+            const shuffle =  (array)=>{for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1)); 
+                [array[i], array[j]] = [array[j], array[i]];
+              }
+              return array;
+            }
+            newState.productList = shuffle(resultProduct.data);
+
+           
             newState.productList.map((item,i)=>{
                 newState.path[i] = `https://raw.githubusercontent.com/TungShihChang/LeDian/master/public/img/class/${newState.productList[i].product_img}.png`;
             })
@@ -144,10 +153,10 @@ class index extends Component {
                     <div id='memberNav' className='collapse'>
                         <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div className='p-2'>
-                            <h4 className='headerText text-center my-2'>個人檔案</h4><hr />
-                            <h4 className='headerText text-center my-2'>帳號管理</h4><hr />
-                            <h4 className='headerText text-center my-2'>歷史訂單</h4><hr />
-                            <h4 className='headerText text-center my-2'>載具存取</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>個人檔案</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>帳號管理</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>歷史訂單</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>載具存取</h4><hr />
                             <h4 className='headerText text-center my-2'>登出</h4>
                         </div>
                     </div>
@@ -162,8 +171,8 @@ class index extends Component {
             <div id='banner' className='d-flex justify-content-center'><img id='bannerImg' src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
             <div className="container">
                 <div className='navbar row'>
-                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
-                    <div className='navImg col-4 btn'><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/le"}}><img src={("/img/index/LeDian_BANNER-01.jpg")} alt='navImg' className='img-fluid'></img></div>
+                    <div className='navImg col-4 btn' onClick={()=>{window.location="/dian"}}><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
                     <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
                 <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>
@@ -301,7 +310,7 @@ class index extends Component {
                         <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
                         key={product.product_id}
-                        className="d-block w-100 img-fluid mx-auto"
+                        className="d-block w-100 img-fluid mx-auto mb-3"
                         src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
@@ -351,12 +360,12 @@ class index extends Component {
                         <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
                         key={product.product_id}
-                        className="d-block w-100 img-fluid mx-auto"
+                        className="d-block w-100 img-fluid mx-auto mb-3"
                         src={this.state.path[i]}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
-                        <h5 className='rouletteBrand m-0'>
+                        <h5 className='rouletteBrand text-center'>
                             {this.state.brandList.map((e)=>{
                                 if(product.brand_id == e.brand_id){
                                     return e.brand_name

@@ -16,6 +16,7 @@
     font-size: 26px;
     font-weight: 500;
     line-height: 100%;
+    cursor: pointer;
 }
 
 #menu {
@@ -125,6 +126,7 @@
     width: 100%;
     opacity: 0.2;
     top: 50px;
+    z-index: -1;
 }
 
 #bannerImg{
