@@ -25,7 +25,7 @@ class index extends Component {
             {}
         ],  
         branchPosition:[
-            {branchId: 1,branchAddress: '台中市西屯區中工三路181號1樓', lat: 24.1767266, lng: 120.6183528},
+            {branchId: 1,branchAddress: '台中市西屯區中工三路181號2樓', lat: 24.1767266, lng: 120.6183528},
         ],
         distances: {},
         productList:[
