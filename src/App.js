@@ -11,6 +11,10 @@ import dian from "./components/dian";
 import LogIn from './components/LogIn';
 import Profile from './components/Profile';
 import order from './components/order';
+import cartList from "./components/cartList";
+import cartPay from "./components/cartPay";
+import DateTimePicker from "./components/dateTimePicker";
+
 
 class App extends Component {
   render() {
@@ -18,17 +22,19 @@ class App extends Component {
        <BrowserRouter>
         <div>
             <Switch>
-             <Route path="/" component={index} exact/>
-             <Route path="/index" component={index} exact/>
-             <Route path="/brand" component={brand} exact/>
-             <Route path="/news" component={news} exact/>
-             <Route path="/branch/:id" component={branch} exact/>
-             <Route path="/le" component={le} exact />
-             <Route path="/dian" component={dian} exact />
-             <Route path="/login" component={LogIn} />
-             <Route path="/profile" component={Profile}/>
-             <Route path="/order" component={order} exact/>
-             
+              <Route path="/" component={index} exact/>
+              <Route path="/index" component={index} exact/>
+              <Route path="/brand" component={brand} exact/>
+              <Route path="/news" component={news} exact/>
+              <Route path="/branch/:id" component={branch} exact/>
+              <Route path="/le" component={le} exact />
+              <Route path="/dian" component={dian} exact />
+              <Route path="/login" component={LogIn} />
+              <Route path="/profile" component={Profile}/>
+              <Route path="/order" component={order} exact/>
+              <Route path="/cartlist" component={cartList} exact />
+              <Route path="/cartPay/:id" component={cartPay} />
+              <Route path="/test" component={DateTimePicker} />
             <Route component={Error}/>
            </Switch>
         </div> 
