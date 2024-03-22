@@ -9,7 +9,6 @@ import Axios from 'axios';
 
 class index extends Component {
     state = { 
-        search:'搜尋店家',
         productList:[
             {}
         ],
@@ -52,7 +51,7 @@ class index extends Component {
                 className='d-flex justify-content-between'>
                 <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
                 <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
-                    <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png'></img></h4>
+                    <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
@@ -96,7 +95,6 @@ class index extends Component {
                     <div className='navImg col-4 btn' onClick={()=>{window.location="/dian"}}><img src={("/img/index/LeDian_BANNER-02.jpg")} alt='navImg' className='img-fluid'></img></div>
                     <div className='navImg col-4 btn' onClick={()=>{window.location="/news"}}><img src={("/img/index/LeDian_BANNER-05.jpg")} alt='navImg' className='img-fluid'></img></div>
                 </div>
-                <input type="text" id='search' name='search' onChange={this.searchChange} value={this.state.search}  className="form-control rounded-pill ps-4 bg-secondary-subtle"></input>            
                 <h2 className='text-center mainColor m-2'>最新消息</h2>
             <div id='newsArea' className='row mt-2'>
                 <div className="newsCard col-4 overflow-hidden p-2 p-sm-2 p-md-3 d-flex">
@@ -133,10 +131,6 @@ class index extends Component {
                 <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
 
                     {this.state.productList.map((product,i)=>{
-
-
-                        const imgPath = `img/class/${product.product_img}.png`
-
                         return(                    
                         <Carousel.Item key={i} id={product.product_id} className='p-0 my-1'><br/><br/>
                         <img
@@ -240,11 +234,6 @@ class index extends Component {
                 </div>
             </div>
             </React.Fragment>);
-    }
-    searchChange = (e) => {
-        var newState = {...this.state};
-        newState.search = e.target.value   
-        this.setState(newState);
     }
     pointinfoShow = (event) => {
         document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
