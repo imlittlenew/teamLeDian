@@ -430,7 +430,7 @@ class cartPay extends Component {
             </div>
         {/* <div id="banner" className="d-flex justify-content-center">
           <img
-            src={("img/img/index/Home_Banner_01.jpg")}
+            src={("img/index/Home_Banner_01.jpg")}
             alt="homeBanner"
             className="img-fluid"
           ></img>
@@ -439,14 +439,14 @@ class cartPay extends Component {
           <div className="navbar row">
             <div className="navImg col-4 btn">
               <img
-                src={("img/img/index/LeDian_BANNER-01.jpg")}
+                src={("img/index/LeDian_BANNER-01.jpg")}
                 alt="navImg"
                 className="img-fluid"
               ></img>
             </div>
             <div className="navImg col-4 btn">
               <img
-                src={("img/img/index/LeDian_BANNER-02.jpg")}
+                src={("img/index/LeDian_BANNER-02.jpg")}
                 alt="navImg"
                 className="img-fluid"
               ></img>
@@ -458,7 +458,7 @@ class cartPay extends Component {
               }}
             >
               <img
-                src={("img/img/index/LeDian_BANNER-05.jpg")}
+                src={("img/index/LeDian_BANNER-05.jpg")}
                 alt="navImg"
                 className="img-fluid"
               ></img>
@@ -511,7 +511,7 @@ class cartPay extends Component {
                             <div className="col-auto d-none d-md-block">
                               <img
                                 className="mainproduct-img"
-                                src={("img/img/mainproduct/4.png")}
+                                src={("img/mainproduct/4.png")}
                                 alt="mainproduct-img"
                               />
                             </div>
@@ -536,7 +536,7 @@ class cartPay extends Component {
                               >
                                 <img
                                   className="icon-join"
-                                  src={("img/img/icon/add-friend 1.png")}
+                                  src={("img/icon/add-friend 1.png")}
                                   alt="add-friend"
                                 />
                                 <span>揪團</span>
@@ -587,7 +587,7 @@ class cartPay extends Component {
                                           </div>
                                           <div className="col-6 px-0">
                                             <img
-                                              src={("img/img/icon/logo.png")}
+                                              src={("img/icon/logo.png")}
                                               alt="brand-logo"
                                             />
                                           </div>
@@ -709,7 +709,7 @@ class cartPay extends Component {
                                           <div className="row">
                                             <div className="col-12">
                                               <img
-                                                src={("img/img/class/10_452.png")}
+                                                src={("img/class/10_452.png")}
                                                 className="clasImg"
                                                 alt="productimg"
                                               ></img>
@@ -1428,7 +1428,7 @@ class cartPay extends Component {
                               />
                               <label htmlFor="cash" className="text-des">
                                 <img
-                                  src={("img/img/icon/cash.png")}
+                                  src={("img/icon/cash.png")}
                                   alt="cash-icon"
                                   className="icon-img-s"
                                 />
@@ -1447,7 +1447,7 @@ class cartPay extends Component {
                               <label htmlFor="line-pay" className="text-des">
                                 <span>
                                   <img
-                                    src={("img/img/icon/linepay.png")}
+                                    src={("img/icon/linepay.png")}
                                     alt="inepay-icon"
                                     className="icon-img"
                                   />
@@ -1548,7 +1548,7 @@ class cartPay extends Component {
                                   <span className="small-text p-2">
                                     <img
                                       className="me-2"
-                                      src={("img/img/icon/exclamation 1.png")}
+                                      src={("img/icon/exclamation 1.png")}
                                       alt="icnimg"
                                     />
                                     預計取貨時間會依門市狀況調整
@@ -1722,7 +1722,7 @@ class cartPay extends Component {
                           <div className="col d-flex flex-column align-items-center">
                             <img
                               className="icon-img"
-                              src={("img/img/icon/clock.png")}
+                              src={("img/icon/clock.png")}
                               alt="clock-icon"
                             />
                             <h4 className="text-title mt-3">取貨時間</h4>
@@ -1758,7 +1758,7 @@ class cartPay extends Component {
             <img
               id='"footerImg"'
               className="img-fluid"
-              src={("img/img/index/LeDian_LOGO-04.png")}
+              src={("img/index/LeDian_LOGO-04.png")}
               alt="footerLogo"
             />
           </div>
@@ -1768,21 +1768,21 @@ class cartPay extends Component {
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/img/index/facebook.png")}
+                    src={("img/index/facebook.png")}
                     alt="fackbook"
                   />
                 </div>
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/img/index/instagram.png")}
+                    src={("img/index/instagram.png")}
                     alt="instagram"
                   />
                 </div>
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/img/index/line.png")}
+                    src={("img/index/line.png")}
                     alt="line"
                   />
                 </div>
