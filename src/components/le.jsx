@@ -302,7 +302,7 @@ class le extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right mx-auto">
+              <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right">
                 {filteredData.map((item) => (
                   <div key={item.product_id} className="col-lg-6 col-xxl-4 my-3">
                     <div className="card">
