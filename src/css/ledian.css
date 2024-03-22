@@ -18,7 +18,6 @@
   font-size: 26px;
   font-weight: 500;
   line-height: 100%;
-  cursor: pointer;
 }
 
 #menu {
@@ -123,7 +122,6 @@
   width: 100%;
   opacity: 0.2;
   top: 50px;
-  z-index: -1;
 }
 
 #bannerImg {
@@ -468,12 +466,12 @@ main div.choose_left_de div.choose_classification_3 {
 
 /* //捲軸底色 */
 .addressall::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px none;
+  -webkit-box-shadow: inset 0 0 2px none;
   background-color: #f2f2f2;
 }
 /* //捲軸寬度 */
 .addressall::-webkit-scrollbar {
-  width: 6px;
+  width: 2px;
   background-color: #f2f2f2;
 }
 /* //捲軸本體顏色 */
@@ -551,4 +549,27 @@ main div.choose_right p.card-title a {
   text-decoration: none;
   color: black;
   font-size: 16px;
+}
+
+/* radio 按鈕選取前後變化 */
+/* 前 */
+.form-check-input[type="radio"] {
+  background-color: #f2f2f2;
+}
+
+/* 後 */
+.form-check-input[type="radio"]:checked {
+  background-color: #003c95;
+  box-shadow: none;
+}
+
+/* checkbox 按鈕選取前後變化 */
+.form-check-input[type="checkbox"] {
+  /* 前 */
+  background-color: #f2f2f2;
+}
+
+.form-check-input[type="checkbox"]:checked {
+  /* 後 */
+  background-color: #003c95;
 }

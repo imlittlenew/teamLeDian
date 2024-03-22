@@ -4,7 +4,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-// import axios from "axios";
+import axios from "axios";
 
 class le extends Component {
   constructor(props) {
@@ -18,19 +18,24 @@ class le extends Component {
         classification_5: false,
       },
       data: [],
-      filteredData: [], // 新增 filteredData 狀態來保存篩選後的數據
-      resultlebrand: [], // 初始化 resultlebrand 狀態
-      search: "搜尋店家",
+      filteredData: [],
+      brand: [],
     };
   }
 
   componentDidMount() {
-    fetch("http://localhost:8000/all/products")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched data:", data); // 在此處檢查數據
-        this.setState({ data }, () => {
-          // 在數據加載完畢後執行一次篩選以顯示所有飲料
+    Promise.all([
+      fetch("http://localhost:8000/all/products").then((response) =>
+        response.json()
+      ),
+      axios
+        .get("http://localhost:8000/all/brand")
+        .then((response) => response.data),
+    ])
+      .then(([productsData, brandData]) => {
+        console.log("Fetched products data:", productsData);
+        console.log("Fetched brand data:", brandData);
+        this.setState({ data: productsData, brand: brandData }, () => {
           this.filterData();
         });
       })
@@ -48,8 +53,7 @@ class le extends Component {
         },
       }),
       () => {
-        // 在狀態更新後重新篩選資料並更新 UI
-        console.log("New Filters:", this.state.filters); // 檢查更新後的篩選器狀態
+        console.log("New Filters:", this.state.filters);
         this.filterData();
       }
     );
@@ -57,26 +61,20 @@ class le extends Component {
 
   filterData() {
     const { data, filters } = this.state;
-    console.log("Filters:", filters); // 檢查篩選器的狀態
-    console.log("Data:", data); // 檢查原始數據的狀態
+    console.log("Filters:", filters);
+    console.log("Data:", data);
 
     const filterCondition = (item) => {
       return Object.keys(filters).every((filter) => {
-        // 將篩選器的鍵映射到對應的數據屬性名稱
-        const dataKey = `product_class_${filter.split("_")[1]}`; // 提取下劃線後的數字部分
+        const dataKey = `product_class_${filter.split("_")[1]}`;
 
-        // 檢查篩選器值是否為 true
         if (filters[filter]) {
-          // 檢查數據屬性是否等於 1
           if (item[dataKey] === 1) {
-            // 滿足篩選條件
             return true;
           } else {
-            // 不滿足篩選條件
             return false;
           }
         } else {
-          // 如果篩選器為 false，則不進行篩選，直接返回 true
           return true;
         }
       });
@@ -85,66 +83,135 @@ class le extends Component {
     // 使用 filterCondition 函數進行篩選
     const filteredData = data.filter(filterCondition);
 
-    console.log("Filtered Data:", filteredData); // 檢查篩選後的數據
+    console.log("Filtered Data:", filteredData);
     this.setState({ filteredData });
 
-    return filteredData; // 直接返回篩選後的數據
+    return filteredData;
   }
 
   render() {
     const { filters, filteredData } = this.state;
 
-    // 如果 filteredData 未定義，顯示載入中的訊息或採取其他適當的措施
     if (!filteredData) {
       return <div>Loading...</div>;
     }
 
+    const shuffledData = filteredData.sort(() => Math.random() - 0.5);
+
     return (
       <React.Fragment>
-        <div id='header'
-            style={{
-                boxShadow: '1px 3px 10px #cccccc',
-                marginBottom: '4px',
-            }} 
-            className='d-flex justify-content-between'>
-            <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
-            <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
-                <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png'></img></h4>
-                <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-                <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-                <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
+        <div
+          id="header"
+          style={{
+            boxShadow: "1px 3px 10px #cccccc",
+            marginBottom: "4px",
+          }}
+          className="d-flex justify-content-between"
+        >
+          <div className="col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center">
+            <div id="menu" className="col-8">
+              <h2
+                className="btn text-start  my-auto fs-4"
+                onClick={this.toggleMenuNav}
+              >
+                ☰
+              </h2>
             </div>
-            <div id="pointinfo">
-                <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2 text-light' /></button>
-                <h1>集點資訊</h1>
-                <p>．每消費20元即可累積1點。</p>
-                <p>．每點可折抵1元消費金額。</p>
-                <p>．點數可在下次消費時折抵使用。</p>
-                <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
-                <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
-            </div>
+            <h4
+              id="homeBtn"
+              className="my-auto btn"
+              onClick={() => {
+                window.location = "/index";
+              }}
+            >
+              <img id="logo" src="/img/index/LeDian_LOGO-05.png"></img>
+            </h4>
+            <h4 className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center">
+              <HiOutlineShoppingBag className="fs-4" />
+              購物車
+            </h4>
+            <h4
+              className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center"
+              onClick={() => {
+                window.location = "/brand";
+              }}
+            >
+              <PiMedal className="fs-4" />
+              品牌專區
+            </h4>
+            <h4
+              className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center"
+              onClick={this.pointinfoShow}
+            >
+              <PiCoins className="fs-4" />
+              集點資訊
+            </h4>
+          </div>
+          <div id="pointinfo">
+            <button id="pointinfoclose" onClick={this.pointinfoHide}>
+              <GiCancel className="fs-2 text-light" />
+            </button>
+            <h1>集點資訊</h1>
+            <p>．每消費20元即可累積1點。</p>
+            <p>．每點可折抵1元消費金額。</p>
+            <p>．點數可在下次消費時折抵使用。</p>
+            <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
+            <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
+          </div>
 
-
-            <div className='d-flex me-2  align-items-center'>
-                <h4 id='loginBtn' className='my-auto btn headerText' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
-                <div id='memberNav' className='collapse'>
-                    <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
-                    <div className='p-2'>
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>個人檔案</h4><hr />
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>帳號管理</h4><hr />
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>歷史訂單</h4><hr />
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>載具存取</h4><hr />
-                        <h4 className='headerText text-center my-2'>登出</h4>
-                    </div>
-                </div>
+          <div className="d-flex me-2  align-items-center">
+            <h4
+              id="loginBtn"
+              className="my-auto btn headerText"
+              onClick={this.toggleMemberNav}
+            >
+              登入/註冊▼
+            </h4>
+            <div id="memberNav" className="collapse">
+              <img
+                id="memberNavImg"
+                src={"/img/index/LeDian_LOGO-05.png"}
+                alt="logo"
+              ></img>
+              <div>
+                <h4 className="headerText text-center my-3">個人檔案</h4>
+                <hr />
+                <h4 className="headerText text-center my-3">帳號管理</h4>
+                <hr />
+                <h4 className="headerText text-center my-3">歷史訂單</h4>
+                <hr />
+                <h4 className="headerText text-center my-3">載具存取</h4>
+                <hr />
+                <h4 className="headerText text-center my-3">登出</h4>
+              </div>
             </div>
+          </div>
         </div>
-        <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-            <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-            <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-            <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
+        <div
+          id="menuNav"
+          className="menuNav d-flex flex-column align-items-center"
+        >
+          <h4 className="menuText my-3 mainColor border-bottom border-secondary">
+            <HiOutlineShoppingBag className="fs-4" />
+            購物車
+          </h4>
+          <h4
+            className="menuText my-3 mainColor border-bottom border-secondary"
+            onClick={() => {
+              window.location = "/brand";
+            }}
+          >
+            <PiMedal className="fs-4" />
+            品牌專區
+          </h4>
+          <h4
+            className="menuText my-3 mainColor border-bottom border-secondary"
+            onClick={this.pointinfoShow}
+          >
+            <PiCoins className="fs-4" />
+            集點資訊
+          </h4>
         </div>
-
 
         <div id="banner" className="d-flex justify-content-center">
           <img
@@ -193,14 +260,6 @@ class le extends Component {
               ></img>
             </div>
           </div>
-          <input
-            type="text"
-            id="search"
-            name="search"
-            onChange={this.searchChange}
-            value={this.state.search}
-            className="form-control rounded-pill ps-4 bg-secondary-subtle"
-          ></input>
         </div>
 
         <main>
@@ -303,8 +362,8 @@ class le extends Component {
                 </div>
               </div>
               <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right mx-auto">
-                {filteredData.map((item) => (
-                  <div key={item.product_id} className="col-lg-6 col-xxl-4 my-3">
+                {shuffledData.map((item) => (
+                  <div key={item.id} className="col-lg-6 col-xxl-4 my-3">
                     <div className="card">
                       <div className="image">
                         {/* 動態設定圖片路徑 */}
@@ -312,7 +371,8 @@ class le extends Component {
                           src={`/img/class/${item.product_img}.png`}
                           className="card-img-top"
                           alt="..."
-                        />
+                        />{" "}
+                        {console.log(item)}
                         {/* 動態設定 logo 路徑 */}
                         <img
                           src={`/img/logo/${item.brand_id}.png`}
@@ -322,8 +382,9 @@ class le extends Component {
                       </div>
                       {/* 動態設定標題 */}
                       <div className="card-title">
-                        {this.state.resultlebrand.length > 0 &&
-                          this.state.resultlebrand.map((brand) => (
+                        {this.state.brand
+                          .filter((brand) => brand.brand_id === item.brand_id) // 過濾出符合 brand_id 的品牌
+                          .map((brand) => (
                             <span key={brand.brand_id}>{brand.brand_name}</span>
                           ))}
                       </div>
@@ -335,12 +396,7 @@ class le extends Component {
                           <p className="price_1 text-center ms-1">
                             {item.products_price_0
                               ? `M${item.products_price_0}`
-                              : ""}
-                          </p>
-                          <p className="price_2 text-center mx-1">
-                            {item.products_price_1
-                              ? `L${item.products_price_1}`
-                              : ""}
+                              : `L${item.products_price_1}`}
                           </p>
                         </div>
                       </div>
@@ -419,11 +475,7 @@ class le extends Component {
       </React.Fragment>
     );
   }
-  searchChange = (e) => {
-    var newState = { ...this.state };
-    newState.search = e.target.value;
-    this.setState(newState);
-  };
+
   pointinfoShow = (event) => {
     document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
     document.getElementById("pointinfo").style.left =
