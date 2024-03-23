@@ -151,24 +151,39 @@ class index extends Component {
     toggleMenuNav = () => {
         document.getElementById('menuNav').classList.toggle('menuNav');
     }
-    logoutClick = () => {
-        localStorage.removeItem('userdata')
+    
+    logoutClick = async () => {
+        // 清除localStorage
+        localStorage.removeItem("userdata");
+        const userdata = localStorage.getItem("userdata");
+        console.log("現在的:", userdata);
+        try {
+          // 告訴後台使用者要登出
+          await Axios.post('http://localhost:8000/logout');
+      
+          
+          //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+        } catch (error) {
+          console.error("登出時出錯:", error);
+        }
+      
         document.getElementById('memberNav').classList.add('collapse');
         this.setState({})
     }
     loginCheck = () => {
-        const userdata = JSON.parse(localStorage.getItem('userdata'));
-        if(userdata){
-            const userImg = userdata.user_img?userdata.user_img:'LeDian.png';
+        const userData = JSON.parse(localStorage.getItem('userdata'));
+        if(userData){
+            const userImg = userData.user_img?userData.user_img:'LeDian.png';
             return (
                 <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                    <img id='memberHeadshot' src={(`/img/headshot/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+                    <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
                     會員專區▼</h4>
                 )
         }else {
             return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
         }              
     }
+
 
 }
  
