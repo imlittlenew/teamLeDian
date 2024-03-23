@@ -123,18 +123,18 @@ class index extends Component {
       }
       loginCheck = () => {
         const userdata = JSON.parse(localStorage.getItem('userdata'));
-        const userImg = userdata.user_img;
         if(userdata){
+            const userImg = userdata.user_img?userdata.user_img:'LeDian.png';
             return (
                 <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                    <img id='memberHeadshot' src={(`/img/Member_Area/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle'></img>
+                    <img id='memberHeadshot' src={(`/img/headshot/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
                     會員專區▼</h4>
                 )
         }else {
             return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
         }              
     }
-
+    
 
     
     }
