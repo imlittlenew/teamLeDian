@@ -15,7 +15,7 @@ import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 // import ProductItem from "./productItem";
 import DateTimePicker from "./dateTimePicker";
-import axios from "axios";
+import Axios from "axios";
 
 class cartPay extends Component {
   constructor(props) {
@@ -319,7 +319,7 @@ class cartPay extends Component {
         "content-type": "application/json",
       },
     };
-    await axios.post(
+    await Axios.post(
       "http://localhost:8000/cartPay",
       JSON.stringify(serverData),
       config
@@ -344,7 +344,7 @@ class cartPay extends Component {
 
   product_edit = async () => {
     let newSate = { ...this.state };
-    let result = await axios.get("http://localhost:8000/test");
+    let result = await Axios.get("http://localhost:8000/test");
     newSate.productEdit = result.data;
     console.log(newSate);
     console.log(newSate.productEdit[3].ingredient);
@@ -1828,7 +1828,7 @@ class cartPay extends Component {
   componentDidMount = async () => {
     console.log(this.props.match.params.id);
     let newState = { ...this.state };
-    let result = await axios.get(
+    let result = await Axios.get(
       `http://localhost:8000/cartPay/${this.props.match.params.id}`
     );
 
@@ -1859,19 +1859,19 @@ class cartPay extends Component {
       event.cancelBubble = true;
   }
 
-
   toggleMemberNav = () => {
     const userdata = localStorage.getItem('userdata');
     if(userdata){
         document.getElementById('memberNav').classList.toggle('collapse');
     }else{
+        const path = this.props.location.pathname;
+        sessionStorage.setItem('redirect',path) ;
         window.location = "/login";
     }
   }
   toggleMenuNav = () => {
-      document.getElementById('menuNav').classList.toggle('menuNav');
+    document.getElementById('menuNav').classList.toggle('menuNav');
   }
-    
   logoutClick = async () => {
     // 清除localStorage
     localStorage.removeItem("userdata");
@@ -1889,8 +1889,9 @@ class cartPay extends Component {
   
     document.getElementById('memberNav').classList.add('collapse');
     this.setState({})
-}
-loginCheck = () => {
+    window.location = "/index"
+  }
+  loginCheck = () => {
     const userData = JSON.parse(localStorage.getItem('userdata'));
     if(userData){
         const userImg = userData.user_img?userData.user_img:'LeDian.png';
@@ -1902,9 +1903,7 @@ loginCheck = () => {
     }else {
         return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
     }              
-}
-
-
+  }
 
 }
 export default cartPay;

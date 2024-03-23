@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
+import Axios from "axios";
 
 class DateTimePicker extends Component {
   constructor(props) {
@@ -128,7 +128,7 @@ class DateTimePicker extends Component {
 
   componentDidMount = async () => {
     let newState = { ...this.state };
-    let result = await axios.get("http://localhost:8000/branchinfo");
+    let result = await Axios.get("http://localhost:8000/branchinfo");
     newState.dbdata = result.data[0];
     console.log("temp", this.props.message);
     this.setState(newState);

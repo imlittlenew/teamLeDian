@@ -4,7 +4,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-import axios from "axios";
+import Axios from "axios";
 
 class le extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class le extends Component {
       fetch("http://localhost:8000/all/products").then((response) =>
         response.json()
       ),
-      axios
+      Axios
         .get("http://localhost:8000/all/brand")
         .then((response) => response.data),
     ])
@@ -415,36 +415,37 @@ class le extends Component {
     event.cancelBubble = true;
   };
 
-
   toggleMemberNav = () => {
     const userdata = localStorage.getItem('userdata');
     if(userdata){
         document.getElementById('memberNav').classList.toggle('collapse');
     }else{
+        const path = this.props.location.pathname;
+        sessionStorage.setItem('redirect',path) ;
         window.location = "/login";
     }
   }
   toggleMenuNav = () => {
       document.getElementById('menuNav').classList.toggle('menuNav');
   }
-    
   logoutClick = async () => {
-    // 清除localStorage
-    localStorage.removeItem("userdata");
-    const userdata = localStorage.getItem("userdata");
-    console.log("現在的:", userdata);
-    try {
-      // 告訴後台使用者要登出
-      await Axios.post('http://localhost:8000/logout');
-  
+      // 清除localStorage
+      localStorage.removeItem("userdata");
+      const userdata = localStorage.getItem("userdata");
+      console.log("現在的:", userdata);
+      try {
+          // 告訴後台使用者要登出
+          await Axios.post('http://localhost:8000/logout');
       
-      //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
-    } catch (error) {
-      console.error("登出時出錯:", error);
-    }
-  
-    document.getElementById('memberNav').classList.add('collapse');
-    this.setState({})
+          
+          //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+      } catch (error) {
+          console.error("登出時出錯:", error);
+      }
+      
+      document.getElementById('memberNav').classList.add('collapse');
+      this.setState({})
+      window.location = "/index"
   }
   loginCheck = () => {
       const userData = JSON.parse(localStorage.getItem('userdata'));
@@ -459,7 +460,6 @@ class le extends Component {
           return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
       }              
   }
-
 
 }
 

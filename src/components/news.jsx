@@ -248,30 +248,32 @@ class index extends Component {
         if(userdata){
             document.getElementById('memberNav').classList.toggle('collapse');
         }else{
+            const path = this.props.location.pathname;
+            sessionStorage.setItem('redirect',path) ;
             window.location = "/login";
         }
       }
     toggleMenuNav = () => {
-          document.getElementById('menuNav').classList.toggle('menuNav');
-      }
-    
-    logoutClick = async () => {
-    // 清除localStorage
-    localStorage.removeItem("userdata");
-    const userdata = localStorage.getItem("userdata");
-    console.log("現在的:", userdata);
-    try {
-        // 告訴後台使用者要登出
-        await Axios.post('http://localhost:8000/logout');
-    
-        
-        //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
-    } catch (error) {
-        console.error("登出時出錯:", error);
+        document.getElementById('menuNav').classList.toggle('menuNav');
     }
-    
-    document.getElementById('memberNav').classList.add('collapse');
-    this.setState({})
+    logoutClick = async () => {
+        // 清除localStorage
+        localStorage.removeItem("userdata");
+        const userdata = localStorage.getItem("userdata");
+        console.log("現在的:", userdata);
+        try {
+            // 告訴後台使用者要登出
+            await Axios.post('http://localhost:8000/logout');
+        
+            
+            //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+        } catch (error) {
+            console.error("登出時出錯:", error);
+        }
+        
+        document.getElementById('memberNav').classList.add('collapse');
+        this.setState({})
+        window.location = "/index"
     }
     loginCheck = () => {
         const userData = JSON.parse(localStorage.getItem('userdata'));
@@ -287,6 +289,9 @@ class index extends Component {
         }              
     }
     
+    
+    
+
     }
  
 export default index;

@@ -145,13 +145,14 @@ class index extends Component {
         if(userdata){
             document.getElementById('memberNav').classList.toggle('collapse');
         }else{
+            const path = this.props.location.pathname;
+            sessionStorage.setItem('redirect',path) ;
             window.location = "/login";
         }
     }
     toggleMenuNav = () => {
         document.getElementById('menuNav').classList.toggle('menuNav');
     }
-    
     logoutClick = async () => {
         // 清除localStorage
         localStorage.removeItem("userdata");
@@ -169,6 +170,7 @@ class index extends Component {
       
         document.getElementById('memberNav').classList.add('collapse');
         this.setState({})
+        window.location = "/index"
     }
     loginCheck = () => {
         const userData = JSON.parse(localStorage.getItem('userdata'));

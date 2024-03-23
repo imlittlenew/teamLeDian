@@ -149,6 +149,9 @@
 }
 
 /* 店家資訊 (右) */
+.branchCard{
+    cursor: pointer;
+}
 .choose_right div.image {
     position: relative;
   }

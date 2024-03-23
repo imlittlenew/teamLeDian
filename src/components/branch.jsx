@@ -158,8 +158,16 @@ class index extends Component {
                                     const closeTime = [branch.Sun_end,branch.Mon_end,branch.Tue_end,branch.Wed_end,branch.Thu_end,branch.Fri_end,branch.Sat_end]
 
                                     return(<React.Fragment key={i}> 
-                                        <div className="col-lg-6 col-xxl-4 my-3" id={branch.branch_id} onClick={()=>{window.location=`/order/${branch.branch_id}`}}>
-                                            <div className="card">
+                                        <div className="col-lg-6 col-xxl-4 my-3" id={branch.branch_id} 
+                                        onClick={()=>{
+                                            const userData = JSON.parse(localStorage.getItem('userdata'));
+                                            if(userData){
+                                                window.location=`/order/${branch.branch_id}`
+                                            }else {                         
+                                                sessionStorage.setItem('redirect',`/order/${branch.branch_id}`) ;
+                                                window.location = "/login";
+                                            }}}>
+                                            <div className="card branchCard">
                                                 <div className="image">
                                                 <img
                                                     src={`/img/mainproduct/${branch.brand_id}.png`}
@@ -242,13 +250,14 @@ class index extends Component {
         if(userdata){
             document.getElementById('memberNav').classList.toggle('collapse');
         }else{
+            const path = this.props.location.pathname;
+            sessionStorage.setItem('redirect',path) ;
             window.location = "/login";
         }
     }
     toggleMenuNav = () => {
         document.getElementById('menuNav').classList.toggle('menuNav');
     }
-    
     logoutClick = async () => {
         // 清除localStorage
         localStorage.removeItem("userdata");
@@ -266,6 +275,7 @@ class index extends Component {
       
         document.getElementById('memberNav').classList.add('collapse');
         this.setState({})
+        window.location = "/index"
     }
     loginCheck = () => {
         const userData = JSON.parse(localStorage.getItem('userdata'));

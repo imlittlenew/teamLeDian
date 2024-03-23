@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../css/order.css";
 import "bootstrap/dist/js/bootstrap.js";
-import axios from 'axios';
+import Axios from 'axios';
 
 
 class order extends Component {
@@ -18,10 +18,10 @@ class order extends Component {
     
     // 元件掛載撈資料
     componentDidMount = async () => {
-        var resultStore = await axios.get(`http://localhost:8000/order/branch/${this.props.match.params.id}`);
-        var resultBrand = await axios.get(`http://localhost:8000/order/brand/${resultStore.data[0].brand_id}`);
-        var resultProduct = await axios.get(`http://localhost:8000/order/product/${resultStore.data[0].brand_id}`);
-        var resultCategories = await axios.get(`http://localhost:8000/categories/${resultStore.data[0].brand_id}`);
+        var resultStore = await Axios.get(`http://localhost:8000/order/branch/${this.props.match.params.id}`);
+        var resultBrand = await Axios.get(`http://localhost:8000/order/brand/${resultStore.data[0].brand_id}`);
+        var resultProduct = await Axios.get(`http://localhost:8000/order/product/${resultStore.data[0].brand_id}`);
+        var resultCategories = await Axios.get(`http://localhost:8000/categories/${resultStore.data[0].brand_id}`);
 
         var newState = { ...this.state };
         newState.storeInfo = resultStore.data[0];

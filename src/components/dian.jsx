@@ -5,7 +5,7 @@ import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import GradeIcon from "@mui/icons-material/Grade";
-import axios from "axios";
+import Axios from "axios";
 
 class dian extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class dian extends Component {
 
   fetchBrandData = async () => {
     try {
-      var brand = await axios.get("http://localhost:8000/all/brand");
+      var brand = await Axios.get("http://localhost:8000/all/brand");
 
       this.setState({
         brand: brand.data,
@@ -77,7 +77,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/address";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data
         .map((item) => {
           const distance = this.calculateDistance(
@@ -166,7 +166,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/address_438";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data.map((item) => {
         const distance = this.calculateDistance(
           this.state.userLocation.latitude,
@@ -200,7 +200,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/score_3.0";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data.map((item) => {
         if (this.state.userLocation) {
           const distance = this.calculateDistance(
@@ -1037,19 +1037,19 @@ class dian extends Component {
     event.cancelBubble = true;
   };
 
-
   toggleMemberNav = () => {
     const userdata = localStorage.getItem('userdata');
     if(userdata){
         document.getElementById('memberNav').classList.toggle('collapse');
     }else{
+        const path = this.props.location.pathname;
+        sessionStorage.setItem('redirect',path) ;
         window.location = "/login";
     }
   }
   toggleMenuNav = () => {
-      document.getElementById('menuNav').classList.toggle('menuNav');
+    document.getElementById('menuNav').classList.toggle('menuNav');
   }
-    
   logoutClick = async () => {
     // 清除localStorage
     localStorage.removeItem("userdata");
@@ -1067,21 +1067,21 @@ class dian extends Component {
   
     document.getElementById('memberNav').classList.add('collapse');
     this.setState({})
+    window.location = "/index"
   }
   loginCheck = () => {
-      const userData = JSON.parse(localStorage.getItem('userdata'));
-      if(userData){
-          const userImg = userData.user_img?userData.user_img:'LeDian.png';
-          return (
-              <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                  <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
-                  會員專區▼</h4>
-              )
-      }else {
-          return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
-      }              
+    const userData = JSON.parse(localStorage.getItem('userdata'));
+    if(userData){
+        const userImg = userData.user_img?userData.user_img:'LeDian.png';
+        return (
+            <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
+                <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+                會員專區▼</h4>
+            )
+    }else {
+        return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+    }              
   }
-
 }
 
 export default dian;

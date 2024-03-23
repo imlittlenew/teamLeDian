@@ -175,8 +175,16 @@ class index extends Component {
         <>
         {Object.entries(distances).filter(([branchId, distance]) => distance < 2)
             .sort((a, b) => a[1] - b[1]).map(([branchId, distance]) => (
-                <div key={branchId} className="col-lg-6 col-xxl-4 my-3" onClick={()=>{window.location=`/order/${branchId}`}}>
-                    <div className="card">
+                <div key={branchId} className="col-lg-6 col-xxl-4 my-3" 
+                    onClick={()=>{
+                        const userData = JSON.parse(localStorage.getItem('userdata'));
+                        if(userData){
+                            window.location=`/order/${branchId}`
+                        }else {                         
+                            sessionStorage.setItem('redirect',`/order/${branchId}`) ;
+                            window.location = "/login";
+                        }}}>
+                    <div className="card branchCard">
                         <div className="image">
                             {this.state.branchList.map((branch)=>{
                                 if(branch.branch_id == branchId){
@@ -410,29 +418,32 @@ class index extends Component {
         if(userdata){
             document.getElementById('memberNav').classList.toggle('collapse');
         }else{
+            const path = this.props.location.pathname;
+            sessionStorage.setItem('redirect',path) ;
             window.location = "/login";
         }
-    }
+      }
     toggleMenuNav = () => {
         document.getElementById('menuNav').classList.toggle('menuNav');
     }
     logoutClick = async () => {
-            // 清除localStorage
-            localStorage.removeItem("userdata");
-            const userdata = localStorage.getItem("userdata");
-            console.log("現在的:", userdata);
-            try {
-              // 告訴後台使用者要登出
-              await Axios.post('http://localhost:8000/logout');
-          
-              
-              //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
-            } catch (error) {
-              console.error("登出時出錯:", error);
-            }
-          
-            document.getElementById('memberNav').classList.add('collapse');
-            this.setState({})
+        // 清除localStorage
+        localStorage.removeItem("userdata");
+        const userdata = localStorage.getItem("userdata");
+        console.log("現在的:", userdata);
+        try {
+            // 告訴後台使用者要登出
+            await Axios.post('http://localhost:8000/logout');
+        
+            
+            //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+        } catch (error) {
+            console.error("登出時出錯:", error);
+        }
+        
+        document.getElementById('memberNav').classList.add('collapse');
+        this.setState({})
+        window.location = "/index"
     }
     loginCheck = () => {
         const userData = JSON.parse(localStorage.getItem('userdata'));
@@ -447,6 +458,8 @@ class index extends Component {
             return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
         }              
     }
+
+
 }
  
 export default index;

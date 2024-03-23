@@ -363,7 +363,6 @@ class Login extends Component {
       event.cancelBubble = true;
   }
 
-
   toggleMemberNav = () => {
     const userdata = localStorage.getItem('userdata');
     if(userdata){
@@ -375,24 +374,24 @@ class Login extends Component {
   toggleMenuNav = () => {
       document.getElementById('menuNav').classList.toggle('menuNav');
   }
-    
   logoutClick = async () => {
-    // 清除localStorage
-    localStorage.removeItem("userdata");
-    const userdata = localStorage.getItem("userdata");
-    console.log("現在的:", userdata);
-    try {
-      // 告訴後台使用者要登出
-      await Axios.post('http://localhost:8000/logout');
-  
+      // 清除localStorage
+      localStorage.removeItem("userdata");
+      const userdata = localStorage.getItem("userdata");
+      console.log("現在的:", userdata);
+      try {
+          // 告訴後台使用者要登出
+          await Axios.post('http://localhost:8000/logout');
       
-      //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
-    } catch (error) {
-      console.error("登出時出錯:", error);
-    }
-  
-    document.getElementById('memberNav').classList.add('collapse');
-    this.setState({})
+          
+          //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+      } catch (error) {
+          console.error("登出時出錯:", error);
+      }
+      
+      document.getElementById('memberNav').classList.add('collapse');
+      this.setState({})
+      window.location = "/index"
   }
   loginCheck = () => {
       const userData = JSON.parse(localStorage.getItem('userdata'));
@@ -407,8 +406,6 @@ class Login extends Component {
           return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
       }              
   }
-
-
 
   phone_change = (e) => {
     this.setState({ phone: e.target.value });
@@ -462,7 +459,8 @@ class Login extends Component {
       const userdata = { user_id, user_img }; 
       const userdataString = JSON.stringify(userdata);
       localStorage.setItem('userdata', userdataString);
-      window.location = '/'; 
+      const redirect = sessionStorage.getItem('redirect');
+      window.location = redirect; 
       this.setState({ showToast: true, toastMessage: "登入成功" });
     } catch (error) {
       console.error("錯誤:", error);
