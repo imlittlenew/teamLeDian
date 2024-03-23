@@ -105,7 +105,7 @@ class order extends Component {
                         </div>
                         <div className="col-12 textstore">
                             <p className="storeContent">
-                                營業時間:{openTime[day]}~{closeTime[day]}
+                                營業時間:{openTime[day]=="店休"?"店休":openTime[day]}~{closeTime[day]=="店休"?"店休":closeTime[day]}
                             </p>
                         </div>
                         <div className="col-12 textstore">

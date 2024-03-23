@@ -119,16 +119,12 @@ class index extends Component {
                 </div>
 
 
-                <div className='d-flex me-2  align-items-center'>
-                    <h4 id='loginBtn' className='my-auto btn headerText' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
+                <div className='d-flex me-2 align-items-center'>
+                    {this.loginCheck()}
                     <div id='memberNav' className='collapse'>
-                        <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
                         <div className='p-2'>
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>個人檔案</h4><hr />
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>帳號管理</h4><hr />
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>歷史訂單</h4><hr />
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>載具存取</h4><hr />
-                            <h4 className='headerText text-center my-2'>登出</h4>
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>會員中心</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={this.logoutClick}>登出</h4>
                         </div>
                     </div>
                 </div>
@@ -138,6 +134,7 @@ class index extends Component {
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
             </div>
+
 
 
             <div id='banner' className='d-flex justify-content-center'><img id='bannerImg' src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
@@ -241,11 +238,34 @@ class index extends Component {
     }
 
     toggleMemberNav = () => {
-        document.getElementById('memberNav').classList.toggle('collapse');
+        const userdata = localStorage.getItem('userdata');
+        if(userdata){
+            document.getElementById('memberNav').classList.toggle('collapse');
+        }else{
+            window.location = "/login";
+        }
     }
     toggleMenuNav = () => {
         document.getElementById('menuNav').classList.toggle('menuNav');
     }
+    logoutClick = () => {
+        localStorage.removeItem('userdata')
+        document.getElementById('memberNav').classList.add('collapse');
+        this.setState({})
+    }
+    loginCheck = () => {
+        const userdata = localStorage.getItem('userdata');
+        if(userdata){
+            return (
+                <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
+                    <img id='memberHeadshot' src={("/img/Member_Area/123.png")} alt='homeBanner' className='img-fluid my-auto mx-1 rounded-circle'></img>
+                    會員專區▼</h4>
+                )
+        }else {
+            return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+        }              
+    }
+    
 }
  
 export default index;

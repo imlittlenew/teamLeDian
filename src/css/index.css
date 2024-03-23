@@ -54,7 +54,10 @@
 #loginBtn {
     color: #003C95;  
 }
-
+#memberHeadshot{
+    height: 50px;
+    width: 50px;
+}
 #header {
     height: 80px;
 }
@@ -114,15 +117,6 @@
 
 #memberNav h4 {
     cursor: pointer;
-}
-
-#memberNavImg {
-    position: absolute;
-    right: 0px;
-    width: 100%;
-    opacity: 0.2;
-    top: 50px;
-    z-index: -1;
 }
 
 #bannerImg{
@@ -280,6 +274,10 @@
     }
     #logo {
         height: 60px;
+    }
+    #memberHeadshot{
+        height: 30px;
+        width: 30px;
     }
     #homeBtn {
         padding: 0;

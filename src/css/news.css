@@ -120,15 +120,11 @@
 #memberNav h4 {
     cursor: pointer;
 }
-
-#memberNavImg {
-    position: absolute;
-    right: 0px;
-    width: 100%;
-    opacity: 0.2;
-    top: 50px;
-    z-index: -1;
+#memberHeadshot{
+    height: 50px;
+    width: 50px;
 }
+	
 
 #bannerImg{
     position: relative;
@@ -232,7 +228,10 @@
         padding: 0;
         height: 60px;
     }
-
+    #memberHeadshot{
+        height: 30px;
+        width: 30px;
+    }
     #memberNav{
         top:50px;
         right: 20px;
