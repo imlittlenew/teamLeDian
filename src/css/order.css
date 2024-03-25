@@ -5,6 +5,12 @@
 
 
 
+/* header */
+#orderheader {
+    margin-bottom: -5px;
+    box-shadow:-2px 6px 7px 0px rgba(0, 0, 0, 0.3);
+}
+
 
 /* 電腦banner */
 @media (min-width: 991px) {
@@ -140,7 +146,7 @@
 @media (min-width: 991px) {
     .col-3.storeBox {
         position: absolute;
-        top: 70px;
+        top: 148px;
         left: 115px;
         width: 350px;
         height: 250px;
@@ -183,6 +189,8 @@
 .link-top {
     margin-top: 10px;
     margin-bottom: 10px;
+    /* margin-left: 20px;
+    margin-right: 20px; */
     height: 1px;
     border-top: solid #003C95 1px;
 }
@@ -250,9 +258,15 @@
     padding-top: 10px;
 }
 
-.col-lg-3.drink {
-    max-width:24% !important;
+
+/* 手機版調整菜單 */
+@media (min-width:991px) {
+    .col-lg-3.drink {
+        max-width:24% !important;
+    }
+    
 }
+
 
 @media (max-width: 992px) {
     .col-md-6.drink {
@@ -341,14 +355,14 @@
     /* padding-left: 30px; */
 }
 
-.modal-content {
+/* .modal-content {
     border-color: #F2AF21 !important;
     border-width: 8px !important;
-}
+} */
 
-.modal-content {
+/* .modal-content {
     border-radius: 36px !important;
-}
+} */
 
 .row.sizetitle {
     flex: auto;
@@ -370,7 +384,7 @@
 }
 
 .form-check-input.checkInput[type=radio] {
-    border-color: #003C95;
+    border-color: #F2AF21 !important;
     border-width: 1px;
 }
 
@@ -499,8 +513,8 @@ svg {
 /* 配料按鈕樣式 */
 .form-check-input[type=checkbox] {
     border-radius: 50% ;
-    border-color:#003C95;
-    border-width:1px;
+    /* border-color:#003C95;
+    border-width:1px; */
 }
 
 .position-fixed.bottom-0.end-0.p-3 {
