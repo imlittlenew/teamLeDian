@@ -493,6 +493,7 @@ main div.choose_right p.card-title a {
   /* 前 */
   background-color: #f2f2f2;
   border-color: #003c95;
+  border-radius: 20% !important;
 }
 
 .le_checkbox[type="checkbox"]:checked {
@@ -501,7 +502,7 @@ main div.choose_right p.card-title a {
 }
 
 /* 回到最上方按鈕 */
-button.topbtn > #topbtn {
+#topbtn {
   position: fixed;
   bottom: 20px;
   right: 20px;
