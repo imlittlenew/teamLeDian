@@ -116,12 +116,9 @@
   cursor: pointer;
 }
 
-#memberNavImg {
-  position: absolute;
-  right: 0px;
-  width: 100%;
-  opacity: 0.2;
-  top: 50px;
+#memberHeadshot {
+  height: 50px;
+  width: 50px;
 }
 
 #bannerImg {
@@ -230,6 +227,10 @@
   }
   #rouletteArea {
     height: 380px;
+  }
+  #memberHeadshot {
+    height: 30px;
+    width: 30px;
   }
 }
 @media screen and (max-width: 768px) {
@@ -349,7 +350,7 @@
     padding: 0 10%;
   }
 
-  main div.choose_left_de div.form-check {
+  main div.choose_left_de div.form-check.dian {
     margin: 0 10% !important;
   }
 
@@ -366,9 +367,9 @@
     margin-top: 20px;
   }
 
-  main div.choose_classification div.form-check {
+  main div.choose_classification div.form-check.le {
     display: block;
-    margin: 0 34% !important;
+    margin: 0 38% !important;
     text-align: center;
   }
 }
@@ -391,7 +392,7 @@ main div.choose_left div.choose_classification {
   margin-top: 20px;
 }
 
-main div.choose_classification div.form-check {
+main div.choose_classification div.form-check.le {
   display: block;
   margin: 0 20%;
 }
@@ -553,23 +554,44 @@ main div.choose_right p.card-title a {
 
 /* radio 按鈕選取前後變化 */
 /* 前 */
-.form-check-input[type="radio"] {
+.dian_radio[type="radio"] {
   background-color: #f2f2f2;
+  border-color: #003c95;
 }
 
 /* 後 */
-.form-check-input[type="radio"]:checked {
+.dian_radio[type="radio"]:checked {
   background-color: #003c95;
   box-shadow: none;
 }
 
 /* checkbox 按鈕選取前後變化 */
-.form-check-input[type="checkbox"] {
+.le_checkbox[type="checkbox"] {
   /* 前 */
   background-color: #f2f2f2;
+  border-color: #003c95;
 }
 
-.form-check-input[type="checkbox"]:checked {
+.le_checkbox[type="checkbox"]:checked {
   /* 後 */
   background-color: #003c95;
+}
+
+/* 回到最上方按鈕 */
+button.top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  cursor: pointer;
+  background-color: #f3b021;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
 }

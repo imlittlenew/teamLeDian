@@ -4,6 +4,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
+import { FaArrowCircleUp } from "react-icons/fa";
 import axios from "axios";
 
 class le extends Component {
@@ -124,7 +125,11 @@ class le extends Component {
                 window.location = "/index";
               }}
             >
-              <img id="logo" src="/img/index/LeDian_LOGO-05.png"></img>
+              <img
+                id="logo"
+                src="/img/index/LeDian_LOGO-05.png"
+                alt="logo"
+              ></img>
             </h4>
             <h4 className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center">
               <HiOutlineShoppingBag className="fs-4" />
@@ -159,30 +164,25 @@ class le extends Component {
             <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
           </div>
 
-          <div className="d-flex me-2  align-items-center">
-            <h4
-              id="loginBtn"
-              className="my-auto btn headerText"
-              onClick={this.toggleMemberNav}
-            >
-              登入/註冊▼
-            </h4>
+          <div className="d-flex me-2 align-items-center">
+            {this.loginCheck()}
             <div id="memberNav" className="collapse">
-              <img
-                id="memberNavImg"
-                src={"/img/index/LeDian_LOGO-05.png"}
-                alt="logo"
-              ></img>
-              <div>
-                <h4 className="headerText text-center my-3">個人檔案</h4>
+              <div className="p-2">
+                <h4
+                  className="headerText text-center my-2"
+                  onClick={() => {
+                    window.location = "/profile";
+                  }}
+                >
+                  會員中心
+                </h4>
                 <hr />
-                <h4 className="headerText text-center my-3">帳號管理</h4>
-                <hr />
-                <h4 className="headerText text-center my-3">歷史訂單</h4>
-                <hr />
-                <h4 className="headerText text-center my-3">載具存取</h4>
-                <hr />
-                <h4 className="headerText text-center my-3">登出</h4>
+                <h4
+                  className="headerText text-center my-2"
+                  onClick={this.logoutClick}
+                >
+                  登出
+                </h4>
               </div>
             </div>
           </div>
@@ -260,6 +260,7 @@ class le extends Component {
               ></img>
             </div>
           </div>
+          <h2 className="text-center mainColor m-2">附近店家</h2>
         </div>
 
         <main>
@@ -269,9 +270,9 @@ class le extends Component {
                 <div className="choose_left">
                   <div className="choose_left_1">透過以下分類篩選</div>
                   <div className="choose_classification">
-                    <div className="form-check">
+                    <div className="form-check le">
                       <input
-                        className="form-check-input"
+                        className="form-check-input le_checkbox"
                         type="checkbox"
                         id="classification_1"
                         checked={filters.classification_1}
@@ -286,9 +287,9 @@ class le extends Component {
                         精選推味
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check le">
                       <input
-                        className="form-check-input"
+                        className="form-check-input le_checkbox"
                         type="checkbox"
                         value=""
                         id="classification_2"
@@ -304,9 +305,9 @@ class le extends Component {
                         茶品精選
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check le">
                       <input
-                        className="form-check-input"
+                        className="form-check-input le_checkbox"
                         type="checkbox"
                         value=""
                         id="classification_3"
@@ -322,9 +323,9 @@ class le extends Component {
                         拿鐵探查
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check le">
                       <input
-                        className="form-check-input"
+                        className="form-check-input le_checkbox"
                         type="checkbox"
                         value=""
                         id="classification_4"
@@ -340,9 +341,9 @@ class le extends Component {
                         口感尋覓
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check le">
                       <input
-                        className="form-check-input"
+                        className="form-check-input le_checkbox"
                         type="checkbox"
                         value=""
                         id="classification_5"
@@ -363,7 +364,13 @@ class le extends Component {
               </div>
               <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right mx-auto">
                 {shuffledData.map((item) => (
-                  <div key={item.id} className="col-lg-6 col-xxl-4 my-3">
+                  <div
+                    key={item.id}
+                    className="col-lg-6 col-xxl-4 my-3"
+                    onClick={() => {
+                      window.location = `/branch/${item.brand_id}`;
+                    }}
+                  >
                     <div className="card">
                       <div className="image">
                         {/* 動態設定圖片路徑 */}
@@ -449,7 +456,7 @@ class le extends Component {
           </div>
           <div
             id="footerInfo"
-            className="col-3 d-flex row align-items-center justify-content-center pe-1"
+            className="col-3 d-flex row align-items-center justify-content-center"
           >
             <div className="col-3 col-sm-6 d-flex flex-column align-items-center">
               <p className="footerText m-0 py-1 text-nowrap text-white">
@@ -472,6 +479,10 @@ class le extends Component {
             </div>
           </div>
         </div>
+
+        <button className="top" onClick={this.scrollToTop}>
+          <FaArrowCircleUp />
+        </button>
       </React.Fragment>
     );
   }
@@ -488,10 +499,73 @@ class le extends Component {
   };
 
   toggleMemberNav = () => {
-    document.getElementById("memberNav").classList.toggle("collapse");
+    const userdata = localStorage.getItem("userdata");
+    if (userdata) {
+      document.getElementById("memberNav").classList.toggle("collapse");
+    } else {
+      const path = this.props.location.pathname;
+      sessionStorage.setItem("redirect", path);
+      window.location = "/login";
+    }
   };
   toggleMenuNav = () => {
     document.getElementById("menuNav").classList.toggle("menuNav");
+  };
+  logoutClick = async () => {
+    // 清除localStorage
+    localStorage.removeItem("userdata");
+    const userdata = localStorage.getItem("userdata");
+    console.log("現在的:", userdata);
+    try {
+      // 告訴後台使用者要登出
+      await axios.post("http://localhost:8000/logout");
+
+      //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+    } catch (error) {
+      console.error("登出時出錯:", error);
+    }
+
+    document.getElementById("memberNav").classList.add("collapse");
+    this.setState({});
+    window.location = "/index";
+  };
+  loginCheck = () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (userData) {
+      const userImg = userData.user_img ? userData.user_img : "LeDian.png";
+      return (
+        <h4
+          id="loginBtn"
+          className="my-auto btn headerText text-nowrap"
+          onClick={this.toggleMemberNav}
+        >
+          <img
+            id="memberHeadshot"
+            src={`/img/users/${userImg}`}
+            alt="memberHeadshot"
+            className="img-fluid my-auto mx-1 rounded-circle border"
+          ></img>
+          會員專區▼
+        </h4>
+      );
+    } else {
+      return (
+        <h4
+          id="loginBtn"
+          className="my-auto btn headerText align-self-center"
+          onClick={this.toggleMemberNav}
+        >
+          登入/註冊▼
+        </h4>
+      );
+    }
+  };
+
+  scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // 平滑滾動
+    });
   };
 }
 
