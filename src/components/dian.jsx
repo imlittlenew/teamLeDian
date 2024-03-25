@@ -81,7 +81,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/address";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data
         .map((item) => {
           const distance = this.calculateDistance(
@@ -170,7 +170,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/address_438";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data.map((item) => {
         const distance = this.calculateDistance(
           this.state.userLocation.latitude,
@@ -204,7 +204,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/score_3.0";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data.map((item) => {
         if (this.state.userLocation) {
           const distance = this.calculateDistance(

@@ -5,7 +5,7 @@ import "../css/cart.css";
 import { FaRegTrashAlt, FaPencilAlt } from "react-icons/fa";
 // import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
+import Axios from "axios";
 class productItem extends Component {
   state = { cartData: [] };
   render() {
@@ -67,7 +67,7 @@ class productItem extends Component {
 
   componentDidMount = async () => {
     var url = "http://localhost:8000/cartPay";
-    var result = await axios.get(url);
+    var result = await Axios.get(url);
     var newData = result.data;
     // newState = result.data;
     this.setState({ cartData: newData });

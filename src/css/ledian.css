@@ -115,7 +115,6 @@
 #memberNav h4 {
   cursor: pointer;
 }
-
 #memberHeadshot {
   height: 50px;
   width: 50px;
@@ -221,6 +220,10 @@
   #memberNav {
     top: 50px;
     right: 20px;
+  }
+  #memberHeadshot {
+    height: 30px;
+    width: 30px;
   }
   .footerText {
     font-size: 14px;
