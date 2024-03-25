@@ -40,8 +40,6 @@ class index extends Component {
 
 
     render() { 
-        const randomNumber = Math.floor(Math.random() * 191);
-
         return (<React.Fragment>
             <div id='header'
                 style={{
@@ -126,7 +124,7 @@ class index extends Component {
             </div>
             
             <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto'>
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={0}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -151,7 +149,7 @@ class index extends Component {
                     </Carousel.Item>)
                     })}
                 </Carousel> 
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={randomNumber}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={1}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -176,7 +174,7 @@ class index extends Component {
                     </Carousel.Item>)
                     })}
                 </Carousel> 
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber+1}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={2}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -189,9 +187,9 @@ class index extends Component {
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
                         <h5 className='rouletteBrand m-0'>
-                            {this.state.brandList.map((e)=>{
-                                if(product.brand_id == e.brand_id){
-                                    return e.brand_name
+                            {this.state.brandList.map((bracd)=>{
+                                if(product.brand_id == bracd.brand_id){
+                                    return bracd.brand_name
                                 }else{ return null}
                             })
                         }
