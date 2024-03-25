@@ -115,7 +115,6 @@ class index extends Component {
         const currentLat =  this.state.currentLocation.lat
         const currentLng =  this.state.currentLocation.lng
         const distances  = this.state.distances;
-        const randomNumber = Math.floor(Math.random() * 188);
 
         return (<React.Fragment>
             <div id='header'
@@ -173,7 +172,7 @@ class index extends Component {
                             {/* 附近店鋪 */}
         {currentLat !== null && currentLng !== null ? (
         <>
-        {Object.entries(distances).filter(([branchId, distance]) => distance < 2)
+        {Object.entries(distances).filter(([branchId, distance]) => distance < 1.5)
             .sort((a, b) => a[1] - b[1]).map(([branchId, distance]) => (
                 <div key={branchId} className="col-lg-6 col-xxl-4 my-3" 
                     onClick={()=>{
@@ -296,7 +295,7 @@ class index extends Component {
                 <h3>想不到喝甚麼?來這看看!</h3>
             </div>
             <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto'>
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={0}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -321,7 +320,7 @@ class index extends Component {
                     </Carousel.Item>)
                     })}
                 </Carousel> 
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={randomNumber}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={1}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -346,7 +345,7 @@ class index extends Component {
                     </Carousel.Item>)
                     })}
                 </Carousel> 
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber+1}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={2}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -359,9 +358,9 @@ class index extends Component {
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
                         <h5 className='rouletteBrand m-0'>
-                            {this.state.brandList.map((e)=>{
-                                if(product.brand_id == e.brand_id){
-                                    return e.brand_name
+                            {this.state.brandList.map((bracd)=>{
+                                if(product.brand_id == bracd.brand_id){
+                                    return bracd.brand_name
                                 }else{ return null}
                             })
                         }
