@@ -581,7 +581,7 @@ main div.choose_right p.card-title a {
 }
 
 /* 回到最上方按鈕 */
-button.topbtn > #topbtn {
+#topbtn {
   position: fixed;
   bottom: 20px;
   right: 20px;
