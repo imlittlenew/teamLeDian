@@ -802,7 +802,7 @@ app.post("/changePassword", async function(req, res) {
 });
 
 
-app.get('/orders/:userId', (req, res) => {
+app.get('/profile/orders/:userId', (req, res) => {
   const userId = req.params.userId;
   conn.query('SELECT * FROM orders WHERE user_id = ?', [userId], (error, results) => {
     if (error) {
@@ -815,7 +815,7 @@ app.get('/orders/:userId', (req, res) => {
   });
 });
 
-app.get('/order_details/:orderId', (req, res) => {
+app.get('/profile/order_details/:orderId', (req, res) => {
   const orderId = req.params.orderId;
   conn.query('SELECT * FROM order_details WHERE orders_id = ?', [orderId], (error, results) => {
     if (error) {
@@ -833,43 +833,6 @@ app.get('/order_details/:orderId', (req, res) => {
 });
 
 
-
-// app.get('/branch/:branchId', (req, res) => {
-//   const branchId = req.params.branchId;
-//   conn.query('SELECT * FROM branch WHERE branch_id = ?', [branchId], (error, results) => {
-//     if (error) {
-//       console.error('Error querying database:', error);
-//       res.status(500).send('Internal server error');
-//       return;
-//     }
-//     if (results.length === 0) {
-//       res.status(404).send('Branch not found');
-//     } else {
-//       console.log('branch data:', results);
-//       console.log('branch data:', results);
-//       console.log('branch data:', results);
-//       console.log('branch data:', results);
-//       console.log('branch data:', results);
-//       res.json(results);
-//     }
-//   });
-// });
-
-// app.get('/brand/:brandId', (req, res) => {
-//   const brandId = req.params.brandId;
-//   conn.query('SELECT * FROM brand WHERE brand_id = ?', [brandId], (error, results) => {
-//     if (error) {
-//       console.error('Error querying database:', error);
-//       res.status(500).send('Internal server error');
-//       return;
-//     }
-//     if (results.length === 0) {
-//       res.status(404).send('Brand not found');
-//     } else {
-//       res.json(results);
-//     }
-//   });
-// });
 
 
 

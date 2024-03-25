@@ -341,14 +341,14 @@
     /* padding-left: 30px; */
 }
 
-.modal-content {
+/* .modal-content {
     border-color: #F2AF21 !important;
     border-width: 8px !important;
-}
+} */
 
-.modal-content {
+/* .modal-content {
     border-radius: 36px !important;
-}
+} */
 
 .row.sizetitle {
     flex: auto;
