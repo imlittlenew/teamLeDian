@@ -3,6 +3,14 @@ import "../css/order.css";
 import "bootstrap/dist/js/bootstrap.js";
 import Axios from 'axios';
 
+import "../css/index.css";
+import { HiOutlineShoppingBag } from "react-icons/hi";
+import { PiMedal } from "react-icons/pi";
+import { PiCoins } from "react-icons/pi";
+import { GiCancel } from "react-icons/gi";
+
+
+
 
 class order extends Component {
 
@@ -11,11 +19,11 @@ class order extends Component {
         brandInfo: {},
         productList: [],
         categoriesList: [],
-        productInfo:{},
+        productInfo: {},
 
     }
 
-    
+
     // 元件掛載撈資料
     componentDidMount = async () => {
         var resultStore = await Axios.get(`http://localhost:8000/order/branch/${this.props.match.params.id}`);
@@ -33,30 +41,71 @@ class order extends Component {
         console.log(this.state);
     }
 
-    getProductInfo = ()=>{
-        
+    getProductInfo = () => {
+
     }
+
 
     render() {
         const brandInfo = this.state.brandInfo
         const storeInfo = this.state.storeInfo
         const day = new Date().getDay();
-        const openTime = [storeInfo.Sun_start,storeInfo.Mon_start,storeInfo.Tue_start,storeInfo.Wed_start,storeInfo.Thu_start,storeInfo.Fri_start,storeInfo.Sat_start]
-        const closeTime = [storeInfo.Sun_end,storeInfo.Mon_end,storeInfo.Tue_end,storeInfo.Wed_end,storeInfo.Thu_end,storeInfo.Fri_end,storeInfo.Sat_end]
+        const openTime = [storeInfo.Sun_start, storeInfo.Mon_start, storeInfo.Tue_start, storeInfo.Wed_start, storeInfo.Thu_start, storeInfo.Fri_start, storeInfo.Sat_start]
+        const closeTime = [storeInfo.Sun_end, storeInfo.Mon_end, storeInfo.Tue_end, storeInfo.Wed_end, storeInfo.Thu_end, storeInfo.Fri_end, storeInfo.Sat_end]
 
 
         return (<React.Fragment>
 
 
+            <div id='orderheader'>
+            <div id='header'
+                style={{
+                    boxShadow: '1px 3px 10px #cccccc',
+                    marginBottom: '4px',
+                }} 
+                className='d-flex justify-content-between'>
+                <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
+                <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
+                    <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
+                </div>
+                <div id="pointinfo">
+                    <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2 text-light' /></button>
+                    <h1>集點資訊</h1>
+                    <p>．每消費20元即可累積1點。</p>
+                    <p>．每點可折抵1元消費金額。</p>
+                    <p>．點數可在下次消費時折抵使用。</p>
+                    <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
+                    <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
+                </div>
 
+
+                <div className='d-flex me-2 align-items-center'>
+                    {this.loginCheck()}
+                    <div id='memberNav' className='collapse'>
+                        <div className='p-2'>
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>會員中心</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={this.logoutClick}>登出</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
+            </div>
+                </div>
 
             {/* 電腦版banner */}
             <div className="row computer">
                 <div className="col-12">
-                    <img 
-                    src={(`/img/storebanner/${brandInfo.brand_id}.png`)}
-                    alt="bannerImg"
-                    className="banner">
+                    <img
+                        src={(`/img/storebanner/${brandInfo.brand_id}.png`)}
+                        alt="bannerImg"
+                        className="banner">
                     </img>
                 </div>
             </div>
@@ -64,10 +113,10 @@ class order extends Component {
             {/* 手機版banner */}
             <div className="row phone">
                 <div className="col-12">
-                    <img 
-                    src={(`/img/storebannermin/${brandInfo.brand_id}.png`)} 
-                    alt="bannerImg" 
-                    className="bannermin">
+                    <img
+                        src={(`/img/storebannermin/${brandInfo.brand_id}.png`)}
+                        alt="bannerImg"
+                        className="bannermin">
                     </img>
                 </div>
             </div>
@@ -78,26 +127,29 @@ class order extends Component {
 
                 <div className="col-3 storeBox">
                     <div className="row">
-                        <div className="col-6">
-                            <img 
-                            src={(`/img/logo/${brandInfo.brand_id}.png`)} 
-                            className="storeBoxLogo"
-                            alt='brandLogo'
+                        <div className='col-1'></div>
+                        <div className="col-3">
+                            <img
+                                src={(`/img/logo/${brandInfo.brand_id}.png`)}
+                                className="storeBoxLogo"
+                                alt='brandLogo'
                             >
                             </img>
                         </div>
-                        <div className="col-6">
-                            <img 
-                            src={("/img/icon/buy2.png")} 
-                            alt="buy" 
-                            className="buyjoin d-flex flex-column align-items-center btn-join" 
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModaljoin"
-                            type="button"
+
+                        <div className="col-3">
+                            <img
+                                src={("/img/icon/buy2.png")}
+                                alt="buy"
+                                className="buyjoin d-flex flex-column align-items-cente"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModaljoin"
+                                type="button"
                             // onClick="linkShare"
                             >
                             </img>
                         </div>
+                        <div className='col-3'></div>
                     </div>
                     <div className="row textstore">
                         <div className="col-12 textstore">
@@ -105,7 +157,7 @@ class order extends Component {
                         </div>
                         <div className="col-12 textstore">
                             <p className="storeContent">
-                                營業時間:{openTime[day]=="店休"?"店休":openTime[day]}~{closeTime[day]=="店休"?"店休":closeTime[day]}
+                                營業時間:{openTime[day] == "店休" ? "店休" : openTime[day]}~{closeTime[day] == "店休" ? "店休" : closeTime[day]}
                             </p>
                         </div>
                         <div className="col-12 textstore">
@@ -169,68 +221,74 @@ class order extends Component {
                     {/* 按鈕 */}
                     <div className="container">
                         {/* 第一段 */}
-                        {this.state.categoriesList.map((category)=>{
-                            return(<React.Fragment key={category.category_id}>
+                        {this.state.categoriesList.map((category) => {
+                            return (<React.Fragment key={category.category_id}>
                                 <div className="row">
-                                <h3 className="title1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        className="bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                                        <path
-                                            d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1" />
-                                    </svg>
-                                    {category.category_name}
-                                </h3>
-                            </div>  
-                            <div className="row drink">
-                            {this.state.productList.map((product)=>{
-                                if(product.category_id == category.category_id){
-                                return (
-                                    <div className="col-lg-3 col-md-6 button btn btn-outline-warning" type="button" data-bs-toggle="modal"  key={product.product_id} id={product.product_id}
-                                    data-bs-target="#exampleModal" onClick={()=>{this.boxmenu(product.product_id)}}>  
-                                    <div className="row">
-                                        <div className="col-8 button ">
-                                            <div className="row">
-                                                <h3 className="buttonTitle">{product.product_name}</h3>
-                                                <div className="row text">
-                                                    <div className="col-5">
-                                                        <p className="buttonPrics col">${product.products_price_0?product.products_price_0:product.products_price_1}</p>
-                                                    </div>
-                                                    <div className="col-2"></div>
-                                                    <div className="col-5">
-                                                        {
-                                                            product.choose_size_0 == 1 | product.choose_size_0 == 3| product.choose_size_0 == 4|product.choose_size_1 == 1 | product.choose_size_1 == 3 |product.choose_size_1 == 4
-                                                            |product.choose_size_2 == 1 | product.choose_size_2 == 3| product.choose_size_0 == 4?<img src={("/img/icon/snowflake.png")} className="cold" alt="cold"></img>:null
-                                                        }
-                                                        {
-                                                            product.choose_size_0 == 2 | product.choose_size_0 == 3| product.choose_size_0 == 5|product.choose_size_1 == 2 | product.choose_size_1 == 3 |product.choose_size_1 == 5
-                                                            |product.choose_size_2 == 2 | product.choose_size_2 == 3| product.choose_size_0 == 5?<img src={("/img/icon/hotsale.png")} className="hot" alt="hot"></img>:null
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-4 product">
-                                            <div className="row">
-                                                <div className="col-12">
-                                                    <img src={(`/img/drinksimg/${product.product_img}.png`)} className="productImg"
-                                                        alt="productImg"></img>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <h3 className="title1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                            className="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1" />
+                                        </svg>
+                                        {category.category_name}
+                                    </h3>
+                                    <div className="link-top"></div>
                                 </div>
-                              )}
-                         })} </div></React.Fragment>
+                                <div className="row drink">
+                                    {this.state.productList.map((product) => {
+                                        if (product.category_id == category.category_id) {
+                                            return (
+                                                <div className="col-lg-3 drink col-md-6 drink button btn btn-outline-warning" type="button" data-bs-toggle="modal" key={product.product_id} id={product.product_id}
+                                                    data-bs-target="#exampleModal" onClick={() => { this.boxmenu(product.product_id) }}>
+                                                    <div className="row">
+                                                        <div className="col-8 button ">
+                                                            <div className="row">
+                                                                <h3 className="buttonTitle">{product.product_name}</h3>
+                                                                <div className="row text">
+                                                                    <div className="col-5">
+                                                                        <p className="buttonPrics col">${product.products_price_0 ? product.products_price_0 : product.products_price_1}</p>
+                                                                    </div>
+                                                                    <div className="col-2"></div>
+                                                                    <div className="col-5">
+                                                                        {
+                                                                            product.choose_size_0 == 1 | product.choose_size_0 == 3 | product.choose_size_0 == 4 | product.choose_size_1 == 1 | product.choose_size_1 == 3 | product.choose_size_1 == 4
+                                                                                | product.choose_size_2 == 1 | product.choose_size_2 == 3 | product.choose_size_0 == 4 ? <img src={("/img/icon/snowflake.png")} className="cold" alt="cold"></img> : null
+                                                                        }
+                                                                        {
+                                                                            product.choose_size_0 == 2 | product.choose_size_0 == 3 | product.choose_size_0 == 5 | product.choose_size_1 == 2 | product.choose_size_1 == 3 | product.choose_size_1 == 5
+                                                                                | product.choose_size_2 == 2 | product.choose_size_2 == 3 | product.choose_size_0 == 5 ? <img src={("/img/icon/hotsale.png")} className="hot" alt="hot"></img> : null
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-4 product">
+                                                            <div className="row">
+                                                                <div className="col-12">
+                                                                    <img src={(`/img/drinksimg/${product.product_img}.png`)} className="productImg"
+                                                                        alt="productImg"></img>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+
+                                    })} </div></React.Fragment>
+
                             )
 
                         })}
-
-
-
-                        <div className="link-top"></div>
                     </div>
                 </div>
             </div>
+
+
+
+
+
+
 
             {/* 對話盒Modal */}
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -453,14 +511,143 @@ class order extends Component {
                     </div>
                 </div>
             </div>
+
+
+
+            {/* footer */}
+            <div id="footer" className='d-flex'>
+                <div id="footerLogo" className='col-3'>
+                    <img id='"footerImg"' className='img-fluid' src={("/img/index/LeDian_LOGO-04.png")} alt="footerLogo" />
+                </div>
+                <div className='col-6 d-flex align-items-center'>
+                    <div id='footerlink' className='col-2 d-flex flex-column'>
+                        <div className='d-flex'>
+                            <div><img className='img-fluid' src={("/img/index/facebook.png")} alt="fackbook" /></div>
+                            <div><img className='img-fluid' src={("/img/index/instagram.png")} alt="instagram" /></div>
+                            <div><img className='img-fluid' src={("/img/index/line.png")} alt="line" /></div>
+                        </div>
+                        <p className='text-white text-nowrap footerText'>信箱: ledian.tw@gmail.com</p>
+                    </div>
+                </div>
+                <div id='footerInfo' className='col-3 d-flex row align-items-center justify-content-center'>
+                    <div className='col-3 col-sm-6 d-flex flex-column align-items-center'>
+                        <p className='footerText m-0 py-1 text-nowrap text-white'>意見回饋</p>
+                        <p className='footerText m-0 py-1 text-nowrap text-white'>常見問題</p>
+                    </div>
+                    <div className='col-4 col-sm-6 d-flex flex-column align-items-start'>
+                        <p className='footerText m-0 py-1 text-nowrap text-white'>使用者條款</p>
+                        <p className='footerText m-0 py-1 text-nowrap text-white'>隱私權條款</p>
+                        <p className='footerText m-0 py-1 text-nowrap text-white'>信用卡條款</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            {/* 購物車吐司訊息 */}
+            {/* <button type="button" className="btn btn-primary" id="liveToastBtn">Show live toast</button>
+
+            <div className="position-fixed bottom-0 end-0 p-3">
+                <div id="liveToast" className="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div className="toast-header">
+                        <img src="..." className="rounded me-2" alt="...">
+                            <strong className="me-auto">Bootstrap</strong>
+                            <small>11 mins ago</small>
+                            <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </img>
+                    </div>
+                    <div className="toast-body">
+                        Hello, world! This is a toast message.
+                    </div>
+                </div>
+            </div> */}
+
+
         </React.Fragment >
         ); // end of redner()
+
     }
 
 
     boxmenu = function (e) {
         console.log(e)
     }
+
+
+    // toastEl = function() {
+    //     var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    //     var toastList = toastElList.map(function (toastEl) {
+    //       return new bootstrap.Toast(toastEl, option)
+    //     })
+    // }
+
+
+    pointinfoShow = (event) => {
+        document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
+        document.getElementById("pointinfo").style.left = event.clientX - 150 + "px";
+    } 
+
+    pointinfoHide = (event) => {
+        document.getElementById("pointinfo").style.top = "-500px";
+        event.cancelBubble = true;
+    }
+
+    toggleMemberNav = () => {
+        const userdata = localStorage.getItem('userdata');
+        if(userdata){
+            document.getElementById('memberNav').classList.toggle('collapse');
+        }else{
+            const path = this.props.location.pathname;
+            sessionStorage.setItem('redirect',path) ;
+            window.location = "/login";
+        }
+      }
+    toggleMenuNav = () => {
+        document.getElementById('menuNav').classList.toggle('menuNav');
+    }
+    logoutClick = async () => {
+        // 清除localStorage
+        localStorage.removeItem("userdata");
+        const userdata = localStorage.getItem("userdata");
+        console.log("現在的:", userdata);
+        try {
+            // 告訴後台使用者要登出
+            await Axios.post('http://localhost:8000/logout');
+        
+            
+            //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+        } catch (error) {
+            console.error("登出時出錯:", error);
+        }
+        
+        document.getElementById('memberNav').classList.add('collapse');
+        this.setState({})
+        window.location = "/index"
+    }
+    loginCheck = () => {
+        const userData = JSON.parse(localStorage.getItem('userdata'));
+        if(userData){
+            const userImg = userData.user_img?userData.user_img:'LeDian.png';
+            return (
+                <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
+                    <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+                    會員專區▼</h4>
+                )
+        }else {
+            return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+        }              
+    }
+    cartMenuClick = () => {
+        const userData = JSON.parse(localStorage.getItem('userdata'));
+        if(userData){
+            const userId = userData.user_id;
+            window.location = `/cartlist/${userId}`;
+        }else {
+            window.location = "/login";
+        }              
+
+    }
+
 
 
 }

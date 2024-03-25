@@ -1,32 +1,25 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../css/headerAndFooter.css";
 import "../css/cart.css";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-import Axios from "axios";
+import axios from "axios";
 class cartList extends Component {
-  state = {
-    dbData: [
-      {
-        cart_id: 1,
-        user_id: 1,
-        brand_id: 1,
-        brand_name: "迷客夏",
-        banch_id: 1,
-        branch_name: "臺中世貿店",
-        branch_address: "台中市大里區成功路462號",
-        total_item: 4,
-        total_item_price: 145,
-      },
-    ],
-  };
-  delete_btn = (e) => {
+  state = { dbData: [{ brand_id: "1" }] };
+
+  delete_btn = async (id, i, e) => {
     e.preventDefault();
-    alert("delete");
+    let newState = { ...this.state };
+    console.log(newState.dbData.splice(i, 1));
+    this.setState(newState);
+    let url = "http://localhost:8000/cartdelete/" + id;
+    await axios.delete(url);
   };
+
   render() {
     return (
       <React.Fragment>
@@ -39,7 +32,7 @@ class cartList extends Component {
                 <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
                 <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
                     <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
                 </div>
@@ -65,7 +58,7 @@ class cartList extends Component {
                 </div>
             </div>
             <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
             </div>
@@ -83,7 +76,7 @@ class cartList extends Component {
                   >
                     <a
                       className="d-md-block p-4 a-link"
-                      href={`./cartPay/${cart.cart_id}`}
+                      href={`/cartPay/${cart.cart_id}`}
                     >
                       <div className="row text-end">
                         <p className="col text-des-small">02/23 20:30</p>
@@ -91,7 +84,7 @@ class cartList extends Component {
                       <div className="row d-flex d-flex align-items-stretch">
                         <div className="col-auto col-3-mb mb-3 mb-md-0 mx-auto">
                           <img
-                            src={(`img/logo/${cart.brand_id}.png`)}
+                            src={`/img/logo/${cart.brand_id}.png`}
                             alt="log"
                             className="logo"
                           />
@@ -113,7 +106,9 @@ class cartList extends Component {
                               <div className="text-center">
                                 <div className="btn btn-pay">結帳</div>
                                 <div
-                                  onClick={this.delete_btn}
+                                  onClick={(e) => {
+                                    this.delete_btn(cart.cart_id, i, e);
+                                  }}
                                   className="btn-garbage ps-2 mt-3"
                                 >
                                   <FaRegTrashAlt className="trash" />
@@ -127,87 +122,6 @@ class cartList extends Component {
                   </div>
                 );
               })}
-
-              {/* <div className="mb-5 mx-auto list-item row d-flex align-items-stretch">
-                <a className="d-md-block p-4 a-link" href="./payStep.html">
-                  <div className="row text-end">
-                    <p className="col text-des-small">02/23 20:30</p>
-                  </div>
-                  <div className="row d-flex d-flex align-items-stretch">
-                    <div className="col-auto col-3-mb mb-3 mb-md-0 mx-auto">
-                      <img
-                        src={("img/img/logo/4.png")}
-                        alt="log"
-                        className="logo"
-                      />
-                    </div>
-
-                    <div className="col-12 col-md-5 mb-md-0 text-center text-md-start d-flex flex-column justify-content-around">
-                      <h2 className="text-title">龜記茗品 (大里成功店)</h2>
-                      <p className="text-des-small d-none d-md-block">
-                        台中市大里區成功路462號
-                      </p>
-                    </div>
-                    <div className="col-12 col-md mb-3 mb-md-0">
-                      <div className="row d-flex flex-column mt-3">
-                        <div className="col d-flex justify-content-around">
-                          <p className="text-title">5項</p>
-                          <p className="text-title">$302</p>
-                          <div className="text-center">
-                            <div className="btn btn-pay">結帳</div>
-                            <div
-                              onClick={this.delete_btn}
-                              className="btn-garbage ps-2 mt-3"
-                            >
-                              <FaRegTrashAlt className="trash" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div className="mb-5 mx-auto list-item row d-flex align-items-stretch">
-                <a className="d-md-block p-4 a-link" href="./payStep.html">
-                  <div className="row text-end">
-                    <p className="col text-des-small">02/23 20:30</p>
-                  </div>
-                  <div className="row d-flex d-flex align-items-stretch">
-                    <div className="col-auto col-3-mb mb-3 mb-md-0 mx-auto">
-                      <img
-                        src={("img/img/logo/4.png")}
-                        alt="log"
-                        className="logo"
-                      />
-                    </div>
-
-                    <div className="col-12 col-md-5 mb-md-0 text-center text-md-start d-flex flex-column justify-content-around">
-                      <h2 className="text-title">龜記茗品 (大里成功店)</h2>
-                      <p className="text-des-small d-none d-md-block">
-                        台中市大里區成功路462號
-                      </p>
-                    </div>
-                    <div className="col-12 col-md mb-3 mb-md-0">
-                      <div className="row d-flex flex-column mt-3">
-                        <div className="col d-flex justify-content-around">
-                          <p className="text-title">5項</p>
-                          <p className="text-title">$302</p>
-                          <div className="text-center">
-                            <div className="btn btn-pay">結帳</div>
-                            <div
-                              onClick={this.delete_btn}
-                              className="btn-garbage ps-2 mt-3"
-                            >
-                              <FaRegTrashAlt className="trash" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div> */}
             </div>
           </div>
         </div>
@@ -216,7 +130,7 @@ class cartList extends Component {
             <img
               id='"footerImg"'
               className="img-fluid"
-              src={("img/img/index/LeDian_LOGO-04.png")}
+              src={"/img/index/LeDian_LOGO-04.png"}
               alt="footerLogo"
             />
           </div>
@@ -226,21 +140,21 @@ class cartList extends Component {
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/img/index/facebook.png")}
+                    src={"/img/index/facebook.png"}
                     alt="fackbook"
                   />
                 </div>
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/img/index/instagram.png")}
+                    src={"/img/index/instagram.png"}
                     alt="instagram"
                   />
                 </div>
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/img/index/line.png")}
+                    src={"/img/index/line.png"}
                     alt="line"
                   />
                 </div>
@@ -279,27 +193,17 @@ class cartList extends Component {
     );
   }
 
-  componentDidMount = async () => {
-    let newState = { ...this.state };
-    let result;
-    result = await Axios.get("http://localhost:8000/cartlist");
-
-    newState.dbData = result.data;
-    this.setState(newState);
-    console.log(newState);
-  };
-
   pointinfoShow = (event) => {
     document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
     document.getElementById("pointinfo").style.left = event.clientX - 150 + "px";
-  } 
+} 
 
-  pointinfoHide = (event) => {
-      document.getElementById("pointinfo").style.top = "-500px";
-      event.cancelBubble = true;
-  }
+pointinfoHide = (event) => {
+    document.getElementById("pointinfo").style.top = "-500px";
+    event.cancelBubble = true;
+}
 
-  toggleMemberNav = () => {
+toggleMemberNav = () => {
     const userdata = localStorage.getItem('userdata');
     if(userdata){
         document.getElementById('memberNav').classList.toggle('collapse');
@@ -308,44 +212,63 @@ class cartList extends Component {
         sessionStorage.setItem('redirect',path) ;
         window.location = "/login";
     }
-}
-  toggleMenuNav = () => {
-      document.getElementById('menuNav').classList.toggle('menuNav');
   }
-  logoutClick = async () => {
-      // 清除localStorage
-      localStorage.removeItem("userdata");
-      const userdata = localStorage.getItem("userdata");
-      console.log("現在的:", userdata);
-      try {
+toggleMenuNav = () => {
+    document.getElementById('menuNav').classList.toggle('menuNav');
+}
+logoutClick = async () => {
+    // 清除localStorage
+    localStorage.removeItem("userdata");
+    const userdata = localStorage.getItem("userdata");
+    console.log("現在的:", userdata);
+    try {
         // 告訴後台使用者要登出
-        await Axios.post('http://localhost:8000/logout');
+        await axios.post('http://localhost:8000/logout');
     
         
         //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
-      } catch (error) {
+    } catch (error) {
         console.error("登出時出錯:", error);
-      }
+    }
     
-      document.getElementById('memberNav').classList.add('collapse');
-      this.setState({})
-      window.location = "/index"
-  }
-  loginCheck = () => {
-      const userData = JSON.parse(localStorage.getItem('userdata'));
-      if(userData){
-          const userImg = userData.user_img?userData.user_img:'LeDian.png';
-          return (
-              <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                  <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
-                  會員專區▼</h4>
-              )
-      }else {
-          return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
-      }              
-  }
+    document.getElementById('memberNav').classList.add('collapse');
+    this.setState({})
+    window.location = "/index"
+}
+loginCheck = () => {
+    const userData = JSON.parse(localStorage.getItem('userdata'));
+    if(userData){
+        const userImg = userData.user_img?userData.user_img:'LeDian.png';
+        return (
+            <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
+                <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+                會員專區▼</h4>
+            )
+    }else {
+        return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+    }              
+}
+cartMenuClick = () => {
+    const userData = JSON.parse(localStorage.getItem('userdata'));
+    if(userData){
+        const userId = userData.user_id;
+        window.location = `/cartlist/${userId}`;
+    }else {
+        window.location = "/login";
+    }              
+
+}
 
 
+  componentDidMount = async () => {
+    let newState = { ...this.state };
+    let result;
+    result = await axios.get("http://localhost:8000/cartlist/1");
+
+    newState.dbData = result.data;
+    this.setState(newState);
+    console.log(newState);
+  };
 }
 
 export default cartList;

@@ -52,7 +52,7 @@ class index extends Component {
                 <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
                 <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
                     <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
                 </div>
@@ -78,10 +78,11 @@ class index extends Component {
                 </div>
             </div>
             <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
             </div>
+
 
 
 
@@ -242,7 +243,6 @@ class index extends Component {
         event.cancelBubble = true;
     }
 
-
     toggleMemberNav = () => {
         const userdata = localStorage.getItem('userdata');
         if(userdata){
@@ -288,9 +288,17 @@ class index extends Component {
             return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
         }              
     }
-    
-    
-    
+    cartMenuClick = () => {
+        const userData = JSON.parse(localStorage.getItem('userdata'));
+        if(userData){
+            const userId = userData.user_id;
+            window.location = `/cartlist/${userId}`;
+        }else {
+            window.location = "/login";
+        }              
+
+    }
+
 
     }
  
