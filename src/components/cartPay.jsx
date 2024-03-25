@@ -15,7 +15,7 @@ import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 // import ProductItem from "./productItem";
 import DateTimePicker from "./dateTimePicker";
-import axios from "axios";
+import Axios from "axios";
 
 class cartPay extends Component {
   constructor(props) {
@@ -319,7 +319,7 @@ class cartPay extends Component {
         "content-type": "application/json",
       },
     };
-    await axios.post(
+    await Axios.post(
       "http://localhost:8000/cartPay",
       JSON.stringify(serverData),
       config
@@ -344,7 +344,7 @@ class cartPay extends Component {
 
   product_edit = async () => {
     let newSate = { ...this.state };
-    let result = await axios.get("http://localhost:8000/test");
+    let result = await Axios.get("http://localhost:8000/test");
     newSate.productEdit = result.data;
     console.log(newSate);
     console.log(newSate.productEdit[3].ingredient);
@@ -1828,7 +1828,7 @@ class cartPay extends Component {
   componentDidMount = async () => {
     console.log(this.props.match.params.id);
     let newState = { ...this.state };
-    let result = await axios.get(
+    let result = await Axios.get(
       `http://localhost:8000/cartPay/${this.props.match.params.id}`
     );
 

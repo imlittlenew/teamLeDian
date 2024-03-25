@@ -14,7 +14,7 @@ class Login extends Component {
     password: "",
     password2: "",
     showToast: false,
-    toastMessage: ''
+    toastMessage: '',
   };
     constructor(props) {
         super(props);
@@ -54,7 +54,6 @@ class Login extends Component {
   render() {
     return (
         <>
-        test123
         <Helmet>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -94,6 +93,8 @@ class Login extends Component {
                     </div>
                 </div>
             </div>
+
+            
             <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
@@ -103,7 +104,7 @@ class Login extends Component {
         </div>
 
 
-      <Toast show={this.state.showToast} onClose={this.toggleToast} className="custom-toast position-fixed  p-3">
+        <Toast show={this.state.showToast} onClose={this.toggleToast} className="custom-toast position-fixed  p-3">
         <div class="d-flex">
           <Toast.Body>{this.state.toastMessage}</Toast.Body>
           <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -166,7 +167,7 @@ class Login extends Component {
           />
         </div>
 
-        <main id='loginmain' className="rounded-5">
+        <main className="rounded-5 loginmain">
           <div className="login-box">
 
 
@@ -466,7 +467,11 @@ class Login extends Component {
       window.location = '/'; 
       this.setState({ showToast: true, toastMessage: "登入成功" });
     } catch (error) {
-      console.error("錯誤:", error);
+      if (error.response && (error.response.status === 400 || error.response.status === 404 || error.response.status === 401)) {
+        this.toggleToast(error.response.data.error);
+      } else {
+        this.setState({ showToast: true, toastMessage: "內部伺服器錯誤" });
+      }
     }
   }
   
@@ -480,13 +485,17 @@ class Login extends Component {
 
     try {
       const response = await Axios.post('http://localhost:8000/forgotPassword', dataToServer);   
-      console.log("來自後端的回應:", response.data);
+      this.setState({ showToast: true, toastMessage: "發送成功", closeModal: true });
+      
     } catch (error) {
-      console.error("錯誤:", error);
+      if (error.response.status === 404) {
+        this.toggleToast(error.response.data.error);
+
+    } else {
+        this.setState({ showToast: true, toastMessage: "發送失敗" });
+    }
     }
 }
-
-
 
 }
 

@@ -9,10 +9,17 @@
   background-color: #eee;
   font-family: FakePearl-Regular, sans-serif;
 }
-
 #userimg {
-  width: 120%;
+  width: 100px;
+  height: 70px;
 }
+
+
+
+
+
+
+
 
 .tab-content {
   background-color: #fff;
@@ -23,22 +30,53 @@
   width: 20%;
 }
 
-.nav-link {
+#leftnav .nav-link {
   border-left: 5px solid transparent;
   padding-left: 15px;
   color: #000;
   font-weight: bold;
 }
-.nav-link:hover {
+#leftnav .nav-link:hover {
   color: #000;
 }
 
-.nav-link.active,
-.nav-link:focus,
-.nav-link:active {
+#leftnav .nav-link.active,
+#leftnav .nav-link:focus,
+#leftnav .nav-link:active {
   border-left-color: #003c96;
   color: #000;
 }
+
+
+#col10nav.nav.fs-5 {
+  justify-content: center; /* 文字水平居中 */
+  list-style-type: none;
+  padding: 0;
+  color: #000;
+  font-weight: bold;
+}
+
+#col10nav.nav.fs-5 .nav-item {
+  display: flex; /* 让每个导航项成为一个 flex 容器 */
+}
+
+#col10nav.nav.fs-5 .nav-link {
+  text-decoration: none;
+  color: black; /* 未选中项目的文字颜色 */
+  text-align: center; /* 文字水平居中 */
+}
+
+/* 选中的导航项目样式 */
+#col10nav.nav.fs-5 .nav-link.active {
+  border-bottom: 5px solid #003c96; /* 底部边框样式和颜色 */
+}
+
+/* 未选中的导航项目样式 */
+#col10nav.nav.fs-5 .nav-link:not(.active) {
+  border-bottom: none; /* 删除未选中项目的底部边框 */
+}
+
+
 
 @media (max-width: 1100px) {
   #leftnav {
@@ -46,7 +84,7 @@
   }
   #userimg {
     width: 150%;
-    margin-top: 8px;
+    margin-top: 8px !important
   }
   .username {
     font-size: 14px;
@@ -60,9 +98,9 @@
   }
 
 }
-@media (max-width: 930px) {
+@media (max-width: 1050px) {
   .profilecol2 {
-    display: none;
+    display: none !important
   }
 
   .profilecol10 {
@@ -198,7 +236,7 @@
   border-color: #f3b021;
   color: #f3b021;
 }
-.profilecard {
+.card {
   border: #f3b021 1px solid;
 }
 #LeDianLogoModal {
@@ -232,7 +270,7 @@
   color: #ddd;
 }
 .rating-group:hover .rating_label .star {
-  color: orange;
+  color: orange
 }
 .rating_input:hover ~ .rating_label .star {
   color: #ddd;
@@ -256,3 +294,8 @@ textarea {
 #profileheader{
   background-color: #fff;
 }
+.profiledate .react-datepicker-wrapper{
+  width: 100%;
+
+}
+

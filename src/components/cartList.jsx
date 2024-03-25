@@ -6,7 +6,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-import axios from "axios";
+import Axios from "axios";
 class cartList extends Component {
   state = {
     dbData: [
@@ -282,7 +282,7 @@ class cartList extends Component {
   componentDidMount = async () => {
     let newState = { ...this.state };
     let result;
-    result = await axios.get("http://localhost:8000/cartlist");
+    result = await Axios.get("http://localhost:8000/cartlist");
 
     newState.dbData = result.data;
     this.setState(newState);

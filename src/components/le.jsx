@@ -4,7 +4,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-import axios from "axios";
+import Axios from "axios";
 
 class le extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class le extends Component {
       fetch("http://localhost:8000/all/products").then((response) =>
         response.json()
       ),
-      axios
+      Axios
         .get("http://localhost:8000/all/brand")
         .then((response) => response.data),
     ])

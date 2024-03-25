@@ -168,9 +168,9 @@ hr.hr-line {
   font-weight: 600;
 }
 
-.star {
+/* .star {
   color: red;
-}
+} */
 
 .btn-edit,
 .btn-delete {
@@ -516,9 +516,9 @@ input[type="radio"].input_box:checked + label::before {
 .star-danger {
   color: #960007;
 }
-.star {
+/* .star {
   color: red;
-}
+} */
 .complete-order {
   max-width: 400px;
   /* margin: 0 auto; */

@@ -5,7 +5,7 @@ import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import GradeIcon from "@mui/icons-material/Grade";
-import axios from "axios";
+import Axios from "axios";
 
 class dian extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class dian extends Component {
 
   fetchBrandData = async () => {
     try {
-      var brand = await axios.get("http://localhost:8000/all/brand");
+      var brand = await Axios.get("http://localhost:8000/all/brand");
 
       this.setState({
         brand: brand.data,
@@ -77,7 +77,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/address";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data
         .map((item) => {
           const distance = this.calculateDistance(
@@ -166,7 +166,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/address_438";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data.map((item) => {
         const distance = this.calculateDistance(
           this.state.userLocation.latitude,
@@ -200,7 +200,7 @@ class dian extends Component {
         url = "http://localhost:8000/dian/score_3.0";
       }
 
-      const response = await axios.get(url);
+      const response = await Axios.get(url);
       const contentWithDistance = response.data.map((item) => {
         if (this.state.userLocation) {
           const distance = this.calculateDistance(

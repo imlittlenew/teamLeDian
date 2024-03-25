@@ -48,6 +48,8 @@ class index extends Component {
                     </div>
                 </div>
             </div>
+
+            
             <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
