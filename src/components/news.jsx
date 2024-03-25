@@ -134,7 +134,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto mb-3"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={`img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
@@ -159,7 +159,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={`img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption className='p-0 my-1' > 
@@ -184,11 +184,11 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto mb-3"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={`img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
-                        <h5 className='rouletteBrand text-center'>
+                        <h5 className='rouletteBrand m-0'>
                             {this.state.brandList.map((e)=>{
                                 if(product.brand_id == e.brand_id){
                                     return e.brand_name

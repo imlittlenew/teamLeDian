@@ -143,6 +143,26 @@
     color: #F3B021;
 }
 
+/* 滾動條 start */
+#nearbyBranch{
+    height: 2000px;
+    overflow: scroll;
+    -ms-overflow-style: none;
+}
+#nearbyBranch::-webkit-scrollbar {
+    display: none;  
+}
+
+html {
+    overflow: -moz-hidden-unscrollable;
+    height: 100%;
+}
+
+body {
+	height: 100%;
+	overflow: auto;
+}
+/* 滾動條 end */
 
 
 /* footer */

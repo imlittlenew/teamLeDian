@@ -1485,3 +1485,85 @@ app.delete("/itemdelete/:itemid", function (req, res) {
 //       res.end();
 //     }
 //   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 訂購頁面連資料庫
+app.get("/order/branch/:id", function (req, res) {
+  // res.send('ok');
+  conn.query(
+    "SELECT * FROM branch WHERE branch_id=?",
+    [req.params.id],
+    function (err, rows) {
+      res.send(JSON.stringify(rows));
+    }
+  );
+});
+
+
+app.get("/order/brand/:id", function (req, res) {
+  // res.send('ok');
+  conn.query(
+    "SELECT * FROM brand WHERE brand_id=?",
+    [req.params.id],
+    function (err, rows) {
+      res.send(JSON.stringify(rows));
+    }
+  );
+});
+
+
+app.get("/order/product/:id", function (req, res) {
+  // res.send('ok');
+  conn.query(
+    "SELECT * FROM products WHERE brand_id=?",
+    [req.params.id],
+    function (err, rows) {
+      res.send(JSON.stringify(rows));
+    }
+  );
+});
+app.get("/product/:id", function (req, res) {
+  // res.send('ok');
+  conn.query(
+    "SELECT * FROM products WHERE product_id=?",
+    [req.params.id],
+    function (err, rows) {
+      res.send(JSON.stringify(rows));
+    }
+  );
+});
+
+
+app.get("/categories/:id", function (req, res) {
+  // res.send('ok');
+  conn.query(
+    "SELECT * FROM categories WHERE brand_id=?",
+    [req.params.id],
+    function (err, rows) {
+      res.send(JSON.stringify(rows));
+    }
+  );
+});
+// 訂購頁面拿取尺寸資料
+// app.get("/index/order/9",function(req,res){
+//     // res.send('ok');
+//     conn.query("select*from brand,sizes where brand.brand_id = sizes.brand_id", [ ],
+//         function(err,rows) {
+//             res.send(JSON.stringify(rows));
+//         }
+//     )
+// })
+
+
+

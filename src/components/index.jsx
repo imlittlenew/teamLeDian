@@ -115,7 +115,7 @@ class index extends Component {
         const currentLat =  this.state.currentLocation.lat
         const currentLng =  this.state.currentLocation.lng
         const distances  = this.state.distances;
-        const randomNumber = Math.floor(Math.random() * 191);
+        const randomNumber = Math.floor(Math.random() * 188);
 
         return (<React.Fragment>
             <div id='header'
@@ -169,7 +169,7 @@ class index extends Component {
             </div>
             <div className="container mt-2 mb-3">
                 <div className="row d-flex justify-content-center">
-                    <div className="choose_right row">
+                    <div className="choose_right row" id='nearbyBranch'>
                             {/* 附近店鋪 */}
         {currentLat !== null && currentLng !== null ? (
         <>
@@ -358,7 +358,7 @@ class index extends Component {
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
-                        <h5 className='rouletteBrand text-center'>
+                        <h5 className='rouletteBrand m-0'>
                             {this.state.brandList.map((e)=>{
                                 if(product.brand_id == e.brand_id){
                                     return e.brand_name

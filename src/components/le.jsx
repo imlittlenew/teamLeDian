@@ -188,7 +188,6 @@ class le extends Component {
               ></img>
             </div>
           </div>
-          <h2 className="text-center mainColor m-2">附近店家</h2>
         </div>
 
         <main>
