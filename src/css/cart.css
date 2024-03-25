@@ -80,6 +80,7 @@ hr.hr-line {
   background-color: #000000;
   border: 1;
   opacity: 1;
+  width: 100%;
 }
 
 /*-----------------------------------------------------*/
@@ -168,10 +169,6 @@ hr.hr-line {
   font-weight: 600;
 }
 
-.star {
-  color: red;
-}
-
 .btn-edit,
 .btn-delete {
   background-color: transparent;
@@ -197,14 +194,14 @@ hr.hr-line {
   /* padding-left: 30px; */
 }
 
-.modal-content {
+/* .modal-content {
   border-color: #f2af21 !important;
   border-width: 8px !important;
 }
 
 .modal-content {
   border-radius: 36px !important;
-}
+} */
 
 .row.sizetitle {
   flex: auto;
@@ -516,7 +513,7 @@ input[type="radio"].input_box:checked + label::before {
 .star-danger {
   color: #960007;
 }
-.star {
+.star-must {
   color: red;
 }
 .complete-order {

@@ -5,6 +5,11 @@
 
 
 
+/* header */
+#orderheader {
+    margin-bottom: -5px;
+    box-shadow:-2px 6px 7px 0px rgba(0, 0, 0, 0.3);
+}
 
 
 /* 電腦banner */
@@ -47,14 +52,14 @@
     color: #333;
 }
 
-.btn-join {
+/* .btn-join {
     background-color: #003c95;
-    /* border-radius: 50%; */
+    border-radius: 50%;
     color: #ffff;
     border: none;
-    /* padding: 5px 15px; */
+    padding: 5px 15px;
     font-size: 18pt;
-}
+} */
 
 .icon-join {
     max-width: 30px;
@@ -141,14 +146,15 @@
 @media (min-width: 991px) {
     .col-3.storeBox {
         position: absolute;
-        top: 70px;
+        top: 148px;
         left: 115px;
-        width: 320px;
-        height: 235px;
+        width: 350px;
+        height: 250px;
         z-index: 50;
         background-color: rgba(232, 232, 232, 0.6);
         border-radius: 15px;
         padding: 10px;
+        padding-top: 22px;
         box-shadow: -2px 6px 7px 0px rgba(0, 0, 0, 0.3);
     }
 
@@ -173,6 +179,7 @@
 
 .title1 {
     font-family: "FakePearl-SemiBold";
+    margin-top: 30px;
 }
 
 .boxMenu {
@@ -180,10 +187,12 @@
 }
 
 .link-top {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* margin-left: 20px;
+    margin-right: 20px; */
     height: 1px;
-    border-top: solid #afafaf 1px;
+    border-top: solid #003C95 1px;
 }
 
 .storeBoxLogo {
@@ -191,13 +200,13 @@
     border-radius: 100px;
 }
 
-/* .col-6 {
+.col-6.storeBoxLogo{
     display: flex;
     justify-content: center;
     /* 在水平方向上置中 */
-    /* align-items: center; */
+    align-items: center;
     /* 在垂直方向上置中 */
-/* } */ */
+}
 
 
 /* 商店資訊 */
@@ -210,8 +219,6 @@
     margin: -3px;
     padding-left: 50px;
 }
-
-
 
 
 
@@ -240,32 +247,38 @@
 }
 
 
-.col-lg-3.col-md-6.button {
+.col-lg-3.drink.col-md-6.button {
     background-color: #EEEEEE;
     /* border: none; */
     /* position:absolute; */
     border-radius: 14px;
     display: flex;
-    margin: 5px;
-    padding-left: 25px;
+    margin: 6px;
+    padding-left: 15px;
     padding-top: 10px;
 }
 
-/* .col-lg-3 {
-    max-width:24% !important;
+
+/* 手機版調整菜單 */
+@media (min-width:991px) {
+    .col-lg-3.drink {
+        max-width:24% !important;
+    }
+    
 }
 
+
 @media (max-width: 992px) {
-    .col-md-6 {
+    .col-md-6.drink {
         flex: 1 1 100%;
         /* 每個列佔滿整行 */
-        /* max-width: 100%; */
-    /* } */
-/* } */ */
+        max-width: 100%;
+    }
+}
 
 .col-4.product {
     padding-right:17px!important;
-    padding-left:14px!important;
+    /* padding-left:14px!important; */
     margin-left: -21px!important;
 }
 
@@ -275,9 +288,10 @@
 
 .buttonTitle {
     font-family: "jf-openhuninn-2.0";
-    font-size: 14pt;
+    font-size: 15pt;
     white-space: nowrap;
-    margin: auto;
+    text-align: left;
+    /* margin-left: 10px; */
 }
 
 .productImg {
@@ -298,12 +312,12 @@
     font-size: 14pt;
 }
 
-/* .col-sm-9.button {
+.col-sm-9.button {
     padding: 15px;
-} */
+}
 
 .row.text {
-    padding-top: 15px;
+    padding-top: 24px;
 }
 
 
@@ -341,14 +355,14 @@
     /* padding-left: 30px; */
 }
 
-.modal-content {
+/* .modal-content {
     border-color: #F2AF21 !important;
     border-width: 8px !important;
-}
+} */
 
-.modal-content {
+/* .modal-content {
     border-radius: 36px !important;
-}
+} */
 
 .row.sizetitle {
     flex: auto;
@@ -364,19 +378,19 @@
 
 
 /* 核取方塊樣式調整 */
-.form-check-input:checked {
+.form-check-input.checkInput:checked {
     background-color: #F2AF21 !important;
     border-color: #F2AF21 !important;
 }
 
-.form-check-input[type=radio] {
-    border-color: #003C95;
+.form-check-input.checkInput[type=radio] {
+    border-color: #F2AF21 !important;
     border-width: 1px;
 }
 
-/* .form-check .form-check-input {
+.form-check .form-check-input.checkInput {
     margin-left: 0px
-} */
+}
 
 .col-md-7.modalRight {
     font-family: "jf-openhuninn-2.0";
@@ -499,6 +513,10 @@ svg {
 /* 配料按鈕樣式 */
 .form-check-input[type=checkbox] {
     border-radius: 50% ;
-    border-color:#003C95;
-    border-width:1px;
+    /* border-color:#003C95;
+    border-width:1px; */
+}
+
+.position-fixed.bottom-0.end-0.p-3 {
+    z-index: 5;
 }

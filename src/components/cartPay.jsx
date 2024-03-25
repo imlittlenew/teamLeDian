@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
-import "../css/index.css";
+import "../css/headerAndFooter.css";
 import "../css/cart.css";
 import { FaRegTrashAlt, FaPencilAlt } from "react-icons/fa";
 // import DatePicker from "react-datepicker";
@@ -13,7 +13,6 @@ import { HiOutlineShoppingBag } from "react-icons/hi";
 import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
-// import ProductItem from "./productItem";
 import DateTimePicker from "./dateTimePicker";
 import axios from "axios";
 
@@ -37,45 +36,72 @@ class cartPay extends Component {
       receipt: 1,
       dbcarts: [
         {
-          branch_name: "臺中世貿店",
-          branch_address: "台中市大里區成功路462號",
-          branch_phone: "04-23580058",
-          brand_name: "迷客夏",
+          brand_id: "2",
+          branch_name: "",
+          branch_address: "",
+          branch_phone: "",
+          brand_name: "",
           item_img: "1_5",
-          item_name: "圓仔玄米抹茶拿鐵",
-          item_size: "M",
-          item_sugar: "無糖",
-          item_temperatures: "去冰",
-          item_price: 60,
-          item_ingredient: "珍珠、椰果",
-          ingredient_price: 5,
-          item_quantity: 2,
-          total_price: 65,
+          item_ingredient: "",
+          item_id: 1,
+          item_sugar: "",
+          item_price: "",
+          total_price: "",
         },
       ],
 
       pickupInfo: { personName: "JHEN", personPhone: "0912345432" },
-      memo: "", //是否寫入資料庫
+      memo: "",
       uniform: "",
       vehicle: "",
       productEdit: [
-        { size_choose: ["M", "L"] },
-        { temperature_choose: ["正常", "去冰"] },
-        { sugar_choose: ["正常", "無糖"] },
-        { ingredient: [{ ingredient_choose: "珍珠", ingredient_price: 10 }] },
-        // { ingredient_price: [] },
+        { size_choose: [] },
+        { temperature_choose: [] },
+        { sugar_choose: [] },
+        { ingredient: [] },
+        { brand_note: "" },
+        { catrs_index: 0 },
+        {},
+        //商品資訊
         {
-          brand_note:
-            "*脆啵啵球配料冷飲限定口感佳（常溫/溫/熱恕不開放加料*小圓仔配料建議冷/溫飲",
+          product: {
+            product_name: "水之森玄米抹茶",
+            product_img: "1_1",
+            choose_sugar: 1,
+            choose_ingredient: 1,
+            products_price_0: 0,
+            products_price_1: 45,
+            products_price_2: 0,
+          },
+        },
+        //商品明細
+        {
+          cats_item: {
+            item_size: "M",
+            item_sugar: "正常",
+            item_temperatures_range: "",
+            item_temperatures: "",
+            item_ingredient: [],
+            item_price: 0,
+            ingredient_price: 0,
+            item_quantity: 1,
+            total_price: 0,
+          },
         },
       ],
+
+      productCkeck: {
+        size: "",
+        temperatures: "",
+        sugar: "",
+      },
     };
   }
 
   nextStep = () => {
     const { currentStep } = this.state;
     this.setState({ currentStep: currentStep + 1 });
-    // console.log(currentStep);
+    console.log(currentStep);
 
     if (currentStep !== 2) {
       const progressBar = document.getElementById("progressbar");
@@ -138,15 +164,14 @@ class cartPay extends Component {
     let newState = { ...this.state };
     newState.usePoninter = e.target.value === "" ? 0 : e.target.value;
     newState.lastPrice = newState.sumPrice - newState.usePoninter;
-    console.log(newState.lastPrice);
     this.setState(newState);
   };
 
+  //購物袋計算
   shoppingBag = () => {
     let newState;
     newState = this.state;
     newState.bag_isChecked = !newState.bag_isChecked;
-    console.log(newState);
 
     //計算袋子數量
     let num = 0;
@@ -154,16 +179,20 @@ class cartPay extends Component {
       newState.dbcarts.forEach((item) => {
         num += item.item_quantity;
       });
+    } else {
+      newState.lastPrice = newState.lastPrice - newState.bagQuantity * 2;
+      this.setState(newState);
+      return;
     }
     newState.bagQuantity = Math.ceil(num / 4);
     newState.lastPrice = newState.lastPrice + newState.bagQuantity * 2;
     this.setState(newState);
   };
 
+  //取貨人姓名、電話
   name_change = (e) => {
     let newState = { ...this.state };
     newState.pickupInfo.personName = e.target.value;
-    console.log(newState);
     this.setState(newState);
   };
   name_check = () => {
@@ -187,7 +216,6 @@ class cartPay extends Component {
   phone_change = (e) => {
     let newState = { ...this.state };
     newState.pickupInfo.personPhone = e.target.value;
-    // console.log(newState);
     this.setState(newState);
   };
   phone_check = () => {
@@ -226,28 +254,28 @@ class cartPay extends Component {
     this.nextStep();
   };
 
+  //備註
   memo_change = (e) => {
     let newState = { ...this.state };
     newState.memo = e.target.value;
     this.setState(newState);
-    console.log(newState);
   };
 
+  //發票
   uniform_change = (e) => {
     let newState = { ...this.state };
     newState.uniform = e.target.value;
     this.setState(newState);
-    console.log(newState);
   };
 
+  //統一標號
   vehicle_change = (e) => {
     let newState = { ...this.state };
     newState.vehicle = e.target.value;
     this.setState(newState);
-    console.log(newState);
   };
 
-  //確認是否選取時間
+  //檢查是否選取時間
   checkedTime = () => {
     if (!this.state.selectedDate) {
       // swal("請選取取貨時間");
@@ -262,23 +290,24 @@ class cartPay extends Component {
     this.nextStep();
   };
 
+  //選取時間
   getTimeValue = (time) => {
     let newState = { ...this.state.selectedDate };
     newState.selectedDate = time;
     // let Month=newState.selectedDate.getMo
     let year = newState.selectedDate.getFullYear();
-    let month = newState.selectedDate.getMonth().toString().padStart(2, 0);
+    let month = (newState.selectedDate.getMonth() + 1)
+      .toString()
+      .padStart(2, 0);
     let date = newState.selectedDate.getDate().toString().padStart(2, 0);
     let hours = newState.selectedDate.getHours().toString().padStart(2, 0);
     let minutes = newState.selectedDate.getMinutes().toString().padStart(2, 0);
     let seconds = newState.selectedDate.getSeconds().toString().padStart(2, 0);
-    newState.pickupTime = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`;
-    console.log(newState.selectedDate.getDate());
-
+    newState.pickupTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
     this.setState(newState);
-    // console.log(this.state.pickupTime);
   };
 
+  //提交訂單
   handleButtonClick = async () => {
     let newSate = { ...this.state };
     let detailsdata;
@@ -299,181 +328,347 @@ class cartPay extends Component {
     });
 
     //datails迴圈整理
-
     let serverData = {
       user_id: 1,
       branch_id: 1,
       orders_total: this.state.lastPrice,
       orders_bag: this.state.bag_isChecked ? 1 : 0,
+      orders_bag_num: this.state.bagQuantity,
+      usePoninter: Number(this.state.usePoninter),
       terms_of_payment: Number(this.state.payMethod),
       invoicing_method: Number(this.state.vehicle),
+      orders_pick_up: this.state.pickupTime,
       orders_status: 1,
       payment_status: Number(this.state.payMethod) === 1 ? 1 : 2,
       updatetime: new Date(),
       createtime: new Date(),
       details: detailsdata,
     };
-    console.log("serverData:", serverData);
+    this.nextStep();
+    // console.log("serverData:", serverData);
     let config = {
       headers: {
         "content-type": "application/json",
       },
     };
+    console.log(serverData);
     await axios.post(
       "http://localhost:8000/cartPay",
       JSON.stringify(serverData),
       config
     );
+
+    //   // //串接linepay
+    // await axios.post(
+    //   "http://localhost:8000/test0231/783743",
+    //   JSON.stringify(serverData),
+    //   config
+    // );
+    // };
   };
 
+  ///訂單確認
+  //付款方式
   payMethod_change = (e) => {
     let newSate = { ...this.state };
-    console.log(newSate);
-    newSate.payMethod = e.target.value;
+    // console.log(newSate);
+    newSate.payMethod = Number(e.target.value);
     // console.log(newSate.payMethod);
     this.setState(newSate);
-    console.log(this.state);
+    // console.log(this.state);
   };
 
+  //發票
   receipt_change = (e) => {
     let newSate = { ...this.state };
     newSate.receipt = e.target.value;
     this.setState(newSate);
-    console.log(this.state.receipt);
+    // console.log(this.state.receipt);
   };
 
-  product_edit = async () => {
+  //商品編輯
+  product_edit = async (id, index) => {
+    console.log(id);
+    // alert(index);
     let newSate = { ...this.state };
-    let result = await axios.get("http://localhost:8000/test");
+    let result = await axios.get(`http://localhost:8000/itemedit/${id}`);
+    newSate.dbcarts.item_id = id;
     newSate.productEdit = result.data;
-    console.log(newSate);
-    console.log(newSate.productEdit[3].ingredient);
-
+    newSate.productEdit[5].catrs_index = index;
+    console.log("productEdit:", newSate.productEdit);
     this.setState(newSate);
   };
 
-  // formSubmi() {
-  //   let formdata = {
-  //     orders_id: 1,
-  //     user_id: 1,
-  //     branch_id: 1,
-  //     orders_total: 111,
-  //     orders_bag: 1,
-  //     terms_of_payment: 2,
-  //     orders_status: 1,
-  //     payment_status: 2,
-  //     updatetime: new Date(),
-  //     createtime: new Date(),
-  //   };
+  //尺寸
+  size_change = (e) => {
+    // console.log(e.target.dataset.temperatures);
+    let newState = { ...this.state };
+    newState.productEdit[8].cats_item.item_size = e.target.value;
 
-  //   let detailsdata = {
-  //     orders_id: 1,
-  //     details_name: "紅茶",
-  //     details_size: "⼤杯",
-  //     details_sugar: "無糖",
-  //     details_mperatures: "去冰",
-  //     details_ingredient: ["珍珠", "椰果"],
-  //     details_amount: 60,
-  //     details_quantity: 2,
-  //     details_total: 120,
-  //     updatetime: new Date(),
-  //     createtime: new Date(),
-  //   };
-  // }
+    newState.productEdit[8].cats_item.item_price = Number(
+      e.target.dataset.products_price
+    );
+    this.setState(newState);
+    console.log(newState);
+    // console.log(newState);
+  };
+  //甜度
+  sugar_change = (e) => {
+    // console.log(e.target.value);
+    let newState = { ...this.state };
+    newState.productEdit[8].cats_item.item_sugar = e.target.value;
+    this.setState(newState);
+  };
+  //溫度
+  temperatures_change = (e) => {
+    // console.log(e.target.value);
+    let newState = { ...this.state };
+    newState.productEdit[8].cats_item.item_temperatures = e.target.value;
+    this.setState(newState);
+  };
+  //配料
+  ingredient_change = (e) => {
+    // console.log(e.target.checked);
+    let newState = { ...this.state };
+    let ingredient_price = Number(e.target.dataset.price);
+    if (e.target.checked) {
+      let newIngredient =
+        newState.productEdit[8].cats_item.item_ingredient +
+        `、${e.target.value}`;
+      newState.productEdit[8].cats_item.item_ingredient = newIngredient;
 
+      newState.productEdit[8].cats_item.ingredient_price += ingredient_price;
+      newState.productEdit[8].cats_item.total_price =
+        newState.productEdit[8].cats_item.item_price +
+        newState.productEdit[8].cats_item.ingredient_price;
+
+      this.setState(newState);
+    } else {
+      let removedIngredient = e.target.value;
+      let remainingIngredients =
+        newState.productEdit[8].cats_item.item_ingredient
+          .split("、")
+          .filter((item) => item !== removedIngredient);
+
+      console.log(remainingIngredients);
+      newState.productEdit[8].cats_item.item_ingredient =
+        remainingIngredients.join("、");
+      newState.productEdit[8].cats_item.ingredient_price -= ingredient_price;
+      newState.productEdit[8].cats_item.total_price =
+        newState.productEdit[8].cats_item.item_price +
+        newState.productEdit[8].cats_item.ingredient_price;
+      this.setState(newState);
+    }
+  };
+
+  //數量增加
+  add_quantity = () => {
+    let newState = { ...this.state };
+    newState.productEdit[8].cats_item.item_quantity += 1;
+    this.setState(newState);
+  };
+
+  // 數量減少
+  reduce_quantity = () => {
+    let newState = { ...this.state };
+    if (newState.productEdit[8].cats_item.item_quantity <= 1) {
+      return;
+    }
+    newState.productEdit[8].cats_item.item_quantity -= 1;
+    this.setState(newState);
+  };
+
+  update_cart = async (index) => {
+    alert("更新" + index);
+    let newState = { ...this.state };
+
+    //更新畫面
+    newState.dbcarts[index].item_quantity =
+      this.state.productEdit[8].cats_item.item_quantity;
+    newState.dbcarts[index].item_size =
+      this.state.productEdit[8].cats_item.item_size;
+    newState.dbcarts[index].item_sugar =
+      this.state.productEdit[8].cats_item.item_sugar;
+    newState.dbcarts[index].item_ingredient =
+      this.state.productEdit[8].cats_item.item_ingredient;
+    newState.dbcarts[index].total_price =
+      this.state.productEdit[8].cats_item.item_price +
+      this.state.productEdit[8].cats_item.ingredient_price;
+
+    let quantity = 0;
+    let sumPrice = 0;
+    newState.dbcarts.forEach((item) => {
+      console.log("item", item);
+      quantity += Number(item.item_quantity);
+      sumPrice += item.total_price * item.item_quantity;
+    });
+    console.log(quantity);
+
+    newState.quantity = quantity;
+    newState.sumPrice = sumPrice;
+    newState.lastPrice = sumPrice;
+
+    console.log("new", newState);
+    this.setState(newState);
+
+    let item_sum = 0;
+    let price_sum = 0;
+    newState.dbcarts.forEach((item) => {
+      item_sum += item.item_quantity;
+      price_sum += item.total_price * item.item_quantity;
+    });
+    console.log(item_sum);
+    newState.quantity = item_sum;
+    newState.sumPrice = price_sum;
+    newState.lastPrice =
+      price_sum - this.state.usePoninter + this.state.bagQuantity * 2;
+
+    //寫入資料庫
+    let serverData = {
+      item_quantity: this.state.productEdit[8].cats_item.item_quantity,
+      item_size: this.state.productEdit[8].cats_item.item_size,
+      item_sugar: this.state.productEdit[8].cats_item.item_sugar,
+      item_ingredient: this.state.productEdit[8].cats_item.item_ingredient,
+      ingredient_price: this.state.productEdit[8].cats_item.ingredient_price,
+      item_price: this.state.productEdit[8].cats_item.item_price,
+      total_price: this.state.productEdit[8].cats_item.total_price,
+    };
+    let config = {
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+    console.log(this.state.dbcarts[index].item_id);
+    await axios.patch(
+      `http://localhost:8000/itemedit/${this.state.dbcarts[index].item_id}`,
+      serverData,
+      config
+    );
+  };
+
+  //刪除商品
+  product_delete = async (itemid, index) => {
+    console.log(itemid);
+    console.log(index);
+    let newState = { ...this.state };
+    if (newState.dbcarts.length === 1) {
+      alert("已無法再減少商品了");
+      return;
+    }
+    newState.dbcarts.splice(index, 1);
+    let quantity = 0;
+    let sumPrice = 0;
+    newState.dbcarts.forEach((item) => {
+      console.log("item", item);
+      quantity += Number(item.item_quantity);
+      sumPrice += item.total_price * item.item_quantity;
+    });
+    newState.quantity = quantity;
+    newState.sumPrice = sumPrice;
+    newState.lastPrice = sumPrice;
+    let item_sum = 0;
+    let price_sum = 0;
+    newState.dbcarts.forEach((item) => {
+      item_sum += item.item_quantity;
+      price_sum += item.total_price * item.item_quantity;
+    });
+    newState.quantity = item_sum;
+    newState.sumPrice = price_sum;
+    newState.lastPrice =
+      price_sum - this.state.usePoninter + this.state.bagQuantity * 2;
+    this.setState(newState);
+    await axios.delete("http://localhost:8000/itemdelete/" + itemid);
+  };
   render() {
     const { currentStep } = this.state;
     return (
       <React.Fragment>
-            <div id='header'
-                style={{
-                    boxShadow: '1px 3px 10px #cccccc',
-                    marginBottom: '4px',
-                }} 
-                className='d-flex justify-content-between'>
-                <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
-                <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
-                    <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png'></img></h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
-                </div>
-                <div id="pointinfo">
-                    <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2 text-light' /></button>
-                    <h1>集點資訊</h1>
-                    <p>．每消費20元即可累積1點。</p>
-                    <p>．每點可折抵1元消費金額。</p>
-                    <p>．點數可在下次消費時折抵使用。</p>
-                    <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
-                    <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
-                </div>
-
-
-                <div className='d-flex me-2  align-items-center'>
-                    <h4 id='loginBtn' className='my-auto btn headerText' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
-                    <div id='memberNav' className='collapse'>
-                        <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
-                        <div className='p-2'>
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>個人檔案</h4><hr />
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>帳號管理</h4><hr />
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>歷史訂單</h4><hr />
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>載具存取</h4><hr />
-                            <h4 className='headerText text-center my-2'>登出</h4>
-                        </div>
-                    </div>
-                </div>
+        <div
+          id="header"
+          style={{
+            boxShadow: "1px 3px 10px #cccccc",
+            marginBottom: "4px",
+          }}
+          className="d-flex justify-content-between"
+        >
+          <div className="col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center">
+            <div id="menu" className="col-8">
+              <h2
+                className="btn text-start  my-auto fs-4"
+                onClick={this.toggleMenuNav}
+              >
+                ☰
+              </h2>
             </div>
-            <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
-            </div>
-        {/* <div id="banner" className="d-flex justify-content-center">
-          <img
-            src={("img/index/Home_Banner_01.jpg")}
-            alt="homeBanner"
-            className="img-fluid"
-          ></img>
-        </div> */}
-        {/* <div className="container">
-          <div className="navbar row">
-            <div className="navImg col-4 btn">
-              <img
-                src={("img/index/LeDian_BANNER-01.jpg")}
-                alt="navImg"
-                className="img-fluid"
-              ></img>
-            </div>
-            <div className="navImg col-4 btn">
-              <img
-                src={("img/index/LeDian_BANNER-02.jpg")}
-                alt="navImg"
-                className="img-fluid"
-              ></img>
-            </div>
-            <div
-              className="navImg col-4 btn"
+            <h4
+              id="homeBtn"
+              className="my-auto btn"
               onClick={() => {
-                window.location = "/news";
+                window.location = "/index";
               }}
             >
               <img
-                src={("img/index/LeDian_BANNER-05.jpg")}
-                alt="navImg"
-                className="img-fluid"
+                id="logo"
+                src="/img/index/LeDian_LOGO-05.png"
+                alt="logo"
               ></img>
+            </h4>
+            <h4 className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center">
+              <HiOutlineShoppingBag className="fs-4" />
+              購物車
+            </h4>
+            <h4
+              className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center"
+              onClick={() => {
+                window.location = "/brand";
+              }}
+            >
+              <PiMedal className="fs-4" />
+              品牌專區
+            </h4>
+            <h4
+              className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center"
+              onClick={this.pointinfoShow}
+            >
+              <PiCoins className="fs-4" />
+              集點資訊
+            </h4>
+          </div>
+          <div id="pointinfo">
+            <button id="pointinfoclose" onClick={this.pointinfoHide}>
+              <GiCancel className="fs-2 text-light" />
+            </button>
+            <h1>集點資訊</h1>
+            <p>．每消費20元即可累積1點。</p>
+            <p>．每點可折抵1元消費金額。</p>
+            <p>．點數可在下次消費時折抵使用。</p>
+            <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
+            <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
+          </div>
+
+          <div className="d-flex me-2 align-items-center">
+            {this.loginCheck()}
+            <div id="memberNav" className="collapse">
+              <div className="p-2">
+                <h4
+                  className="headerText text-center my-2"
+                  onClick={() => {
+                    window.location = "/profile";
+                  }}
+                >
+                  會員中心
+                </h4>
+                <hr />
+                <h4
+                  className="headerText text-center my-2"
+                  onClick={this.logoutClick}
+                >
+                  登出
+                </h4>
+              </div>
             </div>
           </div>
-          <input
-            type="text"
-            id="search"
-            name="search"
-            onChange={this.searchChange}
-            value={this.state.search}
-            className="form-control rounded-pill ps-4 bg-secondary-subtle"
-          ></input>
-          <h2 className="text-center mainColor m-2">附近店家</h2>
-        </div> */}
+        </div>
 
         <div className="body-bg">
           {/* <React.Fragment> */}
@@ -511,7 +706,7 @@ class cartPay extends Component {
                             <div className="col-auto d-none d-md-block">
                               <img
                                 className="mainproduct-img"
-                                src={("img/mainproduct/4.png")}
+                                src={`/img/mainproduct/${this.state.dbcarts[0].brand_id}.png`}
                                 alt="mainproduct-img"
                               />
                             </div>
@@ -536,7 +731,7 @@ class cartPay extends Component {
                               >
                                 <img
                                   className="icon-join"
-                                  src={("img/icon/add-friend 1.png")}
+                                  src="/img/icon/add-friend 1.png"
                                   alt="add-friend"
                                 />
                                 <span>揪團</span>
@@ -587,7 +782,7 @@ class cartPay extends Component {
                                           </div>
                                           <div className="col-6 px-0">
                                             <img
-                                              src={("img/icon/logo.png")}
+                                              src="/img/icon/logo.png"
                                               alt="brand-logo"
                                             />
                                           </div>
@@ -602,7 +797,7 @@ class cartPay extends Component {
                           <div className="row d-flex justify-content-center mt-5">
                             <div className="col-12">
                               <label className="text-title" htmlFor="time">
-                                取貨時間<span className="star">*</span>
+                                取貨時間<span className="star-must">*</span>
                               </label>
                             </div>
                             <div className="col mt-3">
@@ -610,6 +805,11 @@ class cartPay extends Component {
                                 key={this.state.keyForDateTimePicker}
                                 onTime={this.getTimeValue}
                                 message={this.state.selectedDate}
+                                branch={
+                                  this.state.dbcarts.length > 0
+                                    ? this.state.dbcarts[0].branch_id
+                                    : null
+                                }
                               />
                             </div>
                           </div>
@@ -625,7 +825,7 @@ class cartPay extends Component {
                                     <div className="col-md-3 col-6 text-end">
                                       <img
                                         className="product-img"
-                                        src={(`img/class/${item.item_img}.png`)}
+                                        src={`/img/class/${item.item_img}.png`}
                                         alt="drink-img"
                                       />
                                     </div>
@@ -658,6 +858,12 @@ class cartPay extends Component {
                                           <button
                                             type="button"
                                             className="btn-delete"
+                                            onClick={() => {
+                                              this.product_delete(
+                                                item.item_id,
+                                                i
+                                              );
+                                            }}
                                           >
                                             <FaRegTrashAlt className="trash" />
                                           </button>
@@ -666,7 +872,12 @@ class cartPay extends Component {
                                             data-bs-target="#exampleModaledit"
                                             type="button"
                                             className="btn-edit"
-                                            onClick={this.product_edit}
+                                            onClick={() => {
+                                              this.product_edit(
+                                                item.item_id,
+                                                i
+                                              );
+                                            }}
                                           >
                                             <span>
                                               <FaPencilAlt className="pencil" />
@@ -698,7 +909,10 @@ class cartPay extends Component {
                                       <div className="row">
                                         <div className="col-6 modaltop">
                                           <h3 className="modalTitle">
-                                            許慶良窯燒桂圓鮮奶茶
+                                            {
+                                              this.state.productEdit[7].product
+                                                .product_name
+                                            }
                                           </h3>
                                         </div>
                                         <div className="col-6 modaltop"></div>
@@ -709,7 +923,7 @@ class cartPay extends Component {
                                           <div className="row">
                                             <div className="col-12">
                                               <img
-                                                src={("img/class/10_452.png")}
+                                                src={`/img/class/${this.state.productEdit[7].product.product_img}.png`}
                                                 className="clasImg"
                                                 alt="productimg"
                                               ></img>
@@ -719,9 +933,10 @@ class cartPay extends Component {
                                                 className="alert alert-warning"
                                                 role="alert"
                                               >
-                                                *脆啵啵球配料冷飲限定口感佳（常溫/溫/熱恕不開放加料
-                                                <br></br>
-                                                *小圓仔配料建議冷/溫飲
+                                                {
+                                                  this.state.productEdit[5]
+                                                    .brand_note
+                                                }
                                               </div>
                                             </div>
                                           </div>
@@ -749,8 +964,15 @@ class cartPay extends Component {
                                             {/* 尺寸選項 */}
                                             {this.state.productEdit[0].size_choose.map(
                                               (item, i) => {
-                                                console.log(item);
-                                                if (item) {
+                                                if (item.size) {
+                                                  if (
+                                                    item.size ===
+                                                    this.state.productEdit[8]
+                                                      .cats_item.item_size
+                                                  ) {
+                                                    this.state.productEdit[8].cats_item.item_temperatures_range =
+                                                      item.temperatures;
+                                                  }
                                                   return (
                                                     <div
                                                       className="col-4 form-check"
@@ -761,50 +983,38 @@ class cartPay extends Component {
                                                         type="radio"
                                                         name="size"
                                                         id="medium"
-                                                        value="1"
+                                                        value={item.size}
+                                                        data-temperatures={
+                                                          item.temperatures
+                                                        }
+                                                        data-products_price={
+                                                          item.products_price
+                                                        }
+                                                        onChange={
+                                                          this.size_change
+                                                        }
+                                                        checked={
+                                                          item.size ===
+                                                          this.state
+                                                            .productEdit[8]
+                                                            .cats_item.item_size
+                                                            ? "checked"
+                                                            : ""
+                                                        }
                                                       ></input>
                                                       <label
                                                         className="form-check-label"
                                                         htmlFor="medium"
                                                       >
-                                                        &nbsp;{item}
+                                                        &nbsp;{item.size}
                                                       </label>
                                                     </div>
                                                   );
+                                                } else {
+                                                  return null;
                                                 }
                                               }
                                             )}
-
-                                            {/* <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="size"
-                                                id="large"
-                                                value="2"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="large"
-                                              >
-                                                &nbsp;L
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="size"
-                                                id="bottle"
-                                                value="3"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="bottle"
-                                              >
-                                                &nbsp;瓶
-                                              </label>
-                                            </div> */}
                                           </div>
 
                                           <div className="row temperaturetitle">
@@ -827,109 +1037,195 @@ class cartPay extends Component {
                                           </div>
                                           <div className="row temperaturecheck">
                                             {/* 溫度選項 */}
-
-                                            {this.state.productEdit[1].temperature_choose.map(
-                                              (item, i) => {
-                                                if (item) {
-                                                  return (
-                                                    <div
-                                                      className="col-4 form-check"
-                                                      key={i}
-                                                    >
-                                                      <input
-                                                        className="form-check-input square"
-                                                        type="radio"
-                                                        name="temperature"
-                                                        id="lessIce"
-                                                        value="1"
-                                                      ></input>
-                                                      <label
-                                                        className="form-check-label"
-                                                        htmlFor="flexRadioDefault1"
+                                            {this.state.productEdit[8].cats_item
+                                              .item_temperatures_range ===
+                                              1 && (
+                                              <React.Fragment>
+                                                {/* a.filter((item)=>  !item.includes('冰') ) */}
+                                                {this.state.productEdit[1].temperature_choose
+                                                  .filter(
+                                                    (item) =>
+                                                      !item.includes("溫") &&
+                                                      !item.includes("熱") &&
+                                                      item !== ""
+                                                  )
+                                                  .map((t, i) => {
+                                                    return (
+                                                      <div
+                                                        className="col-4 form-check"
+                                                        key={i}
                                                       >
-                                                        &nbsp;{item}
-                                                      </label>
-                                                    </div>
-                                                  );
-                                                }
-                                              }
+                                                        <input
+                                                          className="form-check-input square"
+                                                          type="radio"
+                                                          name="temperature"
+                                                          id="lessIce"
+                                                          value={t}
+                                                          checked={
+                                                            t ===
+                                                            this.state
+                                                              .productEdit[8]
+                                                              .cats_item
+                                                              .item_temperatures
+                                                              ? "checked"
+                                                              : ""
+                                                          }
+                                                          onChange={
+                                                            this
+                                                              .temperatures_change
+                                                          }
+                                                        ></input>
+                                                        <label
+                                                          className="form-check-label"
+                                                          htmlFor="flexRadioDefault1"
+                                                        >
+                                                          &nbsp;{t}
+                                                        </label>
+                                                      </div>
+                                                    );
+                                                  })}
+                                              </React.Fragment>
+                                            )}
+                                            {this.state.productEdit[8].cats_item
+                                              .item_temperatures_range ===
+                                              2 && (
+                                              <React.Fragment>
+                                                {/* a.filter((item)=>  !item.includes('冰') ) */}
+                                                {this.state.productEdit[1].temperature_choose
+                                                  .filter(
+                                                    (item) =>
+                                                      !item.includes("冰") &&
+                                                      item !== ""
+                                                  )
+                                                  .map((t, i) => {
+                                                    return (
+                                                      <div
+                                                        className="col-4 form-check"
+                                                        key={i}
+                                                      >
+                                                        <input
+                                                          className="form-check-input square"
+                                                          type="radio"
+                                                          name="temperature"
+                                                          id="lessIce"
+                                                          value={t}
+                                                          checked={
+                                                            t ===
+                                                            this.state
+                                                              .productEdit[8]
+                                                              .cats_item
+                                                              .item_temperatures
+                                                              ? "checked"
+                                                              : ""
+                                                          }
+                                                          onChange={
+                                                            this
+                                                              .temperatures_change
+                                                          }
+                                                        ></input>
+                                                        <label
+                                                          className="form-check-label"
+                                                          htmlFor="flexRadioDefault1"
+                                                        >
+                                                          &nbsp;{t}
+                                                        </label>
+                                                      </div>
+                                                    );
+                                                  })}
+                                              </React.Fragment>
                                             )}
 
-                                            {/* <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="temperature"
-                                                id="low"
-                                                value="2"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;微冰
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="temperature"
-                                                id="noIce"
-                                                value="3"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;去冰
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="temperature"
-                                                id="normal"
-                                                value="4"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;正常
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="temperature"
-                                                id="roomTemperature"
-                                                value="5"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;溫
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="temperature"
-                                                id="hot"
-                                                value="6"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;熱
-                                              </label>
-                                            </div> */}
+                                            {this.state.productEdit[8].cats_item
+                                              .item_temperatures_range ===
+                                              3 && (
+                                              <React.Fragment>
+                                                {this.state.productEdit[1].temperature_choose.map(
+                                                  (item, i) => {
+                                                    if (item) {
+                                                      return (
+                                                        <div
+                                                          className="col-4 form-check"
+                                                          key={i}
+                                                        >
+                                                          <input
+                                                            className="form-check-input square"
+                                                            type="radio"
+                                                            name="temperature"
+                                                            id="lessIce"
+                                                            value={item}
+                                                            checked={
+                                                              item ===
+                                                              this.state
+                                                                .productEdit[8]
+                                                                .cats_item
+                                                                .item_temperatures
+                                                                ? "checked"
+                                                                : ""
+                                                            }
+                                                            onChange={
+                                                              this
+                                                                .temperatures_change
+                                                            }
+                                                          ></input>
+                                                          <label
+                                                            className="form-check-label"
+                                                            htmlFor="flexRadioDefault1"
+                                                          >
+                                                            &nbsp;{item}
+                                                          </label>
+                                                        </div>
+                                                      );
+                                                    } else {
+                                                      return null;
+                                                    }
+                                                  }
+                                                )}
+                                              </React.Fragment>
+                                            )}
+
+                                            {this.state.productEdit[8].cats_item
+                                              .item_temperatures_range ===
+                                              4 && (
+                                              <div className="col-4 form-check">
+                                                <input
+                                                  className="form-check-input square"
+                                                  type="radio"
+                                                  name="temperature"
+                                                  id="lessIce"
+                                                  value="固定冷"
+                                                  checked
+                                                  readOnly
+                                                ></input>
+                                                <label
+                                                  className="form-check-label"
+                                                  htmlFor="flexRadioDefault1"
+                                                >
+                                                  &nbsp;{"固定冷"}
+                                                </label>
+                                              </div>
+                                            )}
+
+                                            {this.state.productEdit[8].cats_item
+                                              .item_temperatures_range ===
+                                              5 && (
+                                              <div className="col-4 form-check">
+                                                <input
+                                                  className="form-check-input square"
+                                                  type="radio"
+                                                  name="temperature"
+                                                  id="lessIce"
+                                                  value="固定熱"
+                                                  checked
+                                                  readOnly
+                                                ></input>
+                                                <label
+                                                  className="form-check-label"
+                                                  htmlFor="flexRadioDefault1"
+                                                >
+                                                  &nbsp;{"固定熱"}
+                                                </label>
+                                              </div>
+                                            )}
                                           </div>
 
                                           <div className="row sugarinesstitle">
@@ -952,95 +1248,218 @@ class cartPay extends Component {
                                           </div>
                                           <div className="row sugarinesscheck">
                                             {/* 甜度選項 */}
-                                            {this.state.productEdit[2].sugar_choose.map(
-                                              (item, i) => {
-                                                if (item) {
-                                                  return (
-                                                    <div
-                                                      className="col-4 form-check"
-                                                      key={i}
-                                                    >
-                                                      <input
-                                                        className="form-check-input square"
-                                                        type="radio"
-                                                        name="sugariness"
-                                                        id="lessSugar"
-                                                        value="1"
-                                                      ></input>
-                                                      <label
-                                                        className="form-check-label"
-                                                        htmlFor="flexRadioDefault1"
+                                            {this.state.productEdit[7].product
+                                              .choose_sugar === 1 &&
+                                              this.state.productEdit[2].sugar_choose.map(
+                                                (item, i) => {
+                                                  if (item) {
+                                                    return (
+                                                      <div
+                                                        className="col-4 form-check"
+                                                        key={i}
                                                       >
-                                                        &nbsp;{item}
-                                                      </label>
-                                                    </div>
-                                                  );
+                                                        <input
+                                                          className="form-check-input square"
+                                                          type="radio"
+                                                          name="sugariness"
+                                                          id="lessSugar"
+                                                          value={item}
+                                                          onChange={
+                                                            this.sugar_change
+                                                          }
+                                                          checked={
+                                                            item ===
+                                                            this.state
+                                                              .productEdit[8]
+                                                              .cats_item
+                                                              .item_sugar
+                                                              ? "checked"
+                                                              : ""
+                                                          }
+                                                        ></input>
+                                                        <label
+                                                          className="form-check-label"
+                                                          htmlFor="flexRadioDefault1"
+                                                        >
+                                                          &nbsp;{item}
+                                                        </label>
+                                                      </div>
+                                                    );
+                                                  } else {
+                                                    return null;
+                                                  }
                                                 }
-                                              }
+                                              )}
+
+                                            {this.state.productEdit[7].product
+                                              .choose_sugar === 2 && (
+                                              <div className="col-4 form-check">
+                                                <input
+                                                  className="form-check-input square"
+                                                  type="radio"
+                                                  name="sugariness"
+                                                  id="lessSugar"
+                                                  value="甜度固定"
+                                                ></input>
+                                                <label
+                                                  className="form-check-label"
+                                                  htmlFor="flexRadioDefault1"
+                                                >
+                                                  &nbsp;甜度固定
+                                                </label>
+                                              </div>
+                                            )}
+                                            {this.state.productEdit[7].product
+                                              .choose_sugar === 3 && (
+                                              <div className="col-4 form-check">
+                                                <input
+                                                  className="form-check-input square"
+                                                  type="radio"
+                                                  name="sugariness"
+                                                  id="lessSugar"
+                                                  value="無糖"
+                                                ></input>
+                                                <label
+                                                  className="form-check-label"
+                                                  htmlFor="flexRadioDefault1"
+                                                >
+                                                  &nbsp;無糖
+                                                </label>
+                                              </div>
                                             )}
 
-                                            {/* <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="sugariness"
-                                                id="halfSugar"
-                                                value="2"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;半糖
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="sugariness"
-                                                id="standard"
-                                                value="3"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;標準
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="sugariness"
-                                                id="lightSugar"
-                                                value="4"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;微糖
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="radio"
-                                                name="sugariness"
-                                                id="noSugar"
-                                                value="5"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;無糖
-                                              </label>
-                                            </div> */}
-                                          </div>
+                                            {this.state.productEdit[7].product
+                                              .choose_sugar === 4 &&
+                                              this.state.productEdit[2].sugar_choose
+                                                .slice(1)
+                                                .map((item, i) => {
+                                                  if (item) {
+                                                    return (
+                                                      <div
+                                                        className="col-4 form-check"
+                                                        key={i}
+                                                      >
+                                                        <input
+                                                          className="form-check-input square"
+                                                          type="radio"
+                                                          name="sugariness"
+                                                          id="lessSugar"
+                                                          value={item}
+                                                          onChange={
+                                                            this.sugar_change
+                                                          }
+                                                          checked={
+                                                            item ===
+                                                            this.state
+                                                              .productEdit[8]
+                                                              .cats_item
+                                                              .item_sugar
+                                                              ? "checked"
+                                                              : ""
+                                                          }
+                                                        ></input>
+                                                        <label
+                                                          className="form-check-label"
+                                                          htmlFor="flexRadioDefault1"
+                                                        >
+                                                          &nbsp;{item}
+                                                        </label>
+                                                      </div>
+                                                    );
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                })}
 
+                                            {this.state.productEdit[7].product
+                                              .choose_sugar === 5 &&
+                                              this.state.productEdit[2].sugar_choose
+                                                .slice(0, 5)
+                                                .map((item, i) => {
+                                                  if (item) {
+                                                    return (
+                                                      <div
+                                                        className="col-4 form-check"
+                                                        key={i}
+                                                      >
+                                                        <input
+                                                          className="form-check-input square"
+                                                          type="radio"
+                                                          name="sugariness"
+                                                          id="lessSugar"
+                                                          value={item}
+                                                          onChange={
+                                                            this.sugar_change
+                                                          }
+                                                          checked={
+                                                            item ===
+                                                            this.state
+                                                              .productEdit[8]
+                                                              .cats_item
+                                                              .item_sugar
+                                                              ? "checked"
+                                                              : ""
+                                                          }
+                                                        ></input>
+                                                        <label
+                                                          className="form-check-label"
+                                                          htmlFor="flexRadioDefault1"
+                                                        >
+                                                          &nbsp;{item}
+                                                        </label>
+                                                      </div>
+                                                    );
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                })}
+
+                                            {this.state.productEdit[7].product
+                                              .choose_sugar === 6 &&
+                                              this.state.productEdit[2].sugar_choose
+                                                .filter(
+                                                  (item, i) =>
+                                                    i === 4 || i === 6
+                                                )
+                                                .map((item, i) => {
+                                                  if (item) {
+                                                    return (
+                                                      <div
+                                                        className="col-4 form-check"
+                                                        key={i}
+                                                      >
+                                                        <input
+                                                          className="form-check-input square"
+                                                          type="radio"
+                                                          name="sugariness"
+                                                          id="lessSugar"
+                                                          value={item}
+                                                          onChange={
+                                                            this.sugar_change
+                                                          }
+                                                          checked={
+                                                            item ===
+                                                            this.state
+                                                              .productEdit[8]
+                                                              .cats_item
+                                                              .item_sugar
+                                                              ? "checked"
+                                                              : ""
+                                                          }
+                                                        ></input>
+                                                        <label
+                                                          className="form-check-label"
+                                                          htmlFor="flexRadioDefault1"
+                                                        >
+                                                          &nbsp;{item}
+                                                        </label>
+                                                      </div>
+                                                    );
+                                                  } else {
+                                                    return null;
+                                                  }
+                                                })}
+                                          </div>
                                           <div className="row sugarinesstitle">
                                             {/* 配料 */}
                                             <div className="col text">
@@ -1061,12 +1480,20 @@ class cartPay extends Component {
                                           </div>
                                           <div className="row sugarinesscheck">
                                             {/* 配料選項 */}
+
                                             {this.state.productEdit[3].ingredient.map(
                                               (item, i) => {
                                                 if (item.ingredient_choose) {
+                                                  let item_ingredient_ary =
+                                                    this.state.productEdit[8].cats_item.item_ingredient.split(
+                                                      "、"
+                                                    );
+                                                  // console.log(
+                                                  //   item_ingredient_ary
+                                                  // );
                                                   return (
                                                     <div
-                                                      className="col-4 form-check"
+                                                      className="col-6 form-check"
                                                       key={i}
                                                     >
                                                       <input
@@ -1074,7 +1501,22 @@ class cartPay extends Component {
                                                         type="checkbox"
                                                         name="ingredients"
                                                         id="grass"
-                                                        value="1"
+                                                        value={
+                                                          item.ingredient_choose
+                                                        }
+                                                        data-price={
+                                                          item.ingredient_price
+                                                        }
+                                                        checked={
+                                                          item_ingredient_ary.includes(
+                                                            item.ingredient_choose
+                                                          )
+                                                            ? "checked"
+                                                            : ""
+                                                        }
+                                                        onChange={
+                                                          this.ingredient_change
+                                                        }
                                                       ></input>
                                                       <label
                                                         className="form-check-label"
@@ -1087,90 +1529,22 @@ class cartPay extends Component {
                                                       </label>
                                                     </div>
                                                   );
+                                                } else {
+                                                  return null;
                                                 }
                                               }
                                             )}
-                                            {/* <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                name="ingredients"
-                                                id="balls"
-                                                value="2"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;珍珠
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                name="ingredients"
-                                                id="taroBalls"
-                                                value="3"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;芋圓
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                name="ingredients"
-                                                id="redBeans"
-                                                value="4"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;紅豆
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                name="ingredients"
-                                                id="pidding"
-                                                value="5"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;布丁
-                                              </label>
-                                            </div>
-                                            <div className="col-4 form-check">
-                                              <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                name="ingredients"
-                                                id="konjacjelly"
-                                                value="6"
-                                              ></input>
-                                              <label
-                                                className="form-check-label"
-                                                htmlFor="flexRadioDefault1"
-                                              >
-                                                &nbsp;愛玉
-                                              </label>
-                                            </div> */}
                                           </div>
                                         </div>
                                       </div>
                                       <div className="row footer">
                                         <div className="col-6 modaltop  ">
-                                          總金額 : 100 元
+                                          總金額 :
+                                          {this.state.productEdit[8].cats_item
+                                            .item_price +
+                                            this.state.productEdit[8].cats_item
+                                              .ingredient_price}
+                                          元
                                         </div>
                                         <div className="col-6 text-">
                                           <div className="row price">
@@ -1178,6 +1552,7 @@ class cartPay extends Component {
                                               <button
                                                 type="button"
                                                 className="btn add btn-outline-warning"
+                                                onClick={this.reduce_quantity}
                                               >
                                                 <svg
                                                   xmlns="http://www.w3.org/2000/svg"
@@ -1195,12 +1570,18 @@ class cartPay extends Component {
                                               </button>
                                             </div>
                                             <div className="col-4 text-center">
-                                              <div className="price">10</div>
+                                              <div className="price">
+                                                {
+                                                  this.state.productEdit[8]
+                                                    .cats_item.item_quantity
+                                                }
+                                              </div>
                                             </div>
                                             <div className="col-4 text-center">
                                               <button
                                                 type="button"
                                                 className="btn add btn-outline-warning"
+                                                onClick={this.add_quantity}
                                               >
                                                 <svg
                                                   xmlns="http://www.w3.org/2000/svg"
@@ -1225,6 +1606,12 @@ class cartPay extends Component {
                                       <button
                                         className="btn btn-outline-warning"
                                         type="button"
+                                        onClick={() => {
+                                          this.update_cart(
+                                            this.state.productEdit[5]
+                                              .catrs_index
+                                          );
+                                        }}
                                       >
                                         加入購物車
                                       </button>
@@ -1261,7 +1648,7 @@ class cartPay extends Component {
                                   value={this.state.usePoninter}
                                   onChange={this.pointerChange}
                                 />
-                                <p className="mt-3 ps-3 text-des star mb-0">
+                                <p className="mt-3 ps-3 text-des star-must mb-0">
                                   可用點數:{this.state.remainingPoints}
                                 </p>
                               </div>
@@ -1323,9 +1710,9 @@ class cartPay extends Component {
                             )}
                             <div className="col-10 d-flex mt-2 ms-3">
                               <div className="col d-flex">
-                                <p className="text-des star">點數折扣</p>
+                                <p className="text-des star-must">點數折扣</p>
                               </div>
-                              <div className="col text-des text-end star">
+                              <div className="col text-des text-end star-must">
                                 <p>
                                   <span>-</span>
                                   {this.state.usePoninter}
@@ -1384,7 +1771,7 @@ class cartPay extends Component {
                             </div>
                             <div className="col-10 mt-4 mb-2 ms-2">
                               <label htmlFor="" className="text-des">
-                                取貨人姓名<span className="star">*</span>
+                                取貨人姓名<span className="star-must">*</span>
                               </label>
                               <input
                                 className="ms-2 mt-3 form-control input-box"
@@ -1397,7 +1784,7 @@ class cartPay extends Component {
                             </div>
                             <div className="col-10 mt-3 mb-2 ms-2">
                               <label htmlFor="" className="text-des">
-                                取貨人電話<span className="star">*</span>
+                                取貨人電話<span className="star-must">*</span>
                               </label>
                               <input
                                 className="ms-2 mt-3 form-control input-box"
@@ -1413,7 +1800,7 @@ class cartPay extends Component {
                           <div className="row d-flex justify-content-center mt-5">
                             <div className="col-10">
                               <h4 className="text-title">
-                                付款方式<span className="star">*</span>
+                                付款方式<span className="star-must">*</span>
                               </h4>
                             </div>
                             <div className="col-10 mt-3 mb-2">
@@ -1428,7 +1815,7 @@ class cartPay extends Component {
                               />
                               <label htmlFor="cash" className="text-des">
                                 <img
-                                  src={("img/icon/cash.png")}
+                                  src="/img/icon/cash.png"
                                   alt="cash-icon"
                                   className="icon-img-s"
                                 />
@@ -1447,7 +1834,7 @@ class cartPay extends Component {
                               <label htmlFor="line-pay" className="text-des">
                                 <span>
                                   <img
-                                    src={("img/icon/linepay.png")}
+                                    src="/img/icon/linepay.png"
                                     alt="inepay-icon"
                                     className="icon-img"
                                   />
@@ -1459,7 +1846,7 @@ class cartPay extends Component {
                           <div className="row d-flex justify-content-center mt-5">
                             <div className="col-10">
                               <h4 className="text-title">
-                                開立發票<span className="star">*</span>
+                                開立發票<span className="star-must">*</span>
                               </h4>
                             </div>
                             <div className="col-10 mt-3 mb-2">
@@ -1548,7 +1935,7 @@ class cartPay extends Component {
                                   <span className="small-text p-2">
                                     <img
                                       className="me-2"
-                                      src={("img/icon/exclamation 1.png")}
+                                      src="/img/icon/exclamation 1.png"
                                       alt="icnimg"
                                     />
                                     預計取貨時間會依門市狀況調整
@@ -1624,23 +2011,9 @@ class cartPay extends Component {
                               </div>
                               <div className="col">
                                 <h4 className="text-des">
-                                  {this.state.payMethod === "1"
+                                  {this.state.payMethod === 1
                                     ? "現金"
                                     : "LINE Pay"}
-                                </h4>
-                              </div>
-                              <hr className="mt-2 hr-line" />
-                            </div>
-
-                            <div className="row d-flex align-items-center mt-4">
-                              <div className="col-5 col-md-3 text-center text-md-start">
-                                <h4 className="text-des">發票開立</h4>
-                              </div>
-                              <div className="col">
-                                <h4 className="text-des">
-                                  {this.state.vehicle
-                                    ? `手機載具-${this.state.vehicle}`
-                                    : "紙本發票"}
                                 </h4>
                               </div>
                               <hr className="mt-2 hr-line" />
@@ -1722,17 +2095,17 @@ class cartPay extends Component {
                           <div className="col d-flex flex-column align-items-center">
                             <img
                               className="icon-img"
-                              src={("img/icon/clock.png")}
+                              src="/img/icon/clock.png"
                               alt="clock-icon"
                             />
                             <h4 className="text-title mt-3">取貨時間</h4>
-                            <p className="text-des">2024/02/23 21:00</p>
+                            <p className="text-des">{this.state.pickupTime}</p>
                             <h4 className="text-title">取貨地點</h4>
                             <p className="mb-0 text-des">
-                              龜記茗品 (大里成功店)
+                              {`${this.state.dbcarts[0].brand_name} (${this.state.dbcarts[0].branch_name})`}
                             </p>
                             <p className="text-des-small">
-                              台中市大里區成功路462號
+                              {this.state.dbcarts[0].branch_address}
                             </p>
                           </div>
                         </div>
@@ -1758,7 +2131,7 @@ class cartPay extends Component {
             <img
               id='"footerImg"'
               className="img-fluid"
-              src={("img/index/LeDian_LOGO-04.png")}
+              src={"/img/index/LeDian_LOGO-04.png"}
               alt="footerLogo"
             />
           </div>
@@ -1768,21 +2141,21 @@ class cartPay extends Component {
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/index/facebook.png")}
+                    src={"/img/index/facebook.png"}
                     alt="fackbook"
                   />
                 </div>
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/index/instagram.png")}
+                    src={"/img/index/instagram.png"}
                     alt="instagram"
                   />
                 </div>
                 <div>
                   <img
                     className="img-fluid"
-                    src={("img/index/line.png")}
+                    src={"/img/index/line.png"}
                     alt="line"
                   />
                 </div>
@@ -1820,55 +2193,106 @@ class cartPay extends Component {
       </React.Fragment>
     );
   }
-  // 在更新状态时设置 key
+  //更新狀態key
   updateState = () => {
     this.setState({
       // 更新状态
       keyForDateTimePicker: Math.random(), // 设置一个随机值作为 key
     });
   };
-
-  componentDidMount = async () => {
-    console.log(this.props.match.params.id);
-    let newState = { ...this.state };
-    let result = await axios.get(
-      `http://localhost:8000/cartPay/${this.props.match.params.id}`
-    );
-
-    let quantity = 0;
-    let sumPrice = 0;
-    newState.dbcarts = result.data;
-    console.log(newState.dbcarts);
-    newState.dbcarts.forEach((item) => {
-      quantity += item.item_quantity;
-      sumPrice += item.total_price;
-    });
-    newState.quantity = quantity;
-    newState.sumPrice = sumPrice;
-    newState.lastPrice = sumPrice;
-    this.setState(newState);
-    // console.log(this.state.dbcarts);
-
-    // console.log(this.state);
-  };
-
   pointinfoShow = (event) => {
     document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
     document.getElementById("pointinfo").style.left = event.clientX - 150 + "px";
 } 
 
-  pointinfoHide = (event) => {
-      document.getElementById("pointinfo").style.top = "-500px";
-      event.cancelBubble = true;
-  }
+pointinfoHide = (event) => {
+    document.getElementById("pointinfo").style.top = "-500px";
+    event.cancelBubble = true;
+}
 
-  toggleMemberNav = () => {
-      document.getElementById('memberNav').classList.toggle('collapse');
+toggleMemberNav = () => {
+    const userdata = localStorage.getItem('userdata');
+    if(userdata){
+        document.getElementById('memberNav').classList.toggle('collapse');
+    }else{
+        const path = this.props.location.pathname;
+        sessionStorage.setItem('redirect',path) ;
+        window.location = "/login";
+    }
   }
-  toggleMenuNav = () => {
-      document.getElementById('menuNav').classList.toggle('menuNav');
-  }
-
+toggleMenuNav = () => {
+    document.getElementById('menuNav').classList.toggle('menuNav');
+}
+logoutClick = async () => {
+    // 清除localStorage
+    localStorage.removeItem("userdata");
+    const userdata = localStorage.getItem("userdata");
+    console.log("現在的:", userdata);
+    try {
+        // 告訴後台使用者要登出
+        await axios.post('http://localhost:8000/logout');
+    
+        
+        //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+    } catch (error) {
+        console.error("登出時出錯:", error);
+    }
+    
+    document.getElementById('memberNav').classList.add('collapse');
+    this.setState({})
+    window.location = "/index"
+}
+loginCheck = () => {
+    const userData = JSON.parse(localStorage.getItem('userdata'));
+    if(userData){
+        const userImg = userData.user_img?userData.user_img:'LeDian.png';
+        return (
+            <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
+                <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+                會員專區▼</h4>
+            )
+    }else {
+        return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+    }              
+}
+cartMenuClick = () => {
+    const userData = JSON.parse(localStorage.getItem('userdata'));
+    if(userData){
+        const userId = userData.user_id;
+        window.location = `/cartlist/${userId}`;
+    }else {
+        window.location = "/login";
+    }              
 
 }
+
+componentDidMount = async () => {
+    console.log(this.props.match.params.id);
+    let newState = { ...this.state };
+    let result = await axios.get(
+      `http://localhost:8000/cartPay/${this.props.match.params.id}`
+    );
+    console.log(result);
+    let quantity = 0;
+    let sumPrice = 0;
+    newState.dbcarts = result.data;
+    console.log("dbcarts:", newState.dbcarts);
+
+    newState.dbcarts.forEach((item) => {
+      quantity += item.item_quantity;
+      sumPrice +=
+        (item.item_price + item.ingredient_price) * item.item_quantity;
+    });
+    console.log("sumPrice", sumPrice);
+    newState.quantity = quantity;
+    newState.sumPrice = sumPrice;
+    newState.lastPrice = sumPrice;
+
+    this.setState(newState);
+    console.log("dbcart", this.state.dbcarts);
+  };
+}
 export default cartPay;
+
+// ingredient_price
+//item_ingredient

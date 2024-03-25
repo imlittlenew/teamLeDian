@@ -5,174 +5,276 @@ import { PiMedal } from "react-icons/pi";
 import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import GradeIcon from "@mui/icons-material/Grade";
-import Axios from "axios";
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  StandaloneSearchBox,
-  Autocomplete,
-  DistanceMatrixService,
-} from "@react-google-maps/api";
-// import axios from "axios";
-
-<head>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxryD8kH56hfiJ0bJt6r_KQ6G4MEZY6dI&loading=async&libraries=places,drawing,geometry&callback=initMap&v=weekly"></script>
-</head>;
+import { FaArrowCircleUp } from "react-icons/fa";
+import axios from "axios";
 
 class dian extends Component {
-  state = {
-    currentLocation: { lat: null, lng: null },
-    search: "搜尋店家",
-    branchList: [{}],
-    brandList: [{}],
-    branchPosition: [
-      {
-        branchId: 1,
-        branchAddress: "台中市西屯區中工三路181號1樓",
-        lat: 24.1767266,
-        lng: 120.6183528,
-      },
-    ],
-    distances: {},
-    productList: [{}],
-    // nearbyChecked: false, // 新增一个状态来跟踪复选框的状态
-    // starChecked: false, // 添加星评优选选项的状态
-    star4: [],
-  };
-
-  componentDidMount() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords: { latitude: lat, longitude: lng } }) => {
-          const pos = { lat, lng };
-          this.setState({ currentLocation: pos }, () => {
-            this.getData();
-          });
-        },
-        (error) => {
-          console.error("Error getting geolocation:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedOption: "",
+      content: [],
+      score: [],
+      userLocation: null,
+      selectedNearby: "",
+      resultlebrand: [],
+      brand: [],
+      branchList: [{}],
+    };
   }
 
-  getData = async () => {
-    try {
-      const resultBranch = await Axios.get(
-        "http://localhost:8000/index/branch"
-      );
-      const resultBrand = await Axios.get("http://localhost:8000/index/brand");
-      const resultProduct = await Axios.get(
-        "http://localhost:8000/index/products"
-      );
-      const newState = { ...this.state };
-      newState.branchList = resultBranch.data;
-      newState.brandList = resultBrand.data;
-      newState.productList = resultProduct.data;
-      newState.productList.map((item, i) => {
-        newState.path[
-          i
-        ] = `/img/class/${newState.productList[i].product_img}.png`;
-      });
+  componentDidMount() {
+    this.handleNearbyChange("nearby");
 
-      newState.branchPosition = resultBranch.data.map((branch) => ({
-        branchId: branch.branch_id,
-        branchAddress: branch.branch_address,
-        lat: branch.branch_latitude,
-        lng: branch.branch_longitude,
-      }));
-      this.setState(newState, () => {
-        this.calculateDistances();
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        console.log("User location:", userLocation);
+        this.setState({ userLocation });
+      },
+      (error) => {
+        console.error("Error getting user location:", error);
+      }
+    );
+
+    this.fetchBrandData();
+  }
+
+  fetchBrandData = async () => {
+    try {
+      var brand = await axios.get("http://localhost:8000/all/brand");
+      var businessHours = await axios.get("http://localhost:8000/dian/address");
+
+      this.setState({
+        brand: brand.data,
+        branchList: businessHours.data,
       });
       console.log(this.state);
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
+    }
+  };
+  calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return distance.toFixed(1);
+  };
+
+  handleNearbyChange = async (selectedNearby) => {
+    try {
+      this.setState({ score: "", selectedOption: "" });
+
+      let url = "";
+      if (selectedNearby === "nearby") {
+        url = "http://localhost:8000/dian/address";
+      }
+
+      const response = await axios.get(url);
+      const contentWithDistance = response.data
+        .map((item) => {
+          const distance = this.calculateDistance(
+            this.state.userLocation.latitude,
+            this.state.userLocation.longitude,
+            item.branch_latitude,
+            item.branch_longitude
+          );
+
+          // 只有當距離小於1.5公里時才將該地點添加到狀態中
+          if (parseFloat(distance) < 1.5) {
+            return {
+              ...item,
+              distance: distance,
+            };
+          }
+          return null; // 如果距離大於等於1.5公里，則返回 null
+        })
+        .filter((item) => item !== null); // 去除距離大於等於1.5公里的地點
+
+      this.setState({ selectedNearby, content: contentWithDistance });
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
-  calculateDistances = () => {
-    const currentLat = this.state.currentLocation.lat;
-    const currentLng = this.state.currentLocation.lng;
-    const branchPosition = this.state.branchPosition;
-    if (currentLat !== null && currentLng !== null) {
-      const R = 6371; // 地球平均半径（km）
-      const distances = {};
-      branchPosition.forEach((branch) => {
-        const { branchId, lat, lng } = branch;
-        const dLat = this.deg2rad(lat - currentLat);
-        const dLng = this.deg2rad(lng - currentLng);
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(this.deg2rad(currentLat)) *
-            Math.cos(this.deg2rad(lat)) *
-            Math.sin(dLng / 2) *
-            Math.sin(dLng / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        distances[branchId] = (R * c).toFixed(1); // 保留一位小数
+  handleOptionChange = async (selectedOption) => {
+    try {
+      this.setState({ score: "", selectedNearby: "" });
+
+      let url = "";
+
+      if (selectedOption === "400") {
+        url = "http://localhost:8000/dian/address_400";
+      } else if (selectedOption === "401") {
+        url = "http://localhost:8000/dian/address_401";
+      } else if (selectedOption === "402") {
+        url = "http://localhost:8000/dian/address_402";
+      } else if (selectedOption === "403") {
+        url = "http://localhost:8000/dian/address_403";
+      } else if (selectedOption === "404") {
+        url = "http://localhost:8000/dian/address_404";
+      } else if (selectedOption === "406") {
+        url = "http://localhost:8000/dian/address_406";
+      } else if (selectedOption === "407") {
+        url = "http://localhost:8000/dian/address_407";
+      } else if (selectedOption === "408") {
+        url = "http://localhost:8000/dian/address_408";
+      } else if (selectedOption === "411") {
+        url = "http://localhost:8000/dian/address_411";
+      } else if (selectedOption === "412") {
+        url = "http://localhost:8000/dian/address_412";
+      } else if (selectedOption === "413") {
+        url = "http://localhost:8000/dian/address_413";
+      } else if (selectedOption === "414") {
+        url = "http://localhost:8000/dian/address_414";
+      } else if (selectedOption === "420") {
+        url = "http://localhost:8000/dian/address_420";
+      } else if (selectedOption === "421") {
+        url = "http://localhost:8000/dian/address_421";
+      } else if (selectedOption === "422") {
+        url = "http://localhost:8000/dian/address_422";
+      } else if (selectedOption === "423") {
+        url = "http://localhost:8000/dian/address_423";
+      } else if (selectedOption === "426") {
+        url = "http://localhost:8000/dian/address_426";
+      } else if (selectedOption === "427") {
+        url = "http://localhost:8000/dian/address_427";
+      } else if (selectedOption === "428") {
+        url = "http://localhost:8000/dian/address_428";
+      } else if (selectedOption === "429") {
+        url = "http://localhost:8000/dian/address_429";
+      } else if (selectedOption === "432") {
+        url = "http://localhost:8000/dian/address_432";
+      } else if (selectedOption === "433") {
+        url = "http://localhost:8000/dian/address_433";
+      } else if (selectedOption === "434") {
+        url = "http://localhost:8000/dian/address_434";
+      } else if (selectedOption === "435") {
+        url = "http://localhost:8000/dian/address_435";
+      } else if (selectedOption === "436") {
+        url = "http://localhost:8000/dian/address_436";
+      } else if (selectedOption === "437") {
+        url = "http://localhost:8000/dian/address_437";
+      } else if (selectedOption === "438") {
+        url = "http://localhost:8000/dian/address_438";
+      }
+
+      const response = await axios.get(url);
+      const contentWithDistance = response.data.map((item) => {
+        const distance = this.calculateDistance(
+          this.state.userLocation.latitude,
+          this.state.userLocation.longitude,
+          item.branch_latitude,
+          item.branch_longitude
+        );
+        return {
+          ...item,
+          distance: distance,
+        };
       });
-      this.setState({ distances });
+      this.setState({ selectedOption, content: contentWithDistance });
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
-  deg2rad = (deg) => {
-    return deg * (Math.PI / 180);
+  handleScoreChange = async (selectedScore) => {
+    try {
+      this.setState({ selectedOption: "", selectedNearby: "" });
+
+      let url = "";
+      if (selectedScore === "4.5") {
+        url = "http://localhost:8000/dian/score_4.5";
+      } else if (selectedScore === "4.0") {
+        url = "http://localhost:8000/dian/score_4.0";
+      } else if (selectedScore === "3.5") {
+        url = "http://localhost:8000/dian/score_3.5";
+      } else if (selectedScore === "3.0") {
+        url = "http://localhost:8000/dian/score_3.0";
+      }
+
+      const response = await axios.get(url);
+      const contentWithDistance = response.data.map((item) => {
+        if (this.state.userLocation) {
+          const distance = this.calculateDistance(
+            this.state.userLocation.latitude,
+            this.state.userLocation.longitude,
+            item.branch_latitude,
+            item.branch_longitude
+          );
+          return {
+            ...item,
+            distance: parseFloat(distance).toFixed(1),
+          };
+        } else {
+          return {
+            ...item,
+            distance: "N/A", // 如果 userLocation 為 null，則設置距離為 N/A
+          };
+        }
+      });
+      this.setState({ score: selectedScore, content: contentWithDistance });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   render() {
-    const currentLat = this.state.currentLocation.lat;
-    const currentLng = this.state.currentLocation.lng;
-    const distances = this.state.distances;
-    // const nearbyChecked = this.state.nearbyChecked; // 获取复选框状态
-    // const starChecked = this.state.starChecked; // 获取星评优选选项的状态
+    const { selectedOption, content, selectedNearby } = this.state;
+    const shuffledContent = content.sort(() => Math.random() - 0.5);
 
     return (
       <React.Fragment>
-        <div id='header'
-            style={{
-                boxShadow: '1px 3px 10px #cccccc',
-                marginBottom: '4px',
-            }} 
-            className='d-flex justify-content-between'>
-            <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
-            <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
-                <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png'></img></h4>
-                <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-                <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-                <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
-            </div>
-            <div id="pointinfo">
-                <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2 text-light' /></button>
-                <h1>集點資訊</h1>
-                <p>．每消費20元即可累積1點。</p>
-                <p>．每點可折抵1元消費金額。</p>
-                <p>．點數可在下次消費時折抵使用。</p>
-                <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
-                <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
-            </div>
+            <div id='header'
+                style={{
+                    boxShadow: '1px 3px 10px #cccccc',
+                    marginBottom: '4px',
+                }} 
+                className='d-flex justify-content-between'>
+                <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
+                <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
+                    <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
+                </div>
+                <div id="pointinfo">
+                    <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2 text-light' /></button>
+                    <h1>集點資訊</h1>
+                    <p>．每消費20元即可累積1點。</p>
+                    <p>．每點可折抵1元消費金額。</p>
+                    <p>．點數可在下次消費時折抵使用。</p>
+                    <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
+                    <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
+                </div>
 
 
-            <div className='d-flex me-2  align-items-center'>
-                <h4 id='loginBtn' className='my-auto btn headerText' onClick={this.toggleMemberNav}>登入/註冊▼</h4>
-                <div id='memberNav' className='collapse'>
-                    <img id='memberNavImg' src={("/img/index/LeDian_LOGO-05.png")} alt='logo'></img>
-                    <div className='p-2'>
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>個人檔案</h4><hr />
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>帳號管理</h4><hr />
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>歷史訂單</h4><hr />
-                        <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>載具存取</h4><hr />
-                        <h4 className='headerText text-center my-2'>登出</h4>
+                <div className='d-flex me-2 align-items-center'>
+                    {this.loginCheck()}
+                    <div id='memberNav' className='collapse'>
+                        <div className='p-2'>
+                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>會員中心</h4><hr />
+                            <h4 className='headerText text-center my-2' onClick={this.logoutClick}>登出</h4>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-            <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-            <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-            <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
-        </div>
+            <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
+            </div>
 
 
         <div id="banner" className="d-flex justify-content-center">
@@ -222,14 +324,6 @@ class dian extends Component {
               ></img>
             </div>
           </div>
-          <input
-            type="text"
-            id="search"
-            name="search"
-            onChange={this.searchChange}
-            value={this.state.search}
-            className="form-control rounded-pill ps-4 bg-secondary-subtle"
-          ></input>
         </div>
 
         <main>
@@ -240,14 +334,14 @@ class dian extends Component {
                   <div className="choose_left_1">透過以下分類篩選</div>
                   <div className="choose_classification_1">
                     <div className="classification_title">快速篩選</div>
-                    <div className="form-check">
+                    <div className="form-check dian">
                       <input
-                        className="form-check-input"
+                        className="form-check-input dian_radio"
                         type="radio"
                         value=""
                         id="classification_1"
-                        name="nearbyChecked"
-                        onChange={this.handleCheckboxChange} // 在复选框的onChange事件中调用handleCheckboxChange函数
+                        checked={selectedNearby === "nearby"}
+                        onChange={() => this.handleNearbyChange("nearby")}
                       />
                       <label
                         className="form-check-label"
@@ -256,14 +350,14 @@ class dian extends Component {
                         附近店家
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check dian">
                       <input
-                        className="form-check-input"
+                        className="form-check-input dian_radio"
                         type="radio"
                         value=""
                         id="classification_2"
-                        name="starChecked" // 设置复选框的name属性，用于标识不同的选项
-                        // onChange={this.handleCheckboxChange}
+                        checked={this.state.score === "4.0"}
+                        onChange={() => this.handleScoreChange("4.0")}
                       />
                       <label
                         className="form-check-label"
@@ -276,130 +370,151 @@ class dian extends Component {
                   <div className="choose_classification_2">
                     <div className="classification_title">台中探索</div>
                     <div className="addressall">
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_1"
                           value="中區"
+                          data-postcode
+                          checked={selectedOption === "400"}
+                          onChange={() => this.handleOptionChange("400")}
                         />
                         <label className="form-check-label" htmlFor="address_1">
                           {" "}
                           中區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_2"
                           value="東區"
+                          checked={selectedOption === "401"}
+                          onChange={() => this.handleOptionChange("401")}
                         />
                         <label className="form-check-label" htmlFor="address_2">
                           {" "}
                           東區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_3"
                           value="南區"
+                          checked={selectedOption === "402"}
+                          onChange={() => this.handleOptionChange("402")}
                         />
                         <label className="form-check-label" htmlFor="address_3">
                           {" "}
                           南區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_4"
                           value="西區"
+                          checked={selectedOption === "403"}
+                          onChange={() => this.handleOptionChange("403")}
                         />
                         <label className="form-check-label" htmlFor="address_4">
                           {" "}
                           西區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_5"
                           value="北區"
+                          checked={selectedOption === "404"}
+                          onChange={() => this.handleOptionChange("404")}
                         />
                         <label className="form-check-label" htmlFor="address_5">
                           {" "}
                           北區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_6"
                           value="北屯區"
+                          checked={selectedOption === "406"}
+                          onChange={() => this.handleOptionChange("406")}
                         />
                         <label className="form-check-label" htmlFor="address_6">
                           {" "}
                           北屯區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_7"
                           value="西屯區"
+                          checked={selectedOption === "407"}
+                          onChange={() => this.handleOptionChange("407")}
                         />
                         <label className="form-check-label" htmlFor="address_7">
                           {" "}
                           西屯區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_8"
                           value="南屯區"
+                          checked={selectedOption === "408"}
+                          onChange={() => this.handleOptionChange("408")}
                         />
                         <label className="form-check-label" htmlFor="address_8">
                           {" "}
                           南屯區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_9"
                           value="太平區"
+                          checked={selectedOption === "411"}
+                          onChange={() => this.handleOptionChange("411")}
                         />
                         <label className="form-check-label" htmlFor="address_9">
                           {" "}
                           太平區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_10"
                           value="大里區"
+                          checked={selectedOption === "412"}
+                          onChange={() => this.handleOptionChange("412")}
                         />
                         <label
                           className="form-check-label"
@@ -409,13 +524,15 @@ class dian extends Component {
                           大里區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_11"
                           value="霧峰區"
+                          checked={selectedOption === "413"}
+                          onChange={() => this.handleOptionChange("413")}
                         />
                         <label
                           className="form-check-label"
@@ -425,13 +542,15 @@ class dian extends Component {
                           霧峰區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_12"
                           value="烏日區"
+                          checked={selectedOption === "414"}
+                          onChange={() => this.handleOptionChange("414")}
                         />
                         <label
                           className="form-check-label"
@@ -441,13 +560,15 @@ class dian extends Component {
                           烏日區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_13"
                           value="豐原區"
+                          checked={selectedOption === "420"}
+                          onChange={() => this.handleOptionChange("420")}
                         />
                         <label
                           className="form-check-label"
@@ -457,13 +578,15 @@ class dian extends Component {
                           豐原區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_14"
                           value="后里區"
+                          checked={selectedOption === "421"}
+                          onChange={() => this.handleOptionChange("421")}
                         />
                         <label
                           className="form-check-label"
@@ -473,13 +596,15 @@ class dian extends Component {
                           后里區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_15"
                           value="石岡區"
+                          checked={selectedOption === "422"}
+                          onChange={() => this.handleOptionChange("422")}
                         />
                         <label
                           className="form-check-label"
@@ -489,13 +614,15 @@ class dian extends Component {
                           石岡區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_16"
                           value="東勢區"
+                          checked={selectedOption === "423"}
+                          onChange={() => this.handleOptionChange("423")}
                         />
                         <label
                           className="form-check-label"
@@ -505,13 +632,15 @@ class dian extends Component {
                           東勢區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_17"
                           value="新社區"
+                          checked={selectedOption === "426"}
+                          onChange={() => this.handleOptionChange("426")}
                         />
                         <label
                           className="form-check-label"
@@ -521,13 +650,15 @@ class dian extends Component {
                           新社區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_18"
                           value="潭子區"
+                          checked={selectedOption === "427"}
+                          onChange={() => this.handleOptionChange("427")}
                         />
                         <label
                           className="form-check-label"
@@ -537,13 +668,15 @@ class dian extends Component {
                           潭子區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_19"
                           value="大雅區"
+                          checked={selectedOption === "428"}
+                          onChange={() => this.handleOptionChange("428")}
                         />
                         <label
                           className="form-check-label"
@@ -553,13 +686,15 @@ class dian extends Component {
                           大雅區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_20"
                           value="神岡區"
+                          checked={selectedOption === "429"}
+                          onChange={() => this.handleOptionChange("429")}
                         />
                         <label
                           className="form-check-label"
@@ -569,13 +704,15 @@ class dian extends Component {
                           神岡區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_21"
                           value="大肚區"
+                          checked={selectedOption === "432"}
+                          onChange={() => this.handleOptionChange("432")}
                         />
                         <label
                           className="form-check-label"
@@ -585,13 +722,15 @@ class dian extends Component {
                           大肚區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_22"
                           value="沙鹿區"
+                          checked={selectedOption === "433"}
+                          onChange={() => this.handleOptionChange("433")}
                         />
                         <label
                           className="form-check-label"
@@ -601,13 +740,15 @@ class dian extends Component {
                           沙鹿區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_23"
                           value="龍井區"
+                          checked={selectedOption === "434"}
+                          onChange={() => this.handleOptionChange("434")}
                         />
                         <label
                           className="form-check-label"
@@ -617,13 +758,15 @@ class dian extends Component {
                           龍井區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_24"
                           value="梧棲區"
+                          checked={selectedOption === "435"}
+                          onChange={() => this.handleOptionChange("435")}
                         />
                         <label
                           className="form-check-label"
@@ -633,13 +776,15 @@ class dian extends Component {
                           梧棲區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_25"
                           value="清水區"
+                          checked={selectedOption === "436"}
+                          onChange={() => this.handleOptionChange("436")}
                         />
                         <label
                           className="form-check-label"
@@ -649,13 +794,15 @@ class dian extends Component {
                           清水區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_26"
                           value="大甲區"
+                          checked={selectedOption === "437"}
+                          onChange={() => this.handleOptionChange("437")}
                         />
                         <label
                           className="form-check-label"
@@ -665,13 +812,15 @@ class dian extends Component {
                           大甲區{" "}
                         </label>
                       </div>
-                      <div className="form-check">
+                      <div className="form-check dian">
                         <input
-                          className="form-check-input"
+                          className="form-check-input dian_radio"
                           type="radio"
                           name="address"
                           id="address_27"
                           value="外埔區"
+                          checked={selectedOption === "438"}
+                          onChange={() => this.handleOptionChange("438")}
                         />
                         <label
                           className="form-check-label"
@@ -685,45 +834,53 @@ class dian extends Component {
                   </div>
                   <div className="choose_classification_3">
                     <div className="classification_title">尋星饗宴</div>
-                    <div className="form-check">
+                    <div className="form-check dian">
                       <input
-                        className="form-check-input"
+                        className="form-check-input dian_radio"
                         type="radio"
                         name="score"
                         id="score_1"
+                        checked={this.state.score === "4.5"}
+                        onChange={() => this.handleScoreChange("4.5")}
                       />
                       <label className="form-check-label" htmlFor="score_1">
                         <GradeIcon className="me-1 iconColor" /> 4.5以上
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check dian">
                       <input
-                        className="form-check-input"
+                        className="form-check-input dian_radio"
                         type="radio"
                         name="score"
                         id="score_2"
+                        checked={this.state.score === "4.0"}
+                        onChange={() => this.handleScoreChange("4.0")}
                       />
                       <label className="form-check-label" htmlFor="score_2">
                         <GradeIcon className="me-1 iconColor" /> 4.0以上
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check dian">
                       <input
-                        className="form-check-input"
+                        className="form-check-input dian_radio"
                         type="radio"
                         name="score"
                         id="score_2"
+                        checked={this.state.score === "3.5"}
+                        onChange={() => this.handleScoreChange("3.5")}
                       />
                       <label className="form-check-label" htmlFor="score_2">
                         <GradeIcon className="me-1 iconColor" /> 3.5以上
                       </label>
                     </div>
-                    <div className="form-check">
+                    <div className="form-check dian">
                       <input
-                        className="form-check-input"
+                        className="form-check-input dian_radio"
                         type="radio"
                         name="score"
                         id="score_2"
+                        checked={this.state.score === "3.0"}
+                        onChange={() => this.handleScoreChange("3.0")}
                       />
                       <label className="form-check-label" htmlFor="score_2">
                         <GradeIcon className="me-1 iconColor" /> 3.0以上
@@ -732,151 +889,112 @@ class dian extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right justify-content-center">
-                {/* 附近店鋪 */}
-                {currentLat !== null && currentLng !== null ? (
-                  <>
-                    {Object.entries(distances)
-                      .filter(([branchId, distance]) => distance < 1.5)
-                      .sort((a, b) => a[1] - b[1])
-                      .map(([branchid, distance]) => (
-                        <div key={branchid} className="col-lg-6 col-xxl-4 my-3">
-                          <div className="card">
-                            <div className="image">
+              <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right justify-content-center mx-auto">
+                {/* 台中探索、尋星饗宴、星評優選 */}
+                {shuffledContent.map((item, index) => {
+                  let distance = "";
+
+                  if (this.state.userLocation) {
+                    distance = this.calculateDistance(
+                      this.state.userLocation.latitude,
+                      this.state.userLocation.longitude,
+                      item.branch_latitude,
+                      item.branch_longitude
+                    );
+                  } else {
+                    console.log("User location is not available yet.");
+                  }
+
+                  return (
+                    <div
+                      key={index}
+                      className="col-lg-6 col-xxl-4 my-3"
+                      onClick={() => {
+                        window.location = `/order/${item.branch_id}`;
+                      }}
+                    >
+                      <div className="card">
+                        <div className="image">
+                          <img
+                            src={`/img/mainproduct/${item.brand_id}.png`}
+                            className="card-img-top"
+                            alt="..."
+                          />
+                          <img
+                            src={`/img/logo/${item.brand_id}.png`}
+                            className="logo"
+                            alt="..."
+                          />
+                        </div>
+                        <div className="card-body">
+                          <div className="row information">
+                            <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
+                              <GradeIcon className="me-1 iconColor" />
+                              {item.branch_score.toFixed(1)}
+                            </p>
+                            <p className="col-5 time">
                               {this.state.branchList.map((branch) => {
-                                if (branch.branch_id == branchid) {
-                                  var id = branch.brand_id;
-                                  return this.state.brandList.map(function (
-                                    brand
+                                if (branch.branch_id === item.brand_id) {
+                                  const day = new Date().getDay();
+                                  const openTime = [
+                                    branch.Sun_start,
+                                    branch.Mon_start,
+                                    branch.Tue_start,
+                                    branch.Wed_start,
+                                    branch.Thu_start,
+                                    branch.Fri_start,
+                                    branch.Sat_start,
+                                  ];
+                                  const closeTime = [
+                                    branch.Sun_end,
+                                    branch.Mon_end,
+                                    branch.Tue_end,
+                                    branch.Wed_end,
+                                    branch.Thu_end,
+                                    branch.Fri_end,
+                                    branch.Sat_end,
+                                  ];
+                                  if (
+                                    openTime[day] == "店休" ||
+                                    closeTime[day] == "店休"
                                   ) {
-                                    if (brand.brand_id == id) {
-                                      return (
-                                        <img
-                                          src={`/img/mainproduct/${brand.brand_id}.png`}
-                                          className="card-img-top"
-                                          alt="..."
-                                          key={branch.branch_id}
-                                        />
-                                      );
-                                    } else {
-                                      return null;
-                                    }
-                                  });
+                                    return "店休";
+                                  } else {
+                                    return `${openTime[day]}~${closeTime[day]}`;
+                                  }
                                 } else {
                                   return null;
                                 }
                               })}
-                            </div>
-                            <div className="card-body">
-                              <div className="row information">
-                                <p className="col-3 score align-items-center d-flex align-items-center justify-content-center">
-                                  <GradeIcon className="me-1 iconColor" />
-                                  {/* 評分 */}
-                                  {this.state.branchList.map(function (e) {
-                                    if (e.branch_id == branchid) {
-                                      return e.branch_score.toFixed(1); //小數點後補0
-                                    } else {
-                                      return null;
-                                    }
-                                  })}
-                                </p>
-
-                                <p className="col-5 time">
-                                  {/* 營業時間 */}
-
-                                  {this.state.branchList.map((branch) => {
-                                    if (branch.branch_id == branchid) {
-                                      const day = new Date().getDay();
-                                      const openTime = [
-                                        branch.Sun_start,
-                                        branch.Mon_start,
-                                        branch.Tue_start,
-                                        branch.Wed_start,
-                                        branch.Thu_start,
-                                        branch.Fri_start,
-                                        branch.Sat_start,
-                                      ];
-                                      const closeTime = [
-                                        branch.Sun_end,
-                                        branch.Mon_end,
-                                        branch.Tue_end,
-                                        branch.Wed_end,
-                                        branch.Thu_end,
-                                        branch.Fri_end,
-                                        branch.Sat_end,
-                                      ];
-                                      if (
-                                        (openTime[day] == "店休") |
-                                        (closeTime[day] == "店休")
-                                      ) {
-                                        return "店休";
-                                      } else {
-                                        return `${openTime[day]}~${closeTime[day]}`;
-                                      }
-                                    } else {
-                                      return null;
-                                    }
-                                  })}
-                                </p>
-                                <p className="col-4 kilometre">
-                                  約 {distance} 公里
-                                </p>
-                              </div>
-                              <p className="card-title lh-sm">
-                                {/* 品牌名 */}
-                                {this.state.branchList.map((branch) => {
-                                  if (branch.branch_id == branchid) {
-                                    var id = branch.brand_id;
-                                    return this.state.brandList.map(function (
-                                      brand
-                                    ) {
-                                      if (brand.brand_id == id) {
-                                        return brand.brand_name;
-                                      } else {
-                                        return null;
-                                      }
-                                    });
-                                  } else {
-                                    return null;
-                                  }
-                                })}{" "}
-                                {/* 店名 */}
-                                {this.state.branchList.map(function (e) {
-                                  if (e.branch_id == branchid) {
-                                    return e.branch_name;
-                                  } else {
-                                    return null;
-                                  }
-                                })}
-                                <br />
-                                {this.state.branchList.map(function (e) {
-                                  if (e.branch_id == branchid) {
-                                    return (
-                                      <a
-                                        key={branchid}
-                                        href={
-                                          "https://www.google.com/maps/place/" +
-                                          e.branch_address
-                                        }
-                                      >
-                                        {e.branch_address}
-                                      </a>
-                                    );
-                                  } else {
-                                    return null;
-                                  }
-                                })}
-                              </p>
-                            </div>
+                            </p>
+                            <p className="col-4 kilometre">
+                              約 {item.distance} 公里
+                            </p>
                           </div>
+                          <p className="card-title lh-sm">
+                            {this.state.brand &&
+                              this.state.brand
+                                .filter(
+                                  (brand) => brand.brand_id === item.brand_id
+                                )
+                                .map((brand) => (
+                                  <span key={brand.brand_id}>
+                                    {brand.brand_name}
+                                  </span>
+                                ))}{" "}
+                            {item.branch_name}
+                            <br />
+                            <a
+                              href={`https://www.google.com/maps/place/${item.branch_address}`}
+                            >
+                              {item.branch_address}
+                            </a>
+                          </p>
                         </div>
-                      ))}
-                  </>
-                ) : (
-                  <h3>無法讀取位置...</h3>
-                )}
-
-                {/* 星評優選 */}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -923,7 +1041,7 @@ class dian extends Component {
           </div>
           <div
             id="footerInfo"
-            className="col-3 d-flex row align-items-center justify-content-center pe-1"
+            className="col-3 d-flex row align-items-center justify-content-center"
           >
             <div className="col-3 col-sm-6 d-flex flex-column align-items-center">
               <p className="footerText m-0 py-1 text-nowrap text-white">
@@ -946,53 +1064,84 @@ class dian extends Component {
             </div>
           </div>
         </div>
+
+        <button className="topbtn" id="topbtn" onClick={this.scrollToTop}>
+          <FaArrowCircleUp className="text-white" />
+        </button>
       </React.Fragment>
     );
   }
-  searchChange = (e) => {
-    var newState = { ...this.state };
-    newState.search = e.target.value;
-    this.setState(newState);
-  };
   pointinfoShow = (event) => {
     document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
-    document.getElementById("pointinfo").style.left =
-      event.clientX - 150 + "px";
-  };
+    document.getElementById("pointinfo").style.left = event.clientX - 150 + "px";
+} 
 
-  pointinfoHide = (event) => {
+pointinfoHide = (event) => {
     document.getElementById("pointinfo").style.top = "-500px";
     event.cancelBubble = true;
-  };
+}
 
-  toggleMemberNav = () => {
-    document.getElementById("memberNav").classList.toggle("collapse");
-  };
+toggleMemberNav = () => {
+    const userdata = localStorage.getItem('userdata');
+    if(userdata){
+        document.getElementById('memberNav').classList.toggle('collapse');
+    }else{
+        const path = this.props.location.pathname;
+        sessionStorage.setItem('redirect',path) ;
+        window.location = "/login";
+    }
+  }
+toggleMenuNav = () => {
+    document.getElementById('menuNav').classList.toggle('menuNav');
+}
+logoutClick = async () => {
+    // 清除localStorage
+    localStorage.removeItem("userdata");
+    const userdata = localStorage.getItem("userdata");
+    console.log("現在的:", userdata);
+    try {
+        // 告訴後台使用者要登出
+        await axios.post('http://localhost:8000/logout');
+    
+        
+        //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+    } catch (error) {
+        console.error("登出時出錯:", error);
+    }
+    
+    document.getElementById('memberNav').classList.add('collapse');
+    this.setState({})
+    window.location = "/index"
+}
+loginCheck = () => {
+    const userData = JSON.parse(localStorage.getItem('userdata'));
+    if(userData){
+        const userImg = userData.user_img?userData.user_img:'LeDian.png';
+        return (
+            <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
+                <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+                會員專區▼</h4>
+            )
+    }else {
+        return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+    }              
+}
+cartMenuClick = () => {
+    const userData = JSON.parse(localStorage.getItem('userdata'));
+    if(userData){
+        const userId = userData.user_id;
+        window.location = `/cartlist/${userId}`;
+    }else {
+        window.location = "/login";
+    }              
 
-  toggleMenuNav = () => {
-    document.getElementById("menuNav").classList.toggle("menuNav");
-  };
+}
 
-  // componentDidMount = async () => {
-  //   try {
-  //     var resultstar4 = await axios.get("http://localhost:8000/dian/star4");
-  //     var branchList = await axios.get("http://localhost:8000/index/branch");
-  //     var brandList = await axios.get("http://localhost:8000/index/brand");
-
-  //     this.setState({
-  //       resultstar4: resultstar4.data,
-  //       branchList: branchList.data,
-  //       brandList: brandList.data,
-  //     });
-  //     console.log(this.state);
-  //   } catch (ereor) {
-  //     console.error("Error", error);
-  //   }
-  // };
-
-  handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    this.setState({ [name]: checked }); // 更新对应选项的状态
+scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // 平滑滾動
+    });
   };
 }
 
