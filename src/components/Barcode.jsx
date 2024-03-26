@@ -1,38 +1,38 @@
 import React, { Component } from "react";
 import JsBarcode from "jsbarcode";
-import "../css/profile.css"; // 引入樣式文件
-import "react-datepicker/dist/react-datepicker.css"; // 引入日期選擇器樣式
-import { Modal } from "react-bootstrap"; // 添加這行
+import "../css/profile.css"; 
+import "react-datepicker/dist/react-datepicker.css"; 
+import { Modal } from "react-bootstrap"; 
 
 class Barcode extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      verifyBarcodeInput: "", // 驗證輸入的條碼
-      validationResult: "", // 驗證結果
-      generatedBarcodeContainerDisplay: "none", // 生成的條碼容器顯示狀態
-      barcodeImgButtonDisplay: "none", // 條碼圖片按鈕顯示狀態
-      isModalOpen: false, // 模態框打開狀態
-      barcodeText: "", // 條碼文本
+      verifyBarcodeInput: "",
+      validationResult: "", 
+      generatedBarcodeContainerDisplay: "none", 
+      barcodeImgButtonDisplay: "none", 
+      isModalOpen: false, 
+      barcodeText: "", 
     };
   }
 
-  // 處理輸入框變化
+
   handleInputChange = (e) => {
     this.setState({ verifyBarcodeInput: e.target.value.toUpperCase() });
   };
 
-  // 處理編輯按鈕點擊
+
   handleEditButtonClick = () => {
     this.setState({ isModalOpen: true });
   };
 
-  // 處理刪除按鈕點擊
+
   handleDeleteButtonClick = () => {
     this.clearBarcode();
   };
 
-  // 清除條碼信息
+
   clearBarcode = () => {
     this.setState({
       verifyBarcodeInput: "",
@@ -43,7 +43,7 @@ class Barcode extends Component {
     });
   };
 
-  // 生成條碼
+
   generateBarcode = (barcodeValue) => {
     JsBarcode("#generatedBarcode", barcodeValue, { format: "CODE39" });
     this.setState({
@@ -54,7 +54,7 @@ class Barcode extends Component {
     });
   };
 
-  // 驗證輸入的條碼
+
   validateBarcode = () => {
     const barcodeValue = this.state.verifyBarcodeInput;
     const regex = /^\/[\dA-Z0-9+\-.]{7}$/;
@@ -72,7 +72,6 @@ class Barcode extends Component {
   render() {
     return (
       <>
-        {/* 模態框 */}
         <Modal show={this.state.isModalOpen} backdrop="static" centered>
         <Modal.Header closeButton onClick={this.handleModalClose}>
         <Modal.Title>我的載具</Modal.Title>
@@ -98,11 +97,10 @@ class Barcode extends Component {
               儲存
             </div>
           </Modal.Footer>
-
         </Modal>
-        {/* 模態框結束 */}
 
-        {/* 條碼部分 */}
+
+
         <div className="col-12 mb-2 mt-4">
           <div className="row">
             <div className="col-2"></div>
@@ -141,7 +139,6 @@ class Barcode extends Component {
             <svg id="generatedBarcode"></svg>
           </div>
         </div>
-        {/* 條碼部分結束 */}
       </>
     );
   }

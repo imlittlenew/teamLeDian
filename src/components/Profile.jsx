@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import "../css/profile.css";
 import Barcode from "./Barcode.jsx";
@@ -9,7 +9,6 @@ import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import { Helmet } from "react-helmet";
 import { Modal } from 'bootstrap';
-import bootstrap from 'bootstrap'
 import Axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -50,7 +49,6 @@ class Profile extends Component {
   componentDidMount() {
     window.addEventListener("resize", this.handleWindowResize);
     const userData = JSON.parse(localStorage.getItem("userdata"));
-
     if (userData) {
       Axios.get(`http://localhost:8000/user/${userData.user_id}`)
         .then((response) => {
@@ -61,11 +59,6 @@ class Profile extends Component {
           console.error("Failed to fetch user data:", error);
         });
     }
-
-
-
-
-
     if (userData.user_id != null) {
       Axios.get(`http://localhost:8000/user/${userData.user_id}`)
         .then((response) => {
@@ -359,26 +352,17 @@ class Profile extends Component {
         // 可以根据需要在这里处理上传失败后的逻辑
       });
   };
+
   handleModalClose = () => {
     const myModalElement = document.getElementById('Orders_staticBackdrop');
-    alert('myModalElement:', myModalElement);
-  
     const myModal = Modal.getInstance(myModalElement);
-    alert('myModal:', myModal);
   
     if (myModal) {
       myModal.hide();
       myModalElement.setAttribute('data-bs-backdrop', 'true');
-      alert('Modal closed successfully.');
     } else {
-      alert('Modal instance not found.');
     }
   };
-  
-
-  
-  
-
   handleOrderButtonClick = (order) => {
     this.setState({ selectedOrder: order });
     Axios.get(`http://localhost:8000/profile/order_details/${order.orders_id}`)
@@ -389,6 +373,46 @@ class Profile extends Component {
         console.log("Failed to fetch order details data: " + orderDetailsError);
       });
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    // 检查 this.state.selectedOrder 是否存在
+    if (this.state.selectedOrder) {
+      const { user_id } = this.state.selectedOrder;
+      // 向後端發送請求，獲取特定使用者的訂單資料
+      Axios.get(`http://localhost:8000/profile/orders/${user_id}`)
+        .then((response) => {
+          // 獲取到訂單資料
+          const orders = response.data;
+          // 在這裡您可以比對訂單資料的付款狀態和更新點數狀態，並執行相應的邏輯
+          orders.forEach((order) => {
+            const { payment_status, updatedpoints } = order;
+            // 檢查付款狀態是否為1且updatedpoints是否為0
+            if (payment_status === 1 && updatedpoints === 0) {
+              // 調用 updateUserPoints 函數來更新用戶積分
+              this.updateUserPoints();
+            }
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching orders data:', error);
+        });
+    }
+  }
+  updateUserPoints = () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    const userId = userData.user_id; 
+    const pointsToAdd = Math.floor(this.state.selectedOrder.orders_total / 20);
+  
+    Axios.post(`http://localhost:8000/updateUserPoints/${userId}`, { pointsToAdd: pointsToAdd })
+      .then((response) => {
+        const updatedPointsToAdd = response.data;
+        console.log("Updated pointsToAdd:", updatedPointsToAdd);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+  
 
   render() {
     const {
@@ -401,6 +425,7 @@ class Profile extends Component {
       ordersData,
     } = this.state;
     let totalQuantity = 0;
+
     return (
       <div id="profile">
         <Helmet>
@@ -547,9 +572,8 @@ class Profile extends Component {
         <div
           className="modal fade"
           id="Orders_staticBackdrop"
-          data-bs-backdrop="static"
           data-bs-keyboard="false"
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby="Orders_staticBackdropLabel"
           aria-hidden="true"
         >
@@ -680,7 +704,7 @@ class Profile extends Component {
                   {this.state.selectedOrderDetails && (
                     <>
                       {this.state.selectedOrderDetails.map((detail, index) => (
-                        <div key={index} className="rounded-1 detailsbuttom my-2">
+                        <div key={`detail_${index}`} className="rounded-1 detailsbuttom my-2">
                           <div className="col-12 mb-1 fs-6 fw-bold mt-3">
                             {detail.details_name}
                           </div>
@@ -699,7 +723,7 @@ class Profile extends Component {
                   )}
 
                     {this.state.selectedOrder && this.state.selectedOrder.orders_bag === 1 && (
-                      <div className="rounded-1 detailsbuttom">
+                       <div key="bag" className="rounded-1 detailsbuttom">
                         <div className="col-12 mb-1 fs-6 fw-bold mt-3">塑膠袋</div>
                         <div className="col-12 mb-3">
                           <span>$2/</span>
@@ -710,18 +734,21 @@ class Profile extends Component {
 
 
                     {this.state.selectedOrderDetails && (
-                    <>
-                      {this.state.selectedOrderDetails.map((detail, index) => {
-                        totalQuantity += detail.details_quantity; // 计算商品总数量
-                      })}
-                      <div className="mt-4"></div>
-                      <div className="col-3">
-                        <span>商品</span>
-                      </div>
-                      <div className="col-4 text-start">X{totalQuantity}</div>
-                      <div className="col-5 text-end">$85</div>
-                    </>
+                      <>
+                        {this.state.selectedOrderDetails.map((detail, index) => {
+                          totalQuantity += detail.details_quantity; 
+                        })}
+
+
+                        <div className="mt-4"></div>
+                        <div className="col-3">
+                          <span>商品</span>
+                        </div>
+                        <div className="col-4 text-start">X{totalQuantity}</div>
+                        <div className="col-5 text-end">${this.state.selectedOrderDetails.reduce((totalPrice, detail) => totalPrice + detail.details_total, 0)}</div>
+                      </>
                     )}
+
                      
                      {this.state.selectedOrder && (
                     <>
@@ -734,10 +761,15 @@ class Profile extends Component {
                       <div className="col-5 text-end">${this.state.selectedOrder.orders_bag_num * 2}</div>
                       </>
                      )}
-                      <div className="col-3 text-danger">
-                        <span>點數折扣</span>
-                      </div>
-                      <div className="col-9 text-end text-danger">-${this.state.selectedOrder.usePoninter}</div>
+                      {this.state.selectedOrder.usePoninter !== 0 && (
+                        <>
+                          <div className="col-3 text-danger">
+                            <span>點數折扣</span>
+                          </div>
+                          <div className="col-9 text-end text-danger">-${this.state.selectedOrder.usePoninter}</div>
+                        </>
+                      )}
+
                       <hr className="mt-3" />
 
                       <div className="col-3">
@@ -781,15 +813,17 @@ class Profile extends Component {
               </div>
               {/* <!-- body end --> */}
               <div className="modal-footer">
+              
                 <button
                     type="button"
-                    className="btn-close"
+                    className="btnmodal"
                     data-bs-dismiss="modal"
                     aria-label="Close"
                     onClick={this.handleModalClose}
                   >
                   送出評價
                 </button>
+              
               </div>
             </div>
           </div>
@@ -824,7 +858,7 @@ class Profile extends Component {
                             alt=" "
                           />
                           <h6 className="mb-0 mx-2 userpoint">
-                            {userData.points}
+                          {this.state.userData.points}
                           </h6>
                         </span>
                       </div>
@@ -1143,12 +1177,12 @@ class Profile extends Component {
                             >
                               <option value="">選擇城市</option>
                               {city &&
-                                city.map((city) => (
+                                city.map((cityItem) => (
                                   <option
-                                    key={city.city_id}
-                                    value={city.city_id}
+                                    key={cityItem.city_id}
+                                    value={cityItem.city_id}
                                   >
-                                    {city.city}
+                                    {cityItem.city}
                                   </option>
                                 ))}
                             </select>
@@ -1162,12 +1196,12 @@ class Profile extends Component {
                             >
                               <option value="">選擇地區</option>
                               {region &&
-                                region.map((region) => (
+                                region.map((regionItem) => (
                                   <option
-                                    key={region.region_id}
-                                    value={region.region_id}
+                                    key={regionItem.region_id}
+                                    value={regionItem.region_id}
                                   >
-                                    {region.region}
+                                    {regionItem.region}
                                   </option>
                                 ))}
                             </select>
@@ -1206,7 +1240,7 @@ class Profile extends Component {
                               name="oldPassword"
                               className="form-control"
                               required
-                              autocomplete="current-password"
+                              autoComplete="current-password"
                             />
                             <div className="invalid-feedback">不能為空</div>
                           </div>
@@ -1224,7 +1258,7 @@ class Profile extends Component {
                               name="newPassword"
                               className="form-control"
                               required
-                              autocomplete="new-password"
+                              autoComplete="new-password"
                             />
                             <div className="invalid-feedback">不能為空</div>
                           </div>
@@ -1243,7 +1277,7 @@ class Profile extends Component {
                               name="newPassword"
                               className="form-control"
                               required
-                              autocomplete="new-password"
+                              autoComplete="new-password"
                             />
                             <div className="invalid-feedback">不能為空</div>
                           </div>
@@ -1263,7 +1297,7 @@ class Profile extends Component {
                     <div className="tab-pane fade" id="Historical_Orders-v">
                       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                         {ordersData.map((order, index) => (
-                          <div key={index} className="col">
+                          <div key={order.orderId} className="col">
                             <div className="card h-100 text-center">
                               <div className="card-header fw-bold">完成</div>
                               <div className="text-center mt-3">
@@ -1417,68 +1451,21 @@ class Profile extends Component {
     document.getElementById("menuNav").classList.toggle("menuNav");
   };
 
-  // logoutClick = async () => {
-  //   // 清除localStorage
-  //   localStorage.removeItem("userdata");
-  //   const userdata = localStorage.getItem("userdata");
-  //   console.log("現在的:", userdata);
+  logoutClick = async () => {
+    localStorage.removeItem("userdata");
+    const userdata = localStorage.getItem("userdata");
+    console.log("現在的:", userdata);
 
-  //   try {
-  //     // 告訴後台使用者要登出
-  //     await Axios.post("http://localhost:8000/logout");
-
-  //     //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
-  //   } catch (error) {
-  //     console.error("登出時出錯:", error);
-  //   }
-
-  //   document.getElementById("memberNav").classList.add("collapse");
-  //   this.setState({});
-  // };
-
-
-
-
-
-  loginCheck = () => {
-    const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (userData) {
-      Axios.get(`http://localhost:8000/user/${userData.user_id}`)
-        .then((response) => {
-          const userImg = response.data.user_img ? response.data.user_img : "LeDian.png";
-          this.setState({ userImg });
-        })
-        .catch((error) => {
-          console.error("Failed to fetch user data:", error);
-        });
-  
-      return (
-        <h4
-          id="loginBtn"
-          className="my-auto btn headerText text-nowrap"
-          onClick={this.toggleMemberNav}
-        >
-          <img
-            id="memberHeadshot"
-            src={`/img/users/${this.state.userImg}`}
-            alt="memberHeadshot"
-            className="img-fluid my-auto mx-1 rounded-circle border"
-          ></img>
-          會員專區▼
-        </h4>
-      );
-    } else {
-      return (
-        <h4
-          id="loginBtn"
-          className="my-auto btn headerText align-self-center"
-          onClick={this.toggleMemberNav}
-        >
-          登入/註冊▼
-        </h4>
-      );
+    try {
+      await Axios.post("http://localhost:8000/logout");
+    } catch (error) {
+      console.error("登出時出錯:", error);
     }
-  }
+
+    document.getElementById("memberNav").classList.add("collapse");
+    this.setState({});
+  };
+
 }
   
 

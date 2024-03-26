@@ -641,15 +641,14 @@ app.get("/user/:id", function (req, res) {
 
     conn.query("SELECT * FROM users WHERE user_id = ?;", [userId], function (err, rows) {
         if (err) {
-            console.error("数据库查询出错:", err);
-            return res.status(500).json({ error: "数据库查询出错" });
+            console.error("查詢錯誤:", err);
+            return res.status(500).json({ error: "查詢錯誤" });
         }
         if (rows.length === 0) {
             console.log("找不到用户");
             return res.status(404).json({ error: "找不到用户" });
         }
         const userData = rows[0];
-        console.log("用户数据:", userData);
         res.json(userData); 
     });
 });
@@ -753,6 +752,54 @@ const storage = multer.diskStorage({
     });
 });
 
+
+app.post('/updateUserPoints/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const pointsToAdd = req.body.pointsToAdd;
+
+  // 更新用户的积分
+  conn.query('SELECT points FROM users WHERE user_id = ?', [userId], (error, results) => {
+    if (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: 'User not found or points data not found' });
+      return;
+    }
+
+    const currentPoints = results[0].points;
+    const updatedPoints = currentPoints + pointsToAdd;
+
+    conn.query('UPDATE users SET points = ? WHERE user_id = ?', [updatedPoints, userId], (error, results) => {
+      if (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+        return;
+      }
+      conn.query('UPDATE orders SET updatedpoints = 1 WHERE user_id = ?', [userId], (error, results) => {
+        if (error) {
+          console.error('Error:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+          return;
+        }
+
+        res.json({ updatedPoints: updatedPoints });
+      });
+    });
+  });
+});
+
+
+
+
+
+
+
+
+
 //驗證修改密碼前是否正確
 app.post("/verifyPassword", async function(req, res) {
   const userId = req.body.userId; 
@@ -809,7 +856,7 @@ app.get('/profile/orders/:userId', (req, res) => {
       // console.error('Failed to fetch orders data:', error);
       res.status(500).json({ error: 'Failed to fetch orders data' });
     } else {
-      console.log('Orders data:', results);
+
       res.status(200).json(results); 
     }
   });
@@ -826,7 +873,6 @@ app.get('/profile/order_details/:orderId', (req, res) => {
     if (results.length === 0) {
       res.status(404).send('Order details not found');
     } else {
-      console.log('order_details data:', results);
       res.json(results);
     }
   });
