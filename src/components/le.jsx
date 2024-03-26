@@ -38,7 +38,7 @@ class le extends Component {
         // console.log("Fetched products data:", productsData);
         // console.log("Fetched brand data:", brandData);
         this.setState({ data: productsData, brand: brandData }, () => {
-          this.filterData();
+          this.filterData(); // 初始化時直接執行過濾數據的邏輯
         });
       })
       .catch((error) => {
@@ -60,6 +60,17 @@ class le extends Component {
           console.error("Failed to fetch user data:", error);
         });
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // 檢查新的props或state是否有所變化
+    if (
+      this.state.data !== nextState.data ||
+      this.state.filters !== nextState.filters
+    ) {
+      return true; // 需要重新渲染
+    }
+    return false; // 不需要重新渲染
   }
 
   handleFilterChange = (filter) => {
@@ -108,7 +119,12 @@ class le extends Component {
   }
 
   render() {
-    const { filters, filteredData } = this.state;
+    const { filters, filteredData, data } = this.state;
+
+    // 檢查是否有數據
+    if (!data || data.length === 0) {
+      return <div>Loading...</div>;
+    }
 
     if (!filteredData) {
       return <div>Loading...</div>;

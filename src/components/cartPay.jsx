@@ -20,6 +20,7 @@ class cartPay extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userImg: null,
       size_choose: "",
       selectedDate: "",
       currentStep: 1,
@@ -647,7 +648,29 @@ class cartPay extends Component {
           </div>
 
           <div className="d-flex me-2 align-items-center">
-            {this.loginCheck()}
+            {this.state.userData ? (
+              <h4
+                id="loginBtn"
+                className="my-auto btn headerText text-nowrap"
+                onClick={this.toggleMemberNav}
+              >
+                <img
+                  id="memberHeadshot"
+                  src={`/img/users/${this.state.userImg}`}
+                  alt="memberHeadshot"
+                  className="img-fluid my-auto mx-1 rounded-circle border"
+                />
+                會員專區▼
+              </h4>
+            ) : (
+              <h4
+                id="loginBtn"
+                className="my-auto btn headerText align-self-center"
+                onClick={this.toggleMemberNav}
+              >
+                登入/註冊
+              </h4>
+            )}
             <div id="memberNav" className="collapse">
               <div className="p-2">
                 <h4
@@ -2202,71 +2225,70 @@ class cartPay extends Component {
   };
   pointinfoShow = (event) => {
     document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
-    document.getElementById("pointinfo").style.left = event.clientX - 150 + "px";
-} 
+    document.getElementById("pointinfo").style.left =
+      event.clientX - 150 + "px";
+  };
 
-pointinfoHide = (event) => {
+  pointinfoHide = (event) => {
     document.getElementById("pointinfo").style.top = "-500px";
     event.cancelBubble = true;
-}
+  };
 
-toggleMemberNav = () => {
-    const userdata = localStorage.getItem('userdata');
-    if(userdata){
-        document.getElementById('memberNav').classList.toggle('collapse');
-    }else{
-        const path = this.props.location.pathname;
-        sessionStorage.setItem('redirect',path) ;
-        window.location = "/login";
+  toggleMemberNav = () => {
+    const userdata = localStorage.getItem("userdata");
+    if (userdata) {
+      document.getElementById("memberNav").classList.toggle("collapse");
+    } else {
+      const path = this.props.location.pathname;
+      sessionStorage.setItem("redirect", path);
+      window.location = "/login";
     }
-  }
-toggleMenuNav = () => {
-    document.getElementById('menuNav').classList.toggle('menuNav');
-}
-logoutClick = async () => {
+  };
+  toggleMenuNav = () => {
+    document.getElementById("menuNav").classList.toggle("menuNav");
+  };
+  logoutClick = async () => {
     // 清除localStorage
     localStorage.removeItem("userdata");
     const userdata = localStorage.getItem("userdata");
     console.log("現在的:", userdata);
     try {
-        // 告訴後台使用者要登出
-        await axios.post('http://localhost:8000/logout');
-    
-        
-        //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+      // 告訴後台使用者要登出
+      await axios.post("http://localhost:8000/logout");
+
+      //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
     } catch (error) {
-        console.error("登出時出錯:", error);
+      console.error("登出時出錯:", error);
     }
-    
-    document.getElementById('memberNav').classList.add('collapse');
-    this.setState({})
-    window.location = "/index"
-}
-loginCheck = () => {
-    const userData = JSON.parse(localStorage.getItem('userdata'));
-    if(userData){
-        const userImg = userData.user_img?userData.user_img:'LeDian.png';
-        return (
-            <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
-                會員專區▼</h4>
-            )
-    }else {
-        return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
-    }              
-}
-cartMenuClick = () => {
-    const userData = JSON.parse(localStorage.getItem('userdata'));
-    if(userData){
-        const userId = userData.user_id;
-        window.location = `/cartlist/${userId}`;
-    }else {
-        window.location = "/login";
-    }              
 
-}
+    document.getElementById("memberNav").classList.add("collapse");
+    this.setState({});
+    window.location = "/index";
+  };
+  // loginCheck = () => {
+  //     const userData = JSON.parse(localStorage.getItem('userdata'));
+  //     if(userData){
+  //         const userImg = userData.user_img?userData.user_img:'LeDian.png';
+  //         return (
+  //             <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>
+  //                 <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+  //                 會員專區▼</h4>
+  //             )
+  //     }else {
+  //         return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊</h4>)
+  //     }
+  // }
+  cartMenuClick = () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (userData) {
+      const userId = userData.user_id;
+      window.location = `/cartlist/${userId}`;
+    } else {
+      window.location = "/login";
+    }
+  };
 
-componentDidMount = async () => {
+  componentDidMount = async () => {
     console.log(this.props.match.params.id);
     let newState = { ...this.state };
     let result = await axios.get(
@@ -2290,6 +2312,21 @@ componentDidMount = async () => {
 
     this.setState(newState);
     console.log("dbcart", this.state.dbcarts);
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+
+    if (userData) {
+      axios
+        .get(`http://localhost:8000/user/${userData.user_id}`)
+        .then((response) => {
+          const userImg = response.data.user_img
+            ? response.data.user_img
+            : "LeDian.png";
+          this.setState({ userImg, userData });
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user data:", error);
+        });
+    }
   };
 }
 export default cartPay;
