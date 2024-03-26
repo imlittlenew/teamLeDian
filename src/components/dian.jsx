@@ -72,29 +72,9 @@ class dian extends Component {
     return distance.toFixed(1);
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // 檢查新的props或state是否有所變化
-    if (
-      this.state.selectedOption !== nextState.selectedOption ||
-      this.state.content !== nextState.content ||
-      this.state.score !== nextState.score ||
-      this.state.selectedNearby !== nextState.selectedNearby ||
-      this.state.resultlebrand !== nextState.resultlebrand ||
-      this.state.brand !== nextState.brand ||
-      this.state.branchList !== nextState.branchList
-    ) {
-      return true; // 需要重新渲染
-    }
-    return false; // 不需要重新渲染
-  }
-
   handleNearbyChange = async (selectedNearby) => {
     try {
-      this.setState((prevState) => ({
-        ...prevState,
-        score: "",
-        selectedOption: "",
-      }));
+      this.setState({ score: "", selectedOption: "" });
 
       let url = "";
       if (selectedNearby === "nearby") {
@@ -111,21 +91,18 @@ class dian extends Component {
             item.branch_longitude
           );
 
+          // 只有當距離小於1.5公里時才將該地點添加到狀態中
           if (parseFloat(distance) < 1.5) {
             return {
               ...item,
               distance: distance,
             };
           }
-          return null;
+          return null; // 如果距離大於等於1.5公里，則返回 null
         })
-        .filter((item) => item !== null);
+        .filter((item) => item !== null); // 去除距離大於等於1.5公里的地點
 
-      this.setState((prevState) => ({
-        ...prevState,
-        selectedNearby,
-        content: contentWithDistance,
-      }));
+      this.setState({ selectedNearby, content: contentWithDistance });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -206,11 +183,7 @@ class dian extends Component {
           distance: distance,
         };
       });
-      this.setState((prevState) => ({
-        ...prevState,
-        selectedOption,
-        content: contentWithDistance,
-      }));
+      this.setState({ selectedOption, content: contentWithDistance });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -1217,22 +1190,10 @@ class dian extends Component {
     this.setState({});
     window.location = "/index";
   };
-
   loginCheck = () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (userData) {
-      axios
-        .get(`http://localhost:8000/user/${userData.user_id}`)
-        .then((response) => {
-          const userImg = response.data.user_img
-            ? response.data.user_img
-            : "LeDian.png";
-          this.setState({ userImg });
-        })
-        .catch((error) => {
-          console.error("Failed to fetch user data:", error);
-        });
-
+      const userImg = userData.user_img ? userData.user_img : "LeDian.png";
       return (
         <h4
           id="loginBtn"
@@ -1241,7 +1202,7 @@ class dian extends Component {
         >
           <img
             id="memberHeadshot"
-            src={`/img/users/${this.state.userImg}`}
+            src={`/img/users/${userImg}`}
             alt="memberHeadshot"
             className="img-fluid my-auto mx-1 rounded-circle border"
           ></img>
@@ -1260,7 +1221,6 @@ class dian extends Component {
       );
     }
   };
-
   cartMenuClick = () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (userData) {

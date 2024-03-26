@@ -21,6 +21,7 @@ class le extends Component {
       data: [],
       filteredData: [],
       brand: [],
+      userImg: null,
     };
   }
 
@@ -37,23 +38,12 @@ class le extends Component {
         console.log("Fetched products data:", productsData);
         console.log("Fetched brand data:", brandData);
         this.setState({ data: productsData, brand: brandData }, () => {
-          this.filterData(); // 初始化時直接執行過濾數據的邏輯
+          this.filterData();
         });
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // 檢查新的props或state是否有所變化
-    if (
-      this.state.data !== nextState.data ||
-      this.state.filters !== nextState.filters
-    ) {
-      return true; // 需要重新渲染
-    }
-    return false; // 不需要重新渲染
   }
 
   handleFilterChange = (filter) => {
@@ -73,12 +63,8 @@ class le extends Component {
 
   filterData() {
     const { data, filters } = this.state;
-
-    // 如果所有的 filters 都是 false，則顯示所有的數據
-    if (!Object.values(filters).some(Boolean)) {
-      this.setState({ filteredData: data });
-      return;
-    }
+    console.log("Filters:", filters);
+    console.log("Data:", data);
 
     const filterCondition = (item) => {
       return Object.keys(filters).every((filter) => {
@@ -99,18 +85,14 @@ class le extends Component {
     // 使用 filterCondition 函數進行篩選
     const filteredData = data.filter(filterCondition);
 
+    console.log("Filtered Data:", filteredData);
     this.setState({ filteredData });
 
     return filteredData;
   }
 
   render() {
-    const { filters, filteredData, data } = this.state;
-
-    // 檢查是否有數據
-    if (!data || data.length === 0) {
-      return <div>Loading...</div>;
-    }
+    const { filters, filteredData } = this.state;
 
     if (!filteredData) {
       return <div>Loading...</div>;
@@ -553,22 +535,10 @@ class le extends Component {
     this.setState({});
     window.location = "/index";
   };
-
   loginCheck = () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (userData) {
-      axios
-        .get(`http://localhost:8000/user/${userData.user_id}`)
-        .then((response) => {
-          const userImg = response.data.user_img
-            ? response.data.user_img
-            : "LeDian.png";
-          this.setState({ userImg });
-        })
-        .catch((error) => {
-          console.error("Failed to fetch user data:", error);
-        });
-
+      const userImg = userData.user_img ? userData.user_img : "LeDian.png";
       return (
         <h4
           id="loginBtn"
@@ -577,7 +547,7 @@ class le extends Component {
         >
           <img
             id="memberHeadshot"
-            src={`/img/users/${this.state.userImg}`}
+            src={`/img/users/${userImg}`}
             alt="memberHeadshot"
             className="img-fluid my-auto mx-1 rounded-circle border"
           ></img>
@@ -596,7 +566,6 @@ class le extends Component {
       );
     }
   };
-
   cartMenuClick = () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (userData) {
