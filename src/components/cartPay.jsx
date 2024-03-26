@@ -668,7 +668,7 @@ class cartPay extends Component {
                   className="my-auto btn headerText align-self-center"
                   onClick={this.toggleMemberNav}
               >
-                  登入/註冊▼
+                  登入/註冊
               </h4>
               )}
             <div id="memberNav" className="collapse">
@@ -2275,7 +2275,7 @@ logoutClick = async () => {
 //                 會員專區▼</h4>
 //             )
 //     }else {
-//         return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+//         return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊</h4>)
 //     }              
 // }
 cartMenuClick = () => {
