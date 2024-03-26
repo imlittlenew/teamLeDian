@@ -21,6 +21,7 @@ class le extends Component {
       data: [],
       filteredData: [],
       brand: [],
+      userImg: null,
     };
   }
 
@@ -34,8 +35,8 @@ class le extends Component {
         .then((response) => response.data),
     ])
       .then(([productsData, brandData]) => {
-        console.log("Fetched products data:", productsData);
-        console.log("Fetched brand data:", brandData);
+        // console.log("Fetched products data:", productsData);
+        // console.log("Fetched brand data:", brandData);
         this.setState({ data: productsData, brand: brandData }, () => {
           this.filterData();
         });
@@ -43,6 +44,22 @@ class le extends Component {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+
+    if (userData) {
+      axios
+        .get(`http://localhost:8000/user/${userData.user_id}`)
+        .then((response) => {
+          const userImg = response.data.user_img
+            ? response.data.user_img
+            : "LeDian.png";
+          this.setState({ userImg, userData });
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user data:", error);
+        });
+    }
   }
 
   handleFilterChange = (filter) => {
@@ -54,7 +71,7 @@ class le extends Component {
         },
       }),
       () => {
-        console.log("New Filters:", this.state.filters);
+        // console.log("New Filters:", this.state.filters);
         this.filterData();
       }
     );
@@ -62,8 +79,8 @@ class le extends Component {
 
   filterData() {
     const { data, filters } = this.state;
-    console.log("Filters:", filters);
-    console.log("Data:", data);
+    // console.log("Filters:", filters);
+    // console.log("Data:", data);
 
     const filterCondition = (item) => {
       return Object.keys(filters).every((filter) => {
@@ -84,7 +101,7 @@ class le extends Component {
     // 使用 filterCondition 函數進行篩選
     const filteredData = data.filter(filterCondition);
 
-    console.log("Filtered Data:", filteredData);
+    // console.log("Filtered Data:", filteredData);
     this.setState({ filteredData });
 
     return filteredData;
@@ -168,7 +185,29 @@ class le extends Component {
           </div>
 
           <div className="d-flex me-2 align-items-center">
-            {this.loginCheck()}
+            {this.state.userData ? (
+              <h4
+                id="loginBtn"
+                className="my-auto btn headerText text-nowrap"
+                onClick={this.toggleMemberNav}
+              >
+                <img
+                  id="memberHeadshot"
+                  src={`/img/users/${this.state.userImg}`}
+                  alt="memberHeadshot"
+                  className="img-fluid my-auto mx-1 rounded-circle border"
+                />
+                會員專區▼
+              </h4>
+            ) : (
+              <h4
+                id="loginBtn"
+                className="my-auto btn headerText align-self-center"
+                onClick={this.toggleMemberNav}
+              >
+                登入/註冊
+              </h4>
+            )}
             <div id="memberNav" className="collapse">
               <div className="p-2">
                 <h4
@@ -368,9 +407,9 @@ class le extends Component {
                 </div>
               </div>
               <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right mx-auto">
-                {shuffledData.map((item) => (
+                {shuffledData.map((item, i) => (
                   <div
-                    key={item.id}
+                    key={i}
                     className="col-lg-6 col-xxl-4 my-3"
                     onClick={() => {
                       window.location = `/branch/${item.brand_id}`;
@@ -384,7 +423,7 @@ class le extends Component {
                           className="card-img-top"
                           alt="..."
                         />{" "}
-                        {console.log(item)}
+                        {/* {console.log(item)} */}
                         {/* 動態設定 logo 路徑 */}
                         <img
                           src={`/img/logo/${item.brand_id}.png`}
@@ -534,37 +573,37 @@ class le extends Component {
     this.setState({});
     window.location = "/index";
   };
-  loginCheck = () => {
-    const userData = JSON.parse(localStorage.getItem("userdata"));
-    if (userData) {
-      const userImg = userData.user_img ? userData.user_img : "LeDian.png";
-      return (
-        <h4
-          id="loginBtn"
-          className="my-auto btn headerText text-nowrap"
-          onClick={this.toggleMemberNav}
-        >
-          <img
-            id="memberHeadshot"
-            src={`/img/users/${userImg}`}
-            alt="memberHeadshot"
-            className="img-fluid my-auto mx-1 rounded-circle border"
-          ></img>
-          會員專區▼
-        </h4>
-      );
-    } else {
-      return (
-        <h4
-          id="loginBtn"
-          className="my-auto btn headerText align-self-center"
-          onClick={this.toggleMemberNav}
-        >
-          登入/註冊▼
-        </h4>
-      );
-    }
-  };
+  // loginCheck = () => {
+  //   const userData = JSON.parse(localStorage.getItem("userdata"));
+  //   if (userData) {
+  //     const userImg = userData.user_img ? userData.user_img : "LeDian.png";
+  //     return (
+  //       <h4
+  //         id="loginBtn"
+  //         className="my-auto btn headerText text-nowrap"
+  //         onClick={this.toggleMemberNav}
+  //       >
+  //         <img
+  //           id="memberHeadshot"
+  //           src={`/img/users/${userImg}`}
+  //           alt="memberHeadshot"
+  //           className="img-fluid my-auto mx-1 rounded-circle border"
+  //         ></img>
+  //         會員專區▼
+  //       </h4>
+  //     );
+  //   } else {
+  //     return (
+  //       <h4
+  //         id="loginBtn"
+  //         className="my-auto btn headerText align-self-center"
+  //         onClick={this.toggleMemberNav}
+  //       >
+  //         登入/註冊▼
+  //       </h4>
+  //     );
+  //   }
+  // };
   cartMenuClick = () => {
     const userData = JSON.parse(localStorage.getItem("userdata"));
     if (userData) {

@@ -20,6 +20,7 @@ class dian extends Component {
       resultlebrand: [],
       brand: [],
       branchList: [{}],
+      userImg: null,
     };
   }
 
@@ -32,7 +33,7 @@ class dian extends Component {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         };
-        console.log("User location:", userLocation);
+        // console.log("User location:", userLocation);
         this.setState({ userLocation });
       },
       (error) => {
@@ -41,6 +42,22 @@ class dian extends Component {
     );
 
     this.fetchBrandData();
+
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+
+    if (userData) {
+      axios
+        .get(`http://localhost:8000/user/${userData.user_id}`)
+        .then((response) => {
+          const userImg = response.data.user_img
+            ? response.data.user_img
+            : "LeDian.png";
+          this.setState({ userImg, userData });
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user data:", error);
+        });
+    }
   }
 
   fetchBrandData = async () => {
@@ -52,7 +69,7 @@ class dian extends Component {
         brand: brand.data,
         branchList: businessHours.data,
       });
-      console.log(this.state);
+      // console.log(this.state);
     } catch (error) {
       console.error(error);
     }
@@ -84,6 +101,14 @@ class dian extends Component {
       const response = await axios.get(url);
       const contentWithDistance = response.data
         .map((item) => {
+          if (!item || !item.branch_latitude || !item.branch_longitude) {
+            console.log(
+              "Item is null or missing latitude/longitude properties:",
+              item
+            );
+            return null;
+          }
+
           const distance = this.calculateDistance(
             this.state.userLocation.latitude,
             this.state.userLocation.longitude,
@@ -233,49 +258,149 @@ class dian extends Component {
   render() {
     const { selectedOption, content, selectedNearby } = this.state;
     const shuffledContent = content.sort(() => Math.random() - 0.5);
+    // let distance = "";
 
     return (
       <React.Fragment>
-            <div id='header'
-                style={{
-                    boxShadow: '1px 3px 10px #cccccc',
-                    marginBottom: '4px',
-                }} 
-                className='d-flex justify-content-between'>
-                <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
-                <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
-                    <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
-                </div>
-                <div id="pointinfo">
-                    <button  id="pointinfoclose" onClick={this.pointinfoHide}><GiCancel   className='fs-2 text-light' /></button>
-                    <h1>集點資訊</h1>
-                    <p>．每消費20元即可累積1點。</p>
-                    <p>．每點可折抵1元消費金額。</p>
-                    <p>．點數可在下次消費時折抵使用。</p>
-                    <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
-                    <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
-                </div>
-
-
-                <div className='d-flex me-2 align-items-center'>
-                    {this.loginCheck()}
-                    <div id='memberNav' className='collapse'>
-                        <div className='p-2'>
-                            <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>會員中心</h4><hr />
-                            <h4 className='headerText text-center my-2' onClick={this.logoutClick}>登出</h4>
-                        </div>
-                    </div>
-                </div>
+        <div
+          id="header"
+          style={{
+            boxShadow: "1px 3px 10px #cccccc",
+            marginBottom: "4px",
+          }}
+          className="d-flex justify-content-between"
+        >
+          <div className="col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center">
+            <div id="menu" className="col-8">
+              <h2
+                className="btn text-start  my-auto fs-4"
+                onClick={this.toggleMenuNav}
+              >
+                ☰
+              </h2>
             </div>
-            <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
-            </div>
+            <h4
+              id="homeBtn"
+              className="my-auto btn"
+              onClick={() => {
+                window.location = "/index";
+              }}
+            >
+              <img
+                id="logo"
+                src="/img/index/LeDian_LOGO-05.png"
+                alt="logo"
+              ></img>
+            </h4>
+            <h4
+              className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center"
+              onClick={this.cartMenuClick}
+            >
+              <HiOutlineShoppingBag className="fs-4" />
+              購物車
+            </h4>
+            <h4
+              className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center"
+              onClick={() => {
+                window.location = "/brand";
+              }}
+            >
+              <PiMedal className="fs-4" />
+              品牌專區
+            </h4>
+            <h4
+              className="my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center"
+              onClick={this.pointinfoShow}
+            >
+              <PiCoins className="fs-4" />
+              集點資訊
+            </h4>
+          </div>
+          <div id="pointinfo">
+            <button id="pointinfoclose" onClick={this.pointinfoHide}>
+              <GiCancel className="fs-2 text-light" />
+            </button>
+            <h1>集點資訊</h1>
+            <p>．每消費20元即可累積1點。</p>
+            <p>．每點可折抵1元消費金額。</p>
+            <p>．點數可在下次消費時折抵使用。</p>
+            <p>．點數不可轉讓，不可兌換現金，不可合併使用。</p>
+            <p>．本集點活動以公告為準，如有更改，恕不另行通知。</p>
+          </div>
 
+          <div className="d-flex me-2 align-items-center">
+            {this.state.userData ? (
+              <h4
+                id="loginBtn"
+                className="my-auto btn headerText text-nowrap"
+                onClick={this.toggleMemberNav}
+              >
+                <img
+                  id="memberHeadshot"
+                  src={`/img/users/${this.state.userImg}`}
+                  alt="memberHeadshot"
+                  className="img-fluid my-auto mx-1 rounded-circle border"
+                />
+                會員專區▼
+              </h4>
+            ) : (
+              <h4
+                id="loginBtn"
+                className="my-auto btn headerText align-self-center"
+                onClick={this.toggleMemberNav}
+              >
+                登入/註冊
+              </h4>
+            )}
+            <div id="memberNav" className="collapse">
+              <div className="p-2">
+                <h4
+                  className="headerText text-center my-2"
+                  onClick={() => {
+                    window.location = "/profile";
+                  }}
+                >
+                  會員中心
+                </h4>
+                <hr />
+                <h4
+                  className="headerText text-center my-2"
+                  onClick={this.logoutClick}
+                >
+                  登出
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          id="menuNav"
+          className="menuNav d-flex flex-column align-items-center"
+        >
+          <h4
+            className="menuText my-3 mainColor border-bottom border-secondary"
+            onClick={this.cartMenuClick}
+          >
+            <HiOutlineShoppingBag className="fs-4" />
+            購物車
+          </h4>
+          <h4
+            className="menuText my-3 mainColor border-bottom border-secondary"
+            onClick={() => {
+              window.location = "/brand";
+            }}
+          >
+            <PiMedal className="fs-4" />
+            品牌專區
+          </h4>
+          <h4
+            className="menuText my-3 mainColor border-bottom border-secondary"
+            onClick={this.pointinfoShow}
+          >
+            <PiCoins className="fs-4" />
+            集點資訊
+          </h4>
+        </div>
 
         <div id="banner" className="d-flex justify-content-center">
           <img
@@ -892,6 +1017,18 @@ class dian extends Component {
               <div className="col-sm-7 col-md-8 col-lg-9 col-xxl-10 row choose_right justify-content-center mx-auto">
                 {/* 台中探索、尋星饗宴、星評優選 */}
                 {shuffledContent.map((item, index) => {
+                  if (
+                    !item ||
+                    !item.branch_latitude ||
+                    !item.branch_longitude
+                  ) {
+                    console.log(
+                      "Item is null or missing latitude/longitude properties:",
+                      item
+                    );
+                    return null; // 或者其他適當的錯誤處理
+                  }
+
                   let distance = "";
 
                   if (this.state.userLocation) {
@@ -1073,71 +1210,88 @@ class dian extends Component {
   }
   pointinfoShow = (event) => {
     document.getElementById("pointinfo").style.top = event.clientY + 50 + "px";
-    document.getElementById("pointinfo").style.left = event.clientX - 150 + "px";
-} 
+    document.getElementById("pointinfo").style.left =
+      event.clientX - 150 + "px";
+  };
 
-pointinfoHide = (event) => {
+  pointinfoHide = (event) => {
     document.getElementById("pointinfo").style.top = "-500px";
     event.cancelBubble = true;
-}
+  };
 
-toggleMemberNav = () => {
-    const userdata = localStorage.getItem('userdata');
-    if(userdata){
-        document.getElementById('memberNav').classList.toggle('collapse');
-    }else{
-        const path = this.props.location.pathname;
-        sessionStorage.setItem('redirect',path) ;
-        window.location = "/login";
+  toggleMemberNav = () => {
+    const userdata = localStorage.getItem("userdata");
+    if (userdata) {
+      document.getElementById("memberNav").classList.toggle("collapse");
+    } else {
+      const path = this.props.location.pathname;
+      sessionStorage.setItem("redirect", path);
+      window.location = "/login";
     }
-  }
-toggleMenuNav = () => {
-    document.getElementById('menuNav').classList.toggle('menuNav');
-}
-logoutClick = async () => {
+  };
+  toggleMenuNav = () => {
+    document.getElementById("menuNav").classList.toggle("menuNav");
+  };
+  logoutClick = async () => {
     // 清除localStorage
     localStorage.removeItem("userdata");
     const userdata = localStorage.getItem("userdata");
     console.log("現在的:", userdata);
     try {
-        // 告訴後台使用者要登出
-        await axios.post('http://localhost:8000/logout');
-    
-        
-        //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+      // 告訴後台使用者要登出
+      await axios.post("http://localhost:8000/logout");
+
+      //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
     } catch (error) {
-        console.error("登出時出錯:", error);
+      console.error("登出時出錯:", error);
     }
-    
-    document.getElementById('memberNav').classList.add('collapse');
-    this.setState({})
-    window.location = "/index"
-}
-loginCheck = () => {
-    const userData = JSON.parse(localStorage.getItem('userdata'));
-    if(userData){
-        const userImg = userData.user_img?userData.user_img:'LeDian.png';
-        return (
-            <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
-                會員專區▼</h4>
-            )
-    }else {
-        return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
-    }              
-}
-cartMenuClick = () => {
-    const userData = JSON.parse(localStorage.getItem('userdata'));
-    if(userData){
-        const userId = userData.user_id;
-        window.location = `/cartlist/${userId}`;
-    }else {
-        window.location = "/login";
-    }              
 
-}
+    document.getElementById("memberNav").classList.add("collapse");
+    this.setState({});
+    window.location = "/index";
+  };
+  // loginCheck = () => {
+  //   const userData = JSON.parse(localStorage.getItem("userdata"));
+  //   if (userData) {
+  //     const userImg = userData.user_img ? userData.user_img : "LeDian.png";
+  //     return (
+  //       <h4
+  //         id="loginBtn"
+  //         className="my-auto btn headerText text-nowrap"
+  //         onClick={this.toggleMemberNav}
+  //       >
+  //         <img
+  //           id="memberHeadshot"
+  //           src={`/img/users/${userImg}`}
+  //           alt="memberHeadshot"
+  //           className="img-fluid my-auto mx-1 rounded-circle border"
+  //         ></img>
+  //         會員專區▼
+  //       </h4>
+  //     );
+  //   } else {
+  //     return (
+  //       <h4
+  //         id="loginBtn"
+  //         className="my-auto btn headerText align-self-center"
+  //         onClick={this.toggleMemberNav}
+  //       >
+  //         登入/註冊▼
+  //       </h4>
+  //     );
+  //   }
+  // };
+  cartMenuClick = () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    if (userData) {
+      const userId = userData.user_id;
+      window.location = `/cartlist/${userId}`;
+    } else {
+      window.location = "/login";
+    }
+  };
 
-scrollToTop = () => {
+  scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth", // 平滑滾動
