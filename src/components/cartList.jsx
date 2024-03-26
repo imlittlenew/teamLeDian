@@ -9,7 +9,10 @@ import { PiCoins } from "react-icons/pi";
 import { GiCancel } from "react-icons/gi";
 import axios from "axios";
 class cartList extends Component {
-  state = { dbData: [{ brand_id: "1" }] };
+  state = { 
+    dbData: [{ brand_id: "1" }],
+    userImg: null,
+  };
 
   delete_btn = async (id, i, e) => {
     e.preventDefault();
@@ -48,7 +51,30 @@ class cartList extends Component {
 
 
                 <div className='d-flex me-2 align-items-center'>
-                    {this.loginCheck()}
+                    {this.state.userData ? (
+                    <h4
+                        id="loginBtn"
+                        className="my-auto btn headerText text-nowrap"
+                        onClick={this.toggleMemberNav}
+                    >
+                        <img
+                        id="memberHeadshot"
+                        src={`/img/users/${this.state.userImg}`}
+                        alt="memberHeadshot"
+                        className="img-fluid my-auto mx-1 rounded-circle border"
+                        />
+                        會員專區▼
+                    </h4>
+                    ) : (
+                    <h4
+                        id="loginBtn"
+                        className="my-auto btn headerText align-self-center"
+                        onClick={this.toggleMemberNav}
+                    >
+                        登入/註冊▼
+                    </h4>
+                    )}
+                                
                     <div id='memberNav' className='collapse'>
                         <div className='p-2'>
                             <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>會員中心</h4><hr />
@@ -235,19 +261,19 @@ logoutClick = async () => {
     this.setState({})
     window.location = "/index"
 }
-loginCheck = () => {
-    const userData = JSON.parse(localStorage.getItem('userdata'));
-    if(userData){
-        const userImg = userData.user_img?userData.user_img:'LeDian.png';
-        return (
-            <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
-                會員專區▼</h4>
-            )
-    }else {
-        return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
-    }              
-}
+// loginCheck = () => {
+//     const userData = JSON.parse(localStorage.getItem('userdata'));
+//     if(userData){
+//         const userImg = userData.user_img?userData.user_img:'LeDian.png';
+//         return (
+//             <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
+//                 <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
+//                 會員專區▼</h4>
+//             )
+//     }else {
+//         return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+//     }              
+// }
 cartMenuClick = () => {
     const userData = JSON.parse(localStorage.getItem('userdata'));
     if(userData){
@@ -261,6 +287,21 @@ cartMenuClick = () => {
 
 
   componentDidMount = async () => {
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+
+
+    if (userData) {
+      Axios.get(`http://localhost:8000/user/${userData.user_id}`)
+        .then((response) => {
+          const userImg = response.data.user_img ? response.data.user_img : "LeDian.png";
+          this.setState({ userImg, userData });
+        })
+        .catch((error) => {
+          console.error("Failed to fetch user data:", error);
+        });
+    }
+
+
     let newState = { ...this.state };
     let result;
     result = await axios.get("http://localhost:8000/cartlist/1");
