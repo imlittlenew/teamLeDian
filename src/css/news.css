@@ -151,9 +151,11 @@
 
 .rouletteBrand{
     color: #F3B021;
+    font-size: 26px;
 }
 .rouletteProduct{
     color: #F3B021;
+    font-size: 22px;
 }
 
 /* footer */
@@ -195,6 +197,12 @@
     #rouletteArea {
         height: 620px;
     }    
+    .rouletteBrand{
+        font-size: 22px;
+    }
+    .rouletteProduct{
+        font-size: 18px;
+    }
 }
 @media screen and (max-width:1100px) {
     #rouletteArea {
@@ -208,6 +216,12 @@
     .footerText{
         font-size: 18px;
     }
+    .rouletteBrand{
+        font-size: 20px;
+    }
+    .rouletteProduct{
+        font-size: 16px;
+    }
 }
 @media screen and (max-width:992px) {
     .headerText {
@@ -216,6 +230,12 @@
     #rouletteArea {
         height: 470px;
     }    
+    .rouletteBrand{
+        font-size: 16px;
+    }
+    .rouletteProduct{
+        font-size: 14px;
+    }
 }
 @media screen and (max-width:800px) {
     #header {
@@ -251,10 +271,10 @@
         font-size: 12px;
     }
     .rouletteBrand{
-        font-size: 16px;
+        font-size: 14px;
     }
     .rouletteProduct{
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 @media screen and (max-width:650px) {

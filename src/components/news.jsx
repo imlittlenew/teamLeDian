@@ -15,10 +15,13 @@ class index extends Component {
         brandList:[
             {}
         ],
+        userImg: null,
 
      } 
 
      async componentDidMount() {
+        const userData = await JSON.parse(localStorage.getItem("userdata"));
+
         try{
             const newState = {...this.state};
             const resultProduct = await Axios.get("http://localhost:8000/index/products");
@@ -31,17 +34,27 @@ class index extends Component {
             }
             newState.productList = shuffle(resultProduct.data);
             newState.brandList = resultBrand.data;
-            this.setState(newState);            console.log(this.state)
+            this.setState(newState);
         }
         catch (error) {
             console.error('Error:', error);
         }
+
+        if (userData) {
+            await Axios.get(`http://localhost:8000/user/${userData.user_id}`)
+              .then((response) => {
+                const userImg = response.data.user_img ? response.data.user_img : "LeDian.png";
+                this.setState({ userImg, userData });
+              })
+              .catch((error) => {
+                console.error("Failed to fetch user data:", error);
+              });
+          }
+      
      }
 
 
     render() { 
-        const randomNumber = Math.floor(Math.random() * 191);
-
         return (<React.Fragment>
             <div id='header'
                 style={{
@@ -52,7 +65,7 @@ class index extends Component {
                 <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
                 <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
                     <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
                 </div>
@@ -68,7 +81,30 @@ class index extends Component {
 
 
                 <div className='d-flex me-2 align-items-center'>
-                    {this.loginCheck()}
+                    {this.state.userData ? (
+                    <h4
+                        id="loginBtn"
+                        className="my-auto btn headerText text-nowrap"
+                        onClick={this.toggleMemberNav}
+                    >
+                        <img
+                        id="memberHeadshot"
+                        src={`/img/users/${this.state.userImg}`}
+                        alt="memberHeadshot"
+                        className="img-fluid my-auto mx-1 rounded-circle border"
+                        />
+                        會員專區▼
+                    </h4>
+                    ) : (
+                    <h4
+                        id="loginBtn"
+                        className="my-auto btn headerText align-self-center"
+                        onClick={this.toggleMemberNav}
+                    >
+                        登入/註冊
+                    </h4>
+                    )}
+                                
                     <div id='memberNav' className='collapse'>
                         <div className='p-2'>
                             <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>會員中心</h4><hr />
@@ -78,10 +114,11 @@ class index extends Component {
                 </div>
             </div>
             <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
             </div>
+
 
 
 
@@ -125,7 +162,7 @@ class index extends Component {
             </div>
             
             <div id='rouletteArea' className='row d-flex align-items-end justify-content-center mx-auto'>
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber-1}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={0}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -133,7 +170,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto mb-3"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={`img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
@@ -150,7 +187,7 @@ class index extends Component {
                     </Carousel.Item>)
                     })}
                 </Carousel> 
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={randomNumber}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-5' interval={2000} pause={false} defaultActiveIndex={1}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -158,7 +195,7 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={`img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption className='p-0 my-1' > 
@@ -175,7 +212,7 @@ class index extends Component {
                     </Carousel.Item>)
                     })}
                 </Carousel> 
-                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={randomNumber+1}> 
+                <Carousel data-bs-theme="dark" indicators={false} controls={false} className='col-3 mb-4 align-self-center' interval={2000} pause={false} defaultActiveIndex={2}> 
 
                     {this.state.productList.map((product,i)=>{
                         return(                    
@@ -183,14 +220,14 @@ class index extends Component {
                         <img
                         key={product.product_id}
                         className="d-block w-100 img-fluid mx-auto mb-3"
-                        src={`/img/class/${product.product_img}.png`}
+                        src={`img/class/${product.product_img}.png`}
                         alt="..."
                         /><br/><br/><br/><br/>
                         <Carousel.Caption> 
-                        <h5 className='rouletteBrand text-center'>
-                            {this.state.brandList.map((e)=>{
-                                if(product.brand_id == e.brand_id){
-                                    return e.brand_name
+                        <h5 className='rouletteBrand m-0'>
+                            {this.state.brandList.map((bracd)=>{
+                                if(product.brand_id == bracd.brand_id){
+                                    return bracd.brand_name
                                 }else{ return null}
                             })
                         }
@@ -242,51 +279,50 @@ class index extends Component {
         event.cancelBubble = true;
     }
 
-
     toggleMemberNav = () => {
         const userdata = localStorage.getItem('userdata');
         if(userdata){
             document.getElementById('memberNav').classList.toggle('collapse');
         }else{
+            const path = this.props.location.pathname;
+            sessionStorage.setItem('redirect',path) ;
             window.location = "/login";
         }
       }
     toggleMenuNav = () => {
-          document.getElementById('menuNav').classList.toggle('menuNav');
-      }
-    
+        document.getElementById('menuNav').classList.toggle('menuNav');
+    }
     logoutClick = async () => {
-    // 清除localStorage
-    localStorage.removeItem("userdata");
-    const userdata = localStorage.getItem("userdata");
-    console.log("現在的:", userdata);
-    try {
-        // 告訴後台使用者要登出
-        await Axios.post('http://localhost:8000/logout');
-    
+        // 清除localStorage
+        localStorage.removeItem("userdata");
+        const userdata = localStorage.getItem("userdata");
+        console.log("現在的:", userdata);
+        try {
+            // 告訴後台使用者要登出
+            await Axios.post('http://localhost:8000/logout');
         
-        //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
-    } catch (error) {
-        console.error("登出時出錯:", error);
+            
+            //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+        } catch (error) {
+            console.error("登出時出錯:", error);
+        }
+        
+        document.getElementById('memberNav').classList.add('collapse');
+        this.setState({})
+        window.location = "/index"
     }
-    
-    document.getElementById('memberNav').classList.add('collapse');
-    this.setState({})
-    }
-    loginCheck = () => {
+    cartMenuClick = () => {
         const userData = JSON.parse(localStorage.getItem('userdata'));
         if(userData){
-            const userImg = userData.user_img?userData.user_img:'LeDian.png';
-            return (
-                <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                    <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
-                    會員專區▼</h4>
-                )
+            const userId = userData.user_id;
+            window.location = `/cartlist/${userId}`;
         }else {
-            return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
+            window.location = "/login";
         }              
+
     }
-    
+
+
     }
  
 export default index;

@@ -14,13 +14,6 @@
   height: 70px;
 }
 
-
-
-
-
-
-
-
 .tab-content {
   background-color: #fff;
   padding: 20px;
@@ -49,7 +42,7 @@
 
 
 #col10nav.nav.fs-5 {
-  justify-content: center; /* 文字水平居中 */
+  justify-content: center; 
   list-style-type: none;
   padding: 0;
   color: #000;
@@ -57,23 +50,21 @@
 }
 
 #col10nav.nav.fs-5 .nav-item {
-  display: flex; /* 让每个导航项成为一个 flex 容器 */
+  display: flex; 
 }
 
 #col10nav.nav.fs-5 .nav-link {
   text-decoration: none;
-  color: black; /* 未选中项目的文字颜色 */
-  text-align: center; /* 文字水平居中 */
+  color: black;
+  text-align: center; 
 }
 
-/* 选中的导航项目样式 */
 #col10nav.nav.fs-5 .nav-link.active {
-  border-bottom: 5px solid #003c96; /* 底部边框样式和颜色 */
+  border-bottom: 5px solid #003c96; 
 }
 
-/* 未选中的导航项目样式 */
 #col10nav.nav.fs-5 .nav-link:not(.active) {
-  border-bottom: none; /* 删除未选中项目的底部边框 */
+  border-bottom: none;
 }
 
 
@@ -145,12 +136,12 @@
   border-radius: 100px;
   background-color: #f3b021;
   padding: 10px;
-  text-align: center; /* 文字水平置中 */
+  text-align: center; 
   cursor: pointer;
   padding: 0.375rem 0.75rem;
-  margin: 0; /* 清除 margin 以保持水平置中 */
-  width: 70%; /* 保留原本的寬度 */
-  height: 60%; /* 保留原本的高度 */
+  margin: 0; 
+  width: 70%;
+  height: 60%;
   color: #fff;
   display: flex;
   align-items: center;
@@ -202,7 +193,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1; /* 垂直置中 */
+  line-height: 1;
   cursor: pointer;
 }
 
@@ -240,9 +231,10 @@
   border: #f3b021 1px solid;
 }
 #LeDianLogoModal {
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
 }
+
 #pointbuttom {
   background-color: #f3b021;
   color: #fff;
@@ -276,11 +268,12 @@
   color: #ddd;
 }
 textarea {
-  resize: none; /* 禁止调整大小 */
+  resize: none;
 }
 .sendOrder {
   background-color: #003c96;
   color: #fff;
+  
 }
 #Barcodecontent{
   width: 50%;
@@ -301,4 +294,13 @@ textarea {
 
 .completedOrder {
   background-color: #f3b021;
+}
+
+#editbutton>img{
+  width: 25px;
+  height: 25px;
+}
+#deletebutton>img{
+  width: 25px;
+  height: 25px;
 }

@@ -1,164 +1,164 @@
 @font-face {
-    font-family: FakePearl-Regular;
-    src: url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff2)
-        format("woff2"),
-      url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff)
-        format("woff");
-  }
-  .loginmain {
-    border-color: #003c96;
-    border-width: 16px;
-    border-style: dashed;
-    margin: auto;
-    width: 425px !important;
-  }
+  font-family: FakePearl-Regular;
+  src: url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff2)
+      format("woff2"),
+    url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff)
+      format("woff");
+}
+.loginmain {
+  border-color: #003c96;
+  border-width: 16px;
+  border-style: dashed;
+  margin: auto;
+  width: 425px !important;
+}
 
-  .input-group-img {
-    background-color: #f3b021;
+.input-group-img {
+  background-color: #f3b021;
+}
+.imggoogleicon {
+  width: 8%;
+}
+.btn-google,
+.social-login {
+  border-width: 1px;
+  border-color: lightgray;
+}
+.btn-google:hover {
+  border-width: 1px;
+  border-color: #f3b021;
+}
+.headerlogin {
+  background-color: #f3b021;
+  color: white;
+  padding: 10px;
+}
+.bottom {
+  background-color: #f3b021;
+  color: white;
+  padding: 20px;
+}
+button {
+  background-color: #f3b021;
+  border: 0;
+  color: white;
+}
+#forgotbutton{
+  background-color: #fff;
+  color: #777;
+}
+.forgot-password {
+  color: gray;
+}
+hr {
+  width: 100px;
+}
+.login-box .other-login {
+  color: #777;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+.login-box .other-login .hr-line {
+  display: inline-block;
+  width: 140px;
+  border-top: 1px solid #ccc;
+  flex: 1;
+  margin: 0 10px;
+}
+.btn-login {
+  background-color: #f3b021;
+  color: #fff;
+}
+.btn-login:hover {
+  border-color: #f3b021;
+  color: #f3b021;
+}
+.welcomeledian {
+  color: #f3b021;
+}
+.login {
+  border: 2px solid #f3b021 !important;
+}
+input::placeholder {
+  color: gray !important;
+}
+.leftlogoimg {
+  top: -900px;
+  left: -300px;
+  position: absolute;
+  transform: scale(0.25) rotate(-25deg);
+}
+.rightlogoimg {
+  top: -700px;
+  left: 600px;
+  position: absolute;
+  transform: scale(0.2) rotate(25deg);
+}
+@media (max-width: 1900px) {
+  .leftlogoimg,
+  .rightlogoimg,
+  #header-image,
+  #loginfooter {
+    display: none;
   }
-  .imggoogleicon {
-    width: 8%;
+}
+@media (max-height: 900px) {
+  .leftlogoimg,
+  .rightlogoimg,
+  #header-image,
+  #loginfooter {
+    display: none;
   }
-  .btn-google,
-  .social-login {
-    border-width: 1px;
-    border-color: lightgray;
-  }
-  .btn-google:hover {
-    border-width: 1px;
-    border-color: #f3b021;
-  }
-  .headerlogin {
-    background-color: #f3b021;
-    color: white;
-    padding: 10px;
-  }
-  .bottom {
-    background-color: #f3b021;
-    color: white;
-    padding: 20px;
-  }
-  button {
-    background-color: #f3b021;
-    border: 0;
-    color: white;
-  }
-  #forgotbutton{
-    background-color: #fff;
-    color: #777;
-  }
-  .forgot-password {
-    color: gray;
-  }
-  hr {
-    width: 100px;
-  }
-  .login-box .other-login {
-    color: #777;
-    text-align: center;
-    display: flex;
-    align-items: center;
-  }
-  .login-box .other-login .hr-line {
-    display: inline-block;
-    width: 140px;
-    border-top: 1px solid #ccc;
-    flex: 1;
-    margin: 0 10px;
-  }
-  .btn-login {
-    background-color: #f3b021;
-    color: #fff;
-  }
-  .btn-login:hover {
-    border-color: #f3b021;
-    color: #f3b021;
-  }
-  .welcomeledian {
-    color: #f3b021;
-  }
-  .login {
-    border: 2px solid #f3b021 !important;
-  }
-  input::placeholder {
-    color: gray !important;
-  }
-  .leftlogoimg {
-    top: -900px;
-    left: -300px;
-    position: absolute;
-    transform: scale(0.25) rotate(-25deg);
-  }
-  .rightlogoimg {
-    top: -700px;
-    left: 600px;
-    position: absolute;
-    transform: scale(0.2) rotate(25deg);
-  }
-  @media (max-width: 1900px) {
-    .leftlogoimg,
-    .rightlogoimg,
-    #header-image,
-    #loginfooter {
-      display: none;
-    }
-  }
-  @media (max-height: 900px) {
-    .leftlogoimg,
-    .rightlogoimg,
-    #header-image,
-    #loginfooter {
-      display: none;
-    }
-  }
-  .modal-header {
-    background-color: #f3b021;
-    color: #fff;
-    margin: auto;
-    width: 100%;
-    text-align: center;
-  }
-  .btn-forgotPassword,
-  .modal-footer {
-    background-color: #f3b021;
-    width: 100%;
-    border: none;
-    color: white;
-    transition: 0.3s;
-  }
+}
+.modal-header {
+  background-color: #f3b021;
+  color: #fff;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+.btn-forgotPassword,
+.modal-footer {
+  background-color: #f3b021;
+  width: 100%;
+  border: none;
+  color: white;
+  transition: 0.3s;
+}
 
-  .btn-forgotPassword:hover,
-  .modal-footer:hover {
-    opacity: 0.8;
-  }
-  #header-image {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 145px; /* 或者根据您的需求调整高度 */
-    overflow: hidden;
-    margin-top: 80px; /* 例如，向下留出一些间距 */
-  }
-  #loginheader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; /* 确保 header 在页面上方 */
-  }
-  
-  .loginbold {
-    font-weight: bold;
+.btn-forgotPassword:hover,
+.modal-footer:hover {
+  opacity: 0.8;
+}
+#header-image {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 145px; 
+  overflow: hidden;
+  margin-top: 80px; 
+}
+#loginheader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
+}
+
+.loginbold {
+  font-weight: bold;
 }
 .custom-toast {
-  position: fixed;
-  bottom: 20px; /* 调整底部间距 */
-  right: 20px; /* 调整右侧间距 */
-  border:5px solid #f3b021 ;
-  font-size: 20px;
-  font-weight: bold;
-  border-style: dashed;
-  z-index: 999;
+position: fixed;
+bottom: 20px;
+right: 20px; 
+border:5px solid #f3b021 ;
+font-size: 20px;
+font-weight: bold;
+border-style: dashed;
+z-index: 999;
 }

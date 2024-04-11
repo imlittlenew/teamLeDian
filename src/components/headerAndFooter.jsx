@@ -8,9 +8,25 @@ import Axios from 'axios';
 
 class index extends Component {
     state = { 
-
+        userImg: null,
      } 
-     
+     componentDidMount(){
+        const userData = JSON.parse(localStorage.getItem("userdata"));
+
+
+        if (userData) {
+          Axios.get(`http://localhost:8000/user/${userData.user_id}`)
+            .then((response) => {
+              const userImg = response.data.user_img ? response.data.user_img : "LeDian.png";
+              this.setState({ userImg, userData });
+            })
+            .catch((error) => {
+              console.error("Failed to fetch user data:", error);
+            });
+        }
+    
+    
+     }
     render() { 
 
         return (<React.Fragment>
@@ -23,7 +39,7 @@ class index extends Component {
                 <div className='col-7 col-sm-7 col-md-6 col-xl-5 d-flex ms-2 justify-content-between align-items-center'>
                 <div id='menu' className='col-8'><h2 className='btn text-start  my-auto fs-4' onClick={this.toggleMenuNav}>☰</h2></div>
                     <h4 id='homeBtn' className='my-auto btn' onClick={()=>{window.location="/index"}}><img id='logo' src='/img/index/LeDian_LOGO-05.png' alt='logo'></img></h4>
-                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                    <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                     <h4 className='my-auto p-0 btn headerText menuBtn d-flex align-items-center justify-content-center' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
                 </div>
@@ -39,7 +55,30 @@ class index extends Component {
 
 
                 <div className='d-flex me-2 align-items-center'>
-                    {this.loginCheck()}
+                    {this.state.userData ? (
+                    <h4
+                        id="loginBtn"
+                        className="my-auto btn headerText text-nowrap"
+                        onClick={this.toggleMemberNav}
+                    >
+                        <img
+                        id="memberHeadshot"
+                        src={`/img/users/${this.state.userImg}`}
+                        alt="memberHeadshot"
+                        className="img-fluid my-auto mx-1 rounded-circle border"
+                        />
+                        會員專區▼
+                    </h4>
+                    ) : (
+                    <h4
+                        id="loginBtn"
+                        className="my-auto btn headerText align-self-center"
+                        onClick={this.toggleMemberNav}
+                    >
+                        登入/註冊
+                    </h4>
+                    )}
+                                
                     <div id='memberNav' className='collapse'>
                         <div className='p-2'>
                             <h4 className='headerText text-center my-2' onClick={()=>{window.location="/profile"}}>會員中心</h4><hr />
@@ -48,14 +87,11 @@ class index extends Component {
                     </div>
                 </div>
             </div>
-
-            
             <div id='menuNav' className='menuNav d-flex flex-column align-items-center'>
-                <h4 className='menuText my-3 mainColor border-bottom border-secondary'><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
+                <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.cartMenuClick}><HiOutlineShoppingBag className='fs-4'/>購物車</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={()=>{window.location="/brand"}}><PiMedal className='fs-4'/>品牌專區</h4>
                 <h4 className='menuText my-3 mainColor border-bottom border-secondary' onClick={this.pointinfoShow}><PiCoins className='fs-4'/>集點資訊</h4>
             </div>
-
 
 
             <div id='banner' className='d-flex justify-content-center'><img id='bannerImg' src={("/img/index/Home_Banner_01.jpg")} alt='homeBanner' className='img-fluid'></img></div>
@@ -106,54 +142,50 @@ class index extends Component {
         event.cancelBubble = true;
     }
 
-
     toggleMemberNav = () => {
         const userdata = localStorage.getItem('userdata');
         if(userdata){
             document.getElementById('memberNav').classList.toggle('collapse');
         }else{
+            const path = this.props.location.pathname;
+            sessionStorage.setItem('redirect',path) ;
             window.location = "/login";
         }
       }
-      toggleMenuNav = () => {
-          document.getElementById('menuNav').classList.toggle('menuNav');
-      }
-    
-      logoutClick = async () => {
+    toggleMenuNav = () => {
+        document.getElementById('menuNav').classList.toggle('menuNav');
+    }
+    logoutClick = async () => {
         // 清除localStorage
         localStorage.removeItem("userdata");
         const userdata = localStorage.getItem("userdata");
         console.log("現在的:", userdata);
         try {
-          // 告訴後台使用者要登出
-          await Axios.post('http://localhost:8000/logout');
-      
-          
-          //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
+            // 告訴後台使用者要登出
+            await Axios.post('http://localhost:8000/logout');
+        
+            
+            //   window.location = '/logout'; // 看看登出要重新定向到哪個頁面
         } catch (error) {
-          console.error("登出時出錯:", error);
+            console.error("登出時出錯:", error);
         }
-      
+        
         document.getElementById('memberNav').classList.add('collapse');
         this.setState({})
-      }
-      loginCheck = () => {
-          const userData = JSON.parse(localStorage.getItem('userdata'));
-          if(userData){
-              const userImg = userData.user_img?userData.user_img:'LeDian.png';
-              return (
-                  <h4 id='loginBtn' className='my-auto btn headerText text-nowrap' onClick={this.toggleMemberNav}>                
-                      <img id='memberHeadshot' src={(`/img/users/${userImg}`)} alt='memberHeadshot' className='img-fluid my-auto mx-1 rounded-circle border'></img>
-                      會員專區▼</h4>
-                  )
-          }else {
-              return (<h4 id='loginBtn' className='my-auto btn headerText align-self-center' onClick={this.toggleMemberNav}>登入/註冊▼</h4>)
-          }              
-      }
-    
-    
+        window.location = "/index"
+    }
+    cartMenuClick = () => {
+        const userData = JSON.parse(localStorage.getItem('userdata'));
+        if(userData){
+            const userId = userData.user_id;
+            window.location = `/cartlist/${userId}`;
+        }else {
+            window.location = "/login";
+        }              
 
-    
+    }
+
+
     }
  
 export default index;
